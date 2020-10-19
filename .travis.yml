@@ -4,6 +4,8 @@ git:
     depth: 1
 install: go get -v github.com/cokidd/hugo
 script: hugo
+-git config user.email "okidingme@gmail.com"
+-git config user.name "cokidd"
 deploy:
     provider: pages
     skip_cleanup: true
