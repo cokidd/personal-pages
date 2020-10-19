@@ -1,0 +1,18 @@
+sudo: false
+language: go
+git:
+    depth: 1
+install: go get -v github.com/cokidd/personal-pages
+script: hugo
+deploy:
+    provider: pages
+    skip_cleanup: true
+    github_token: db610441a5f53c21ec5108c93897be6ac41ff5ed
+    on:
+        branch: master
+    local_dir: public
+    repo: cokidd/cokidd.github.io
+    fqdn: 
+    target_branch: master
+    email: okidingme@gmail.com
+    name: cokidd
