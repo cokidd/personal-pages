@@ -1,22 +1,31 @@
-sudo: false
 language: go
-git:
-    depth: 100
-install: go get -v github.com/cokidd/hugo
-script: hugo
--git config user.email "okidingme@gmail.com"
--git config user.name "cokidd"
-- export TRAVIS_TAG=${TRAVIS_TAG:-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)}
-- git tag $TRAVIS_TAG
+
+install:
+  - wget https://github.com/gohugoio/hugo/releases/download/v0.51/hugo_0.51_Linux-64bit.deb
+  - sudo dpkg -i hugo*.deb
+  - git clone https://github.com/cokidd/personal-pages.git
+
+script:
+  - hugo
+
+after_script:
+  - cd ./public
+  - git init
+  - git config user.name "cokidd"
+  - git config user.email "okidingme@gmail.com"
+  - git add .
+  - git commit -m "Update Blog By TravisCI With Build $TRAVIS_BUILD_NUMBER"
+  - git push --force --quiet "https://$token@${GH_REF}" master:master
+  - git push --quiet "https://$token@${GH_REF}" master:master --tags
+
+env:
+ global:
+   - GH_REF: cokidd/cokidd.github.io
+
 deploy:
-    provider: pages
-    skip_cleanup: true
-    github_token: $token
-    on:
-        branch: master
-    local_dir: public
-    repo: cokidd/cokidd.github.io
-    fqdn: 
-    target_branch: master
-    email: okidingme@gmail.com
-    name: cokidd
+  provider: pages 
+  skip-cleanup: true
+  local-dir: public 
+  github-token: $token 
+  on:
+    branch: master 

@@ -1180,6 +1180,26 @@ cat <<  EOF|ldapadd -x -D cn=Manager, dc=game2sky,dc=com -W -H ldap:///
     /usr/share/migrationtools/migrate_base.pl > base.ldif
     ```
 
+  * 添加用于生成OpenDLAP用户
+  
+    ```shell
+    vim adduser.sh
+    #!/bin/bash
+    #Add system user
+    for ldap in {1..5}; do
+    	if id user${ldap} &> /dev/null;then
+    		echo "System account already exists"
+    	else
+    		adduser user${ldap}
+    		echo user${ldap}|passwd --stdin user${ldap} &> /dev/null
+    		echo "user${ldap} system add finish"
+    	fi
+    done
+    chmod +x adduser.sh
+    id user1
+    
+    ```
+  
     
 
 ### 2.Linux 远程权限设置
