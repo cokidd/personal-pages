@@ -1062,7 +1062,7 @@ cat <<  EOF|ldapadd -x -D cn=Manager, dc=game2sky,dc=com -W -H ldap:///
 
 ## 五、 高级配置
 
-1.Linux 用户权限管理
+### 1.Linux 用户权限管理
 
 * 使用密码
 
@@ -1170,9 +1170,19 @@ cat <<  EOF|ldapadd -x -D cn=Manager, dc=game2sky,dc=com -W -H ldap:///
   )
   
   ```
+  
+* 通过migrationtools实现用户和用户组添加
 
+  * 安装migrationtools工具
 
-2.Linux 远程权限设置
+    ```shell
+    yum install migrationtools -y
+    /usr/share/migrationtools/migrate_base.pl > base.ldif
+    ```
+
+    
+
+### 2.Linux 远程权限设置
 
 * sudo设置
 
@@ -1196,8 +1206,7 @@ cat <<  EOF|ldapadd -x -D cn=Manager, dc=game2sky,dc=com -W -H ldap:///
   
   ```
 
-
-3.设置密码策略组
+### 3.设置密码策略组
 
 * vim pwp.ldif
 
