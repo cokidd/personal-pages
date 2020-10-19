@@ -1,7 +1,7 @@
 sudo: false
 language: go
 git:
-    depth: 100
+    depth: 1
 install: go get -v github.com/cokidd/hugo
 script: hugo
 - git config --global user.email "okidingme@gmail.com"
