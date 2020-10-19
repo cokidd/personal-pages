@@ -4,8 +4,11 @@ git:
     depth: 100
 install: go get -v github.com/cokidd/hugo
 script: hugo
--git config user.email "okidingme@gmail.com"
--git config user.name "cokidd"
+before_deploy:
+    -git config user.email "okidingme@gmail.com"
+    -git config user.name "cokidd"
+    - export TRAVIS_TAG=${TRAVIS_TAG:-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)}
+    - git tag $TRAVIS_TAG
 deploy:
     provider: pages
     skip_cleanup: true
