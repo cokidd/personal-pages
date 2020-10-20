@@ -3,7 +3,7 @@ go:
   - master
   
 install:
-  - wget https://github.com/gohugoio/hugo/releases/download/v0.76.5/hugo_v0.76.5_Linux-64bit.deb
+  - wget https://github.com/gohugoio/hugo/releases/download/v0.76.5/hugo_0.76.5_Linux-64bit.deb
   - sudo dpkg -i hugo*.deb
   - git clone https://github.com/cokidd/personal-pages.git
   
