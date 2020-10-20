@@ -3,10 +3,11 @@ go:
   - master
   
 install:
-  - go get github.com/spf13/hugo
+  - wget https://github.com/gohugoio/hugo/releases/download/v0.76.5/hugo_v0.76.5_Linux-64bit.deb
+  - sudo dpkg -i hugo*.deb
+  - git clone https://github.com/cokidd/personal-pages.git
   
 script:
-  - git clone https://github.com/cokidd/personal-pages.git
   - hugo
 
 after_script:
