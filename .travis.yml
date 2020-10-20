@@ -20,7 +20,7 @@ after_script:
 
 env:
  global:
-   - GH_REF: cokidd/cokidd.github.io.git
+   - GH_REF: github.com/cokidd/cokidd.github.io.git
 
 deploy:
   provider: pages 
