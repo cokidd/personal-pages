@@ -1,18 +1,13 @@
-+++
-author = "Cokidd"
-title = "LDAP(Lightweight Directory Access Protocol 轻量级目录服务)"
-date = "2020-10-19"
-description = "Guide to LDAP usage"
-tags = [
-    "Linux",
-]
 
-categories = [
-    "系统管理员",
-]
-
-+++
-
+---
+date: 2020-10-19
+description: LDAP 使用详解
+featured_image: "/images/chinese.jpg"
+tags: [Linux，OpenLDAP]
+title: "LDAP(Lightweight Directory Access Protocol 轻量级目录服务)"
+categories: [Linux]
+posts: [LDAP(Lightweight Directory Access Protocol 轻量级目录服务)]
+---
 
 # LDAP(Lightweight Directory Access Protocol 轻量级目录服务)
 
@@ -1424,5 +1419,34 @@ cat <<  EOF|ldapadd -x -D cn=Manager, dc=game2sky,dc=com -W -H ldap:///
   slapcat -v -l openldap-backup.ldif
   ```
 
-  
+
+6.性能优化
+
+* 性能优化的目标
+  * 架构调整
+  * 索引优化
+  * 数据存储优化
+  * 条目缓存大小
+  * 客户端参数调整
+  * 服务端内核参数优化
+* 架构调整
+  * 当服务器不能满足需求时，通过增加服务器数量来实现架构上的扩展。通过多台服务器实现同步或LVS及负载均衡等方式实现横向性能的提高
+* 索引优化
+  * 对关键数据创建索引提高查询效率
+    * 获取索引
+    * ldapsearch -Q -LLL -Y EXTERNAL -H -ldapi:/// -b cn=config '(olcDatabase={2}bdb)'
+    * 通过数据类型创建索引给OpenLDAP添加sn信息
+    * cat >> | ldapmodify -Q -Y EXTERNAL -H ldapi:/// <<EOF
+    * dn:olcDatabase={2}bdb,cn=config
+    * changetype:modify
+    * add:olcDbIndex
+    * olcDbIndex:sn pres,eq,sub
+    * modifying entry "olcDatabase={2}db,cn=config"
+* 数据存储优化
+  * 测试硬盘普通硬盘性能
+    * hdparam -Tt /dev/sdb
+  * 测试硬件存储性能
+    * hdparam -Tt /dev/emcpoweral
+* 条目缓存优化
+  * 设置缓存大小
 

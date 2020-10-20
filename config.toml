@@ -1,96 +1,54 @@
-baseURL = "https://cokidd.github.io"
-title = "Cokidd's contents"
-languageCode = "en"
-DefaultContentLanguage = "en" # Change this to change the site's language
-theme = "hugo.386"
-preserveTaxonomyNames = true
+baseURL = "http://cokidd.github.io"
+DefaultContentLanguage = "zh-hant" # Theme's display language, supports: en, fr, zh, zh-hant
+languageCode = "zh-hant"
+title = "Cokidd Kernel"
+copyright = "This is Cokidd Kernel copyright."
+theme = "diary"
+# googleAnalytics = "UA-123-45"
+
+[markup]
+  [markup.highlight]
+    codeFences = true
+    guessSyntax = false
+    hl_Lines = ""
+    lineNoStart = 1
+    lineNos = false
+    lineNumbersInTable = true
+    noClasses = true
+    style = "perldoc"
+    tabWidth = 4
 
 [params]
-    # The name to display as main title in the home page
-    mainpagetitle = "Unexpected world!"
+subtitle = "Themed by Diary."
+enableGitalk = true
 
-    # The subtitle to display under the title in the home page
-    mainpagesubtitle = "Welcome to Unexpected world!" 
+# Twitter Card and Open Graph settings
+enableOpenGraph = true
+enableTwitterCards = true
+title = "My Blog" # will set 'og:site_name'
+description = "My HomePage Description"  # will set 'og:description'
 
-    # The description of your website. It will be displayed in the home page
-    mainpagedesc = "This page is organized to collect and learn some unexpected things."
-
-    # The name to display in the copyright section in the footer
-    copyrightname = "Cokidd"
-
-    # The url to use as link in the copyright name in the footer. Leave empty to use none.
-    copyrighturl = ""
-
-    # Show the "built on Hugo" disclaimer
-    showhugo = true
-
-    # Urls for social networks
-    github = "https://github.com"
-    gitlab = "https://gitlab.com"
-
-    # Enables or disables the loading animations. false activates them. Default is false.
-    loadfastload = false
-
-    # Sets the speed for the page loading effect. Default is 1.0.
-    loadspeedfactor = 1.0
-
-    # Enables or disables the second flyby cursor. Default is false.
-    loadonepass = false
-
-[params.copyright]
-    name = "Cokidd"
-
-    # The url to use as link in the copyright name in the footer. Leave empty to use none.
-    url = "http://jmf-portfolio.netlify.com"
-
-    # Text to go before copyright information
-    prefix = "[hugo.386 theme by Max le Fou](https://gitlab.com/maxlefou/hugo.386)"
-
-    # Text to go between copyright and hugo disclaimer (if enabled)
-    suffix = "Cokkid 90's"
-
-[menu]
-  # This displays buttons in the navbar to access your contents
-  [[menu.main]]
-    identifier = "about" # An unique identifier for the button
-    name = "About"       # A display name for the button
-    url = "/about/"      # The path to the content. It can lead to a single page (like here)
-    weight = 10          # A number to order the buttons in the navbar
-
-  [[menu.main]]
-    identifier = "posts"
-    name = "All posts"
-    url = "/post/"       # The path can lead to a content folder too.
-    weight = 20
-
+[params.gitalk]
+  owner = "user"
+  repo = "repo name"
+  client_id = "your client id"
+  client_secret = "your client secret"
 [taxonomies]
-category = "categories"
-tag = "tags"
+   posts="posts"
+   tag = "tags"
+   category = "categories"
+
+[[menu.main]]
+url = "/posts"
+name = "Archive"
+weight = 1
+[[menu.main]]
+url = "/categories"
+name = "Categories"
+weight = 2
+[[menu.main]]
+url = "/tags"
+name = "Tags"
+weight = 3
 
 
-[privacy]
-
-  [privacy.vimeo]
-    disabled = false
-    simple = true
-
-  [privacy.twitter]
-    disabled = false
-    enableDNT = true
-    simple = true
-
-  [privacy.instagram]
-    disabled = false
-    simple = true
-
-  [privacy.youtube]
-    disabled = false
-    privacyEnhanced = true
-
-[services]
-
-  [services.instagram]
-    disableInlineCSS = true
-
-  [services.twitter]
-    disableInlineCSS = true
