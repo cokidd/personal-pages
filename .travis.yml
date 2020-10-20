@@ -1,7 +1,7 @@
 language: go
   
 install:
-  - go git github.com/spf13/hugo
+  - go get github.com/spf13/hugo
   
 script:
   - git clone https://github.com/cokidd/personal-pages.git
