@@ -1200,7 +1200,36 @@ cat <<  EOF|ldapadd -x -D cn=Manager, dc=game2sky,dc=com -W -H ldap:///
     
     ```
   
-    
+    * 配置/usr/share/migrationtools/migrate_common.ph
+  
+      ```shell
+      $DEFAULT_MAIL_DOMAIN = "game2sky.com"
+      $DEFAULT_BASE="dc=game2sky,dc=com"
+      
+      ```
+  
+    * 通过migrationtools 工具生成LDIF模板文件并生成系统用户及组LDIF 文件
+  
+      ```shell
+      tail -n 5 /etc/passwd > system
+      /usr/share/migrationtools/migrate_passwd.pl system people.ldif
+      tail -n 10 /etc/group > group
+      /usr/share/migrationtools/migrate_group.pl group group.ldif
+      ```
+  
+    * 导入LDIF文件至OpenLDAP目录树中
+  
+      ```shell
+      ldapadd -x -W -D "cn=Manager,dc=game2sky,dc=com" -f people.ldif
+      ```
+  
+    * 查询添加的OpenLDAP用户信息
+  
+      ```shell
+      ldapsearch -LLL -x -D 'cn=Manager,dc=game2sky,dc=com' -W -b 'dc=game2sky,dc=com' 'uid=user1'
+      ```
+  
+      
 
 ### 2.Linux 远程权限设置
 
@@ -1297,6 +1326,102 @@ cat <<  EOF|ldapadd -x -D cn=Manager, dc=game2sky,dc=com -W -H ldap:///
   重启nslcd服务
   service nslcd restart
   
+  ```
+
+
+### 4.samba服务器设置
+
+* samba安全级别
+
+  * share:为共享模式，无须提供用户的密码即可直接访问Samba共享资源，share模式一般用于公共资源下载
+  * user:使用samba自身数据中存在的用户进行验证，为了保证Samba共享资源的安全性。
+  * server:使用windows系统或Samba服务端自身提供的用户名和密码进行验证
+  * domain:使用Windows域服务器提供有效的用户名和密码作为访问samba共享资源的入口passdb backend包括3种类型:smbpasswd tdbsam ldapsam
+    * smbpasswd:指令基于系统用户设置samba密码
+    * tdbsam:使用passdb.tdb数据库进行用户验证，该文件存放在/etc/samba下。passdb.tdb时tdbsam所采用的数据库的文件名称。
+    * ldapsam通过OpenLDAP验证
+
+* 设置samba共享资源
+
+  * ldapserver设置
+
+  ```shell
+  cp /usr/share/doc/samba*/LDAP/samba.schema /etc/openldap/schema/
+  #使用部署时使用ldapmodify命令添加samba.schema
+  #vim samba_user.ldif
+  olcAccess: to attrs=userPassword,sambaLMPassword,sambaNTPassword
+   by self write
+   by dn="cn=Manager,dc=game2sky,dc=com" write
+   by anonymous auth
+   by * none
+  
+  olcAccess: to *
+   by dn="cn=Manager,dc=game2sky,dc=com" write
+   by self write
+   by * read
+  #设置权限设置
+  systemctl restart slapd
+  
+  ```
+
+* openldap 客户端配置
+
+  ```shell
+  yum install samba -y
+  vim /etc/samba/smb.conf
+  #修改字段
+  [global]
+  security = user
+  passdb backend = ldapsam:ldap://172.16.3.180/
+  ldap suffix = "dc=game2sky,dc=com"
+  ldap group suffix = "cn=group"
+  ldap user suffix = "ou=people"
+  ldap admin dn ="cn=Manager,dc=game2sky,dc=com"
+  ldap delete dn = no
+  ldap passwd sync = Yes
+  pam password change = Yes
+  ldap ssl = off
+  mkdir /home/share #创建home下共享文件
+  [ldap-share] #设置共享文件夹内用户访问权限
+  	path=/home/share
+  	comment = Security Ddirectory
+  	writeable = yes
+  	valid users = cent 
+  testparm /etc/samba/smb.conf
+  systemctl restart smb nmb
+  systemctl enable smb nmb
+  smbpasswd -w password #password 表示管理员用户密码
+  smbpasswd -a cent #表示修改cent用户的密码
+  
+  ```
+
+* samba 以组方式进行共享
+
+  ```shell
+  vim smb_group.ldif
+  dn: cn=system,ou=groups,dc=game2sky,dc=com
+  changetype: modify
+  add:memberUid
+  memberUid: userid
+  ldapmodify -x -D cn=Manager,dc=game2sky,dc=com -W -H ldap:///
+  ```
+
+* samba设置
+
+  ```shel
+  [ldap-share]
+  	path = /home/share
+  	comment = Security Ddirectory
+  	writable = yes
+  	valid users = @system
+  ```
+
+5.OpenLDAP备份
+
+* slapcat 指令进行备份
+
+  ```shell
+  slapcat -v -l openldap-backup.ldif
   ```
 
   

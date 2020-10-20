@@ -1,0 +1,1661 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <title>Cokidd&#39;s contents</title>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <meta content="utf-8" http-equiv="encoding">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="theme-color" content="#000084" />
+    <link rel="icon" href="https://cokidd.github.io/favicon.ico">
+    <link rel="canonical" href="https://cokidd.github.io">
+    
+    
+</head>
+<body>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"></button>
+            <a class="brand" href="https://cokidd.github.io">Cokidd&#39;s contents</a>
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    
+                    
+                        
+                            <li>
+                                <a href="/about/">
+                                    
+                                    <span>About</span>
+                                </a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/post/">
+                                    
+                                    <span>All posts</span>
+                                </a>
+                            </li>
+                        
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav><div id="content" class="container">
+
+<div class="row-fluid navmargin">
+    <div class="page-header">
+        <h1>LDAP(Lightweight Directory Access Protocol 轻量级目录服务) - Mon, Oct 19, 2020</h1>
+    </div>
+    <p class="lead">Guide to LDAP usage</p>
+    <h1 id="ldaplightweight-directory-access-protocol-轻量级目录服务">LDAP(Lightweight Directory Access Protocol 轻量级目录服务)</h1>
+<h2 id="一概述">一、概述</h2>
+<h3 id="1--目录">1.  目录</h3>
+<ul>
+<li>
+<p>目录：专门设计用于搜索和浏览的树状结构数据库</p>
+</li>
+<li>
+<p>目录特点：</p>
+<ul>
+<li>
+<p>倾向于包含基于属性的描述性信息，并支持复杂的过滤</p>
+</li>
+<li>
+<p>不支持复杂交互和复杂更新、回滚，通常更新是全有或全无的更改</p>
+</li>
+<li>
+<p>对大量查找和搜索操作通常会快速响应</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-目录服务">2. 目录服务</h3>
+<ul>
+<li>目录服务：以树状结构数据库为基础，提供相应的信息查询服务</li>
+</ul>
+<h3 id="3-ldap-lightweight-directory-access-protocol-轻量级目录服务">3. LDAP (Lightweight Directory Access Protocol 轻量级目录服务)</h3>
+<ul>
+<li>
+<p>LDAP:它是用于访问目录服务（特别是基于X.500的目录服务）的轻量级协议。 LDAP通过TCP/IP或其他面向连接的传输服务运行。</p>
+</li>
+<li>
+<p>数据类型表达：</p>
+<ul>
+<li>条目(dn)：条目是具有全局唯一专有名称(DN)属性的集合，DN用于明确地引用条目，每个条目都有一个类型及单一或多个值。</li>
+<li>模式(Schema):对象类(ObjectClass)、属性类型(AttributeType)、属性语法(Syntax)和匹配规则(MatchingRules)的集合。</li>
+</ul>
+</li>
+<li>
+<p>存储信息方式：将条目以树状的层次进行排列</p>
+</li>
+<li>
+<p>LDAP功能：查询条目、更新条目、删除条目、添加条目</p>
+</li>
+<li>
+<p>LDAP适用范围：需要集中管理、存储、访问数据时</p>
+</li>
+<li>
+<p>LDAP架构：Client/Server架构</p>
+</li>
+<li>
+<p>LDAP交互过程：客户端连接到服务端询问，服务器提供应答或对应指针(指针指向从何处可以获得对应信息，类似DNS)</p>
+</li>
+</ul>
+<h3 id="4-openldap开源ldap应用">4. OpenLDAP(开源LDAP应用)</h3>
+<ul>
+<li>
+<p>OpenLDAP服务：核心服务为slapd</p>
+</li>
+<li>
+<p>slapd服务特性：</p>
+<ul>
+<li>
+<p>使用LDAPv3协议</p>
+</li>
+<li>
+<p>简单身份验证和安全层</p>
+</li>
+<li>
+<p>传输层安全(TLS或SSL)</p>
+</li>
+<li>
+<p>拓扑控制</p>
+</li>
+<li>
+<p>访问控制</p>
+</li>
+<li>
+<p>数据库后端选择</p>
+</li>
+<li>
+<p>多个数据实例</p>
+</li>
+<li>
+<p>通用模块api</p>
+</li>
+<li>
+<p>多线程</p>
+</li>
+<li>
+<p>复制</p>
+</li>
+<li>
+<p>代理缓存</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="5openldap功能汇总">5.OpenLDAP功能汇总</h3>
+<ul>
+<li>实现账号统一集中管理</li>
+<li>权限控制管理(sudo)</li>
+<li>密码控制策略管理</li>
+<li>密码审计管理</li>
+<li>密码控制策略</li>
+<li>主机控制管理</li>
+<li>同步机制管理</li>
+<li>TLS/SASL加密传输</li>
+<li>高可用负载均衡</li>
+<li>自定义schema</li>
+<li>各种应用平台集成账号管理</li>
+</ul>
+<h3 id="6openldap条目概述">6.OpenLDAP条目概述</h3>
+<ul>
+<li>objectClass分类
+<ul>
+<li>结构型(structural): 如person和organizationUnit</li>
+<li>辅助型(auxiliary):如extensibleObject</li>
+<li>抽象型(abstract):如top,抽象型的objectClass不能直接使用</li>
+</ul>
+</li>
+</ul>
+<h3 id="7openldap属性概述">7.OpenLDAP属性概述</h3>
+<ul>
+<li>属性(Attribute):在目录树中主要用于描述条目相关信息。例如用户条目的用途、联系方式、邮件、uid、gid、公司地址等</li>
+<li>常用属性类型:
+<ul>
+<li>dn(distinguished name):唯一标识名，类似于Linux文件系统中的绝对路径，每个对象都有唯一标识名。(例如，uid=dpgdy, ou=People, dc=gdy, dc=com)</li>
+<li>rdn(relative dn):通常指相对标识名，类似与Linux文件系统中的相对路径。</li>
+<li>ui(user id):通常指一个用户的登录名称</li>
+<li>sn(sur name):通常指一个人的姓氏</li>
+<li>giveName:通常指一个人的名字</li>
+<li>I:通常指一个地方的地名。</li>
+<li>objectClass:objectClass是特殊的属性，包含数据存储的方式以及相关属性信息</li>
+<li>dc(domain component):通常指定一个域名</li>
+<li>ou(organization unit):通常指定一个组织单元的名称</li>
+<li>cn(common name):通常指一个对象的名称，如果是人,需要使用全名</li>
+<li>mail:通常指登录账号的邮箱地址</li>
+<li>telephoneNumber:通常指登录账号的手机号码</li>
+<li>c：通常指一个二位国家的名称</li>
+</ul>
+</li>
+</ul>
+<h3 id="8openldap管理命令汇总">8.OpenLDAP管理命令汇总</h3>
+<ul>
+<li>ldapsearch:搜索OpenLDAP目录树条目</li>
+<li>ldapadd:通过LDIF格式，添加目录树条目</li>
+<li>ldapdelete:删除OpenLDAP目录树条目</li>
+<li>ldapmodify:修改OpenLDAP目录树条目</li>
+<li>ldapwhoami:检验OpenLDAP目录树条目</li>
+<li>ldapmodrdn:修改OpenLDAP目录树条目</li>
+<li>ldapcompare:判断DN值和指定参数值是否属于同一个条目</li>
+<li>ldappasswd:修改OpenLDAP目录树用户条目实现密码重置</li>
+<li>slaptest:验证slapd.conf文件或cn=配置目录(slapd.d)</li>
+<li>slapindex:创建OpenLDAP目录树索引，提高查询效率</li>
+<li>slapcat:将数据条目转换为OpenLDAP的LDIF文件</li>
+</ul>
+<h3 id="9openldap-同步机制概述">9.OpenLDAP 同步机制概述</h3>
+<ul>
+<li>syncrepl同步提供一个有状态的复制，拉(pull)和推(push)模式进行目录树的同步</li>
+<li>多并发连接时，数据同步信息不完整需要重新加载ldap进程</li>
+<li>日志需要分割、清理和同步</li>
+</ul>
+<h3 id="10openldap-权限内容概述">10.OpenLDAP 权限内容概述</h3>
+<ul>
+<li>
+<p>Linux-PAM 组织架构</p>
+<ul>
+<li>
+<p>Linux通过PAM模块来验证登录者合法性及密码正确性</p>
+<p><img src="C:%5CUsers%5CAdministrator%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201016154519079.png" alt="image-20201016154519079"></p>
+</li>
+</ul>
+</li>
+<li>
+<p>PAM模块认证类型</p>
+<ul>
+<li>auth:认证管理，验证使用者身份，账号和密码</li>
+<li>accout:用户认证，基于用户表</li>
+<li>password:密码口令，认证管理</li>
+<li>session:会话管理，日志记录或则限制用户登录次数</li>
+</ul>
+</li>
+<li>
+<p>PAM模块的模块流程</p>
+<ul>
+<li>required:必要条件，需要同其他模块一起验证。验证失败，则返回失败信息</li>
+<li>requisite:必要条件，验证失败后即结束整个验证过程</li>
+<li>sufficient:充分条件，验证成功即返回OK,不再继续验证</li>
+<li>optional:可选条件，无论验证如何不会影响会话</li>
+<li>include：包含另外一个配置文件中类型相同的行</li>
+</ul>
+</li>
+<li>
+<p>PAM模块</p>
+<ul>
+<li>pam_rootok.so:如果UID=0,RETURN OK</li>
+<li>pam_access.so:配置文件为/etc/security/access.conf,登录模块</li>
+<li>pam_listfile.so:基于文件允许或拒绝访问资源机制</li>
+<li>pam_time.so:基于时间的访问控制</li>
+<li>pam_tally2.so:登录统计</li>
+<li>pam_limits.so:限制会话过程中对资源的使用情况，配置文件/etc/security/limits.conf</li>
+</ul>
+</li>
+</ul>
+<p>11.密码策略属性详解</p>
+<ul>
+<li>pwdAllowUserChange,允许用户修改密码</li>
+<li>pwdAttribute, pwdPolicy对象的一个属性，用于标识用户密码</li>
+<li>pwdExpireWarning,密码过期前警告天数</li>
+<li>pwdFailureCountInterval，密码失败后恢复时间</li>
+<li>pwdGraceAuthNLimit,密码过期后不能登录的天数，0代表禁止登录</li>
+<li>pwdInHistory，开启密码历史记录，用于保证不能和之前设置的密码相同</li>
+<li>pwdLockout,超过定义次数，账号被锁定</li>
+<li>pwdLockoutDuration，密码连续输入错误次数后，账号锁定时间</li>
+<li>pwdMaxAge,密码有效期，到期需要强制修改密码</li>
+<li>pwdMaxFailure,密码最大失效次数，超过后账号被锁定</li>
+<li>pwdMinAge，密码有效期</li>
+<li>pwdMinLength，用户修改密码是最短的密码长度</li>
+<li>pwdMustChange，用户登录系统提示修改密码</li>
+<li>pwdSafeModify，是否允许用户修改密码</li>
+<li>pwdLockoutDuration，账号锁定后，不能自动解锁，需要管理员解锁</li>
+</ul>
+<h2 id="二安装和基本配置centos-7">二、安装和基本配置（CentOS 7)</h2>
+<h3 id="1-查看是否存在openssl">1. 查看是否存在openssl</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>root@localhost ~<span style="color:#f92672">]</span><span style="color:#75715e"># rpm -qa|grep openssl</span>
+<span style="color:#75715e">#如果内容为空</span>
+<span style="color:#f92672">[</span>root@localhost ~<span style="color:#f92672">]</span><span style="color:#75715e"># yum -y install openssl</span>
+</code></pre></div><h3 id="2-安装openldap">2. 安装openldap</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>root@localhost ~<span style="color:#f92672">]</span><span style="color:#75715e"># yum -y install openldap-servers openldap-clients</span>
+<span style="color:#75715e">#复制数据库配置</span>
+<span style="color:#f92672">[</span>root@localhost ~<span style="color:#f92672">]</span><span style="color:#75715e"># cp /usr/share/openldap-servers/DB_CONFIG.example /var/lib/ldap/DB_CONFIG</span>
+<span style="color:#75715e">#修改文件权限</span>
+<span style="color:#f92672">[</span>root@localhost ~<span style="color:#f92672">]</span><span style="color:#75715e"># chown ldap. /var/lib/ldap/DB_CONFIG</span>
+<span style="color:#75715e">#启动服务</span>
+<span style="color:#f92672">[</span>root@localhost ~<span style="color:#f92672">]</span><span style="color:#75715e">#systemctl start slapd</span>
+<span style="color:#f92672">[</span>root@localhost ~<span style="color:#f92672">]</span><span style="color:#75715e"># systemctl enable slapd</span>
+</code></pre></div><h3 id="3时间同步设置">3.时间同步设置</h3>
+<ul>
+<li>
+<p>OpenLDAP需要时间进行同步</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">ntpdate 0.rhel.pool.ntp.org
+rpm -qa| grep openldap-server
+</code></pre></div></li>
+</ul>
+<h3 id="4-基础配置">4. 基础配置</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e">#设置管理员密码</span>
+<span style="color:#75715e">#生成加密密码</span>
+<span style="color:#f92672">[</span>root@localhost ~<span style="color:#f92672">]</span><span style="color:#75715e"># slappasswd</span>
+New password:
+Re-enter new password:
+<span style="color:#f92672">{</span>SSHA<span style="color:#f92672">}</span>QECj5ITzHfYsmpNvsGUIYZXqTYxIukXw
+<span style="color:#75715e">#将{SSHA}QECj5ITzHfYsmpNvsGUIYZXqTYxIukXw内容复制</span>
+
+<span style="color:#75715e">#创建配置文件</span>
+<span style="color:#f92672">[</span>root@localhost ~<span style="color:#f92672">]</span><span style="color:#75715e"># vi chrootpw.ldif</span>
+<span style="color:#75715e">#将{SSHA}QECj5ITzHfYsmpNvsGUIYZXqTYxIukXw内容复制至olcRootPW中</span>
+dn: olcDatabase<span style="color:#f92672">={</span>0<span style="color:#f92672">}</span>config,cn<span style="color:#f92672">=</span>config
+changetype: modify
+add: olcRootPW
+olcRootPW: <span style="color:#f92672">{</span>SSHA<span style="color:#f92672">}</span>QECj5ITzHfYsmpNvsGUIYZXqTYxIukXw
+
+<span style="color:#75715e">#添加配置文件(使用SASL机制)</span>
+<span style="color:#f92672">[</span>root@localhost ~<span style="color:#f92672">]</span><span style="color:#75715e"># ldapadd -Y EXTERNAL -H ldapi:/// -f chrootpw.ldif</span>
+SASL/EXTERNAL authentication started
+SASL username: gidNumber<span style="color:#f92672">=</span>0+uidNumber<span style="color:#f92672">=</span>0,cn<span style="color:#f92672">=</span>peercred,cn<span style="color:#f92672">=</span>external,cn<span style="color:#f92672">=</span>auth
+SASL SSF: <span style="color:#ae81ff">0</span>
+modifying entry <span style="color:#e6db74">&#34;olcDatabase={0}config,cn=config&#34;</span>
+
+<span style="color:#75715e">#导入基本配置</span>
+<span style="color:#f92672">[</span>root@localhost ~<span style="color:#f92672">]</span><span style="color:#75715e"># ldapadd -Y EXTERNAL -H ldapi:/// -f /etc/openldap/schema/cosine.ldif</span>
+SASL/EXTERNAL authentication started
+SASL username: gidNumber<span style="color:#f92672">=</span>0+uidNumber<span style="color:#f92672">=</span>0,cn<span style="color:#f92672">=</span>peercred,cn<span style="color:#f92672">=</span>external,cn<span style="color:#f92672">=</span>auth
+SASL SSF: <span style="color:#ae81ff">0</span>
+adding new entry <span style="color:#e6db74">&#34;cn=cosine,cn=schema,cn=config&#34;</span>
+
+<span style="color:#f92672">[</span>root@localhost ~<span style="color:#f92672">]</span><span style="color:#75715e"># ldapadd -Y EXTERNAL -H ldapi:/// -f /etc/openldap/schema/nis.ldif</span>
+SASL/EXTERNAL authentication started
+SASL username: gidNumber<span style="color:#f92672">=</span>0+uidNumber<span style="color:#f92672">=</span>0,cn<span style="color:#f92672">=</span>peercred,cn<span style="color:#f92672">=</span>external,cn<span style="color:#f92672">=</span>auth
+SASL SSF: <span style="color:#ae81ff">0</span>
+adding new entry <span style="color:#e6db74">&#34;cn=nis,cn=schema,cn=config&#34;</span>
+
+<span style="color:#f92672">[</span>root@localhost ~<span style="color:#f92672">]</span><span style="color:#75715e"># ldapadd -Y EXTERNAL -H ldapi:/// -f /etc/openldap/schema/inetorgperson.ldif</span>
+SASL/EXTERNAL authentication started
+SASL username: gidNumber<span style="color:#f92672">=</span>0+uidNumber<span style="color:#f92672">=</span>0,cn<span style="color:#f92672">=</span>peercred,cn<span style="color:#f92672">=</span>external,cn<span style="color:#f92672">=</span>auth
+SASL SSF: <span style="color:#ae81ff">0</span>
+adding new entry <span style="color:#e6db74">&#34;cn=inetorgperson,cn=schema,cn=config&#34;</span>
+
+<span style="color:#75715e">#导入所有模式</span>
+<span style="color:#f92672">[</span>root@localhost ~<span style="color:#f92672">]</span><span style="color:#75715e"># find /etc/openldap/schema/ -name &#34;*.ldif&#34; -exec ldapadd -Y EXTERNAL -H ldapi:/// -D &#34;cn=config&#34; -f {} \ </span>
+
+<span style="color:#75715e">#设置目录管理员密码(内容不相同)</span>
+<span style="color:#75715e">#生成加密密码</span>
+<span style="color:#f92672">[</span>root@localhost ~<span style="color:#f92672">]</span><span style="color:#75715e"># slappasswd</span>
+New password:
+Re-enter new password:
+<span style="color:#f92672">{</span>SSHA<span style="color:#f92672">}</span>AgeHfglDlqbccpFV4RLY42eXO4+kM0eD
+<span style="color:#75715e">#管理目录配置文件</span>
+<span style="color:#f92672">[</span>root@localhost ~<span style="color:#f92672">]</span><span style="color:#75715e"># vi chdomain.ldif</span>
+<span style="color:#75715e"># 将dc=***，dc=***内容替换为设置的域名</span>
+<span style="color:#75715e"># 将{SSHA}AgeHfglDlqbccpFV4RLY42eXO4+kM0eD内容复制至olcRootPW中</span>
+dn: olcDatabase<span style="color:#f92672">={</span>1<span style="color:#f92672">}</span>monitor,cn<span style="color:#f92672">=</span>config
+changetype: modify
+replace: olcAccess
+olcAccess: <span style="color:#f92672">{</span>0<span style="color:#f92672">}</span>to * by dn.base<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth&#34;</span>
+  read by dn.base<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;cn=Manager,dc=srv,dc=com&#34;</span> read by * none
+
+dn: olcDatabase<span style="color:#f92672">={</span>2<span style="color:#f92672">}</span>hdb,cn<span style="color:#f92672">=</span>config
+changetype: modify
+replace: olcSuffix
+olcSuffix: dc<span style="color:#f92672">=</span>srv,dc<span style="color:#f92672">=</span>com
+
+dn: olcDatabase<span style="color:#f92672">={</span>2<span style="color:#f92672">}</span>hdb,cn<span style="color:#f92672">=</span>config
+changetype: modify
+replace: olcRootDN
+olcRootDN: cn<span style="color:#f92672">=</span>Manager,dc<span style="color:#f92672">=</span>srv,dc<span style="color:#f92672">=</span>com
+
+dn: olcDatabase<span style="color:#f92672">={</span>2<span style="color:#f92672">}</span>hdb,cn<span style="color:#f92672">=</span>config
+changetype: modify
+add: olcRootPW
+olcRootPW: <span style="color:#f92672">{</span>SSHA<span style="color:#f92672">}</span>AgeHfglDlqbccpFV4RLY42eXO4+kM0eD
+
+dn: olcDatabase<span style="color:#f92672">={</span>2<span style="color:#f92672">}</span>hdb,cn<span style="color:#f92672">=</span>config
+changetype: modify
+add: olcAccess
+olcAccess: <span style="color:#f92672">{</span>0<span style="color:#f92672">}</span>to attrs<span style="color:#f92672">=</span>userPassword,shadowLastChange by
+  dn<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;cn=Manager,dc=srv,dc=com&#34;</span> write by anonymous auth by self write by * none
+olcAccess: <span style="color:#f92672">{</span>1<span style="color:#f92672">}</span>to dn.base<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;</span> by * read
+olcAccess: <span style="color:#f92672">{</span>2<span style="color:#f92672">}</span>to * by dn<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;cn=Manager,dc=srv,dc=com&#34;</span> write by * read
+<span style="color:#75715e">#配置文件添加</span>
+<span style="color:#f92672">[</span>root@localhost ~<span style="color:#f92672">]</span><span style="color:#75715e"># ldapmodify -Y EXTERNAL -H ldapi:/// -f chdomain.ldif</span>
+SASL/EXTERNAL authentication started
+SASL username: gidNumber<span style="color:#f92672">=</span>0+uidNumber<span style="color:#f92672">=</span>0,cn<span style="color:#f92672">=</span>peercred,cn<span style="color:#f92672">=</span>external,cn<span style="color:#f92672">=</span>auth
+SASL SSF: <span style="color:#ae81ff">0</span>
+modifying entry <span style="color:#e6db74">&#34;olcDatabase={1}monitor,cn=config&#34;</span>
+
+modifying entry <span style="color:#e6db74">&#34;olcDatabase={2}hdb,cn=config&#34;</span>
+
+modifying entry <span style="color:#e6db74">&#34;olcDatabase={2}hdb,cn=config&#34;</span>
+
+modifying entry <span style="color:#e6db74">&#34;olcDatabase={2}hdb,cn=config&#34;</span>
+
+<span style="color:#75715e">#基础域名配置文件</span>
+<span style="color:#f92672">[</span>root@localhost ~<span style="color:#f92672">]</span><span style="color:#75715e"># vi basedomain.ldif</span>
+<span style="color:#75715e">#将dc=***，dc=***内容替换为设置的域名</span>
+dn: dc<span style="color:#f92672">=</span>game2sky,dc<span style="color:#f92672">=</span>com
+objectClass: top
+objectClass: dcObject
+objectclass: organization
+o: game2sky com
+dc: game2sky
+
+dn: cn<span style="color:#f92672">=</span>Manager,dc<span style="color:#f92672">=</span>game2sky,dc<span style="color:#f92672">=</span>com
+objectClass: organizationalRole
+cn: Manager
+description: Directory Manager
+
+dn: ou<span style="color:#f92672">=</span>People,dc<span style="color:#f92672">=</span>game2sky,dc<span style="color:#f92672">=</span>com
+objectClass: organizationalUnit
+ou: People
+
+dn: ou<span style="color:#f92672">=</span>Group,dc<span style="color:#f92672">=</span>game2sky,dc<span style="color:#f92672">=</span>com
+objectClass: organizationalUnit
+ou: Group
+
+<span style="color:#75715e">#数据结构添加</span>
+<span style="color:#f92672">[</span>root@localhost ~<span style="color:#f92672">]</span><span style="color:#75715e"># ldapadd -x -D cn=Manager,dc=game2sky,dc=com -W -f basedomain.ldif</span>
+Enter LDAP Password:     <span style="color:#75715e"># directory manager&#39;s password</span>
+adding new entry <span style="color:#e6db74">&#34;dc=game2sky,dc=com&#34;</span>
+
+adding new entry <span style="color:#e6db74">&#34;cn=Manager,dc=game2sky,dc=com&#34;</span>
+
+adding new entry <span style="color:#e6db74">&#34;ou=People,dc=game2sky,dc=com&#34;</span>
+
+adding new entry <span style="color:#e6db74">&#34;ou=Group,dc=game2sky,dc=com&#34;</span>
+
+</code></pre></div><h3 id="5-phpldapadmin前端页面部署">5. phpLDAPadmin前端页面部署</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>root@localhost ~<span style="color:#f92672">]</span><span style="color:#75715e"># yum --enablerepo=epel -y install phpldapadmin</span>
+<span style="color:#f92672">[</span>root@localhost ~<span style="color:#f92672">]</span><span style="color:#75715e"># vi /etc/phpldapadmin/config.php</span>
+<span style="color:#75715e"># 397行取消注释, 398行添加注释</span>
+$servers-&gt;setValue<span style="color:#f92672">(</span><span style="color:#e6db74">&#39;login&#39;</span>,<span style="color:#e6db74">&#39;attr&#39;</span>,<span style="color:#e6db74">&#39;dn&#39;</span><span style="color:#f92672">)</span>;
+// $servers-&gt;setValue<span style="color:#f92672">(</span><span style="color:#e6db74">&#39;login&#39;</span>,<span style="color:#e6db74">&#39;attr&#39;</span>,<span style="color:#e6db74">&#39;uid&#39;</span><span style="color:#f92672">)</span>;
+<span style="color:#f92672">[</span>root@localhost ~<span style="color:#f92672">]</span><span style="color:#75715e"># vi /etc/httpd/conf.d/phpldapadmin.conf</span>
+Alias /phpldapadmin /usr/share/phpldapadmin/htdocs
+Alias /ldapadmin /usr/share/phpldapadmin/htdocs
+&lt;Directory /usr/share/phpldapadmin/htdocs&gt;
+  &lt;IfModule mod_authz_core.c&gt;
+    <span style="color:#75715e"># Apache 2.4</span>
+    Require local
+    <span style="color:#75715e"># 添加Require ip 172.16.0.0/22</span>
+    Require ip 172.16.0.0/22
+<span style="color:#f92672">[</span>root@localhost ~<span style="color:#f92672">]</span><span style="color:#75715e"># systemctl restart httpd</span>
+</code></pre></div><ul>
+<li>
+<p>通过web端访问url:ipaddress/ldapadmin/,显示如下</p>
+<p><img src="C:%5CUsers%5CAdministrator%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201010160328443.png" alt="image-20201010160328443"></p>
+</li>
+</ul>
+<h3 id="6-防火墙配置">6. 防火墙配置</h3>
+<ul>
+<li>
+<p>iptables明文数据传输配置:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">iptables -A INPUT -p tcp -m state -state NEW -dport <span style="color:#ae81ff">389</span> -j ACCEPT
+iptables -A OUTPUT -p tcp -m state -state NEW -dport <span style="color:#ae81ff">389</span> -j ACCEPT
+service iptables save
+service iptables restart<span style="color:#f92672">&amp;&amp;</span>chkconfig iptables on 
+</code></pre></div></li>
+<li>
+<p>密文数据传输配置:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">iptables -A INPUT -p tcp -m state -state NEW -dport <span style="color:#ae81ff">636</span> -j ACCEPT
+iptables -A OUTPUT -p tcp -m state -state NEW -dport <span style="color:#ae81ff">636</span> -j ACCEPT
+service iptables save
+service iptables restart<span style="color:#f92672">&amp;&amp;</span>chkconfig iptables on 
+</code></pre></div></li>
+</ul>
+<h3 id="7域名解析设置">7.域名解析设置</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>root@localhost ~<span style="color:#f92672">]</span><span style="color:#75715e"># cat &gt;&gt; /etc/hosts &lt;&lt;EOF</span>
+&gt; ipaddress  hostname firstname
+&gt; EOF
+<span style="color:#75715e"># ipaddress 表示IP地址</span>
+<span style="color:#75715e"># hostname 表示服务器域名全称</span>
+<span style="color:#75715e"># firstname 表示服务器域名第一个名称</span>
+</code></pre></div><h3 id="8ldap客户端部署">8.LDAP客户端部署</h3>
+<ul>
+<li>
+<p>配置文件功能</p>
+<ul>
+<li>/etc/nsswitch.conf：用于名称转化服务，用于UNIX&amp;Linux系统验证用户身份所读取本地文件或是远程验证服务器</li>
+<li>/etc/sysconfig/authconfig：用于提供身份验证值LDAP功能</li>
+<li>/etc/pam.d/system-auth：主要用于显示现实用户账号身份验证</li>
+<li>/etc/pam_ldap.conf：用于实现用户账号身份验证</li>
+<li>/etc/openldap/ldap.conf：主要用于查询OpenLDAP服务器所有条目信息</li>
+</ul>
+</li>
+<li>
+<p>部署方式</p>
+<ul>
+<li>
+<p>图形化部署方式</p>
+<ul>
+<li>常用工具setup 、authconfig-tui命令</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>配置文件部署方式</p>
+<ul>
+<li>
+<p>命令行部署方式</p>
+<ul>
+<li>常用工具authconfig命令</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>部署前时间同步</p>
+<ul>
+<li>ntpdate 0.rhel.pool.ntp.org</li>
+<li>部署前域名解析</li>
+<li>vim /etc/hosts
+<ul>
+<li>172.16.3.180 openldap.game2sky.com</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>安装客户端工具
+<code>shell yum -y install openldap-clients nss-pam-ldapd authconfig --enableldap \ --enableldapauth \ --ldapserver=172.16.3.180 \ --ldapbasedn=&quot;dc=game,dc=com&quot; \ --enablemkhomedir \ --update</code></p>
+</li>
+</ul>
+<h3 id="9openssl加密传输设置">9.OpenSSL加密传输设置</h3>
+<ul>
+<li>创建CA证书</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">rpm -qa | grep openssl
+cd /etc/pki/CA
+openssl req -new -x509 -key private/cakey.pem -out cacert.pem 
+<span style="color:#75715e">#设置证书</span>
+Country Name<span style="color:#f92672">(</span><span style="color:#ae81ff">2</span> lettercode<span style="color:#f92672">)</span>:cn<span style="color:#f92672">(</span>两个字母的国家代号<span style="color:#f92672">)</span>
+State or Province Name<span style="color:#f92672">(</span>fullname<span style="color:#f92672">)</span>:Beijing<span style="color:#f92672">(</span>省份或地区名<span style="color:#f92672">)</span>
+Locality Name<span style="color:#f92672">(</span>eg, city<span style="color:#f92672">)[</span>Default City<span style="color:#f92672">]</span>:市或地区
+Organization Name<span style="color:#f92672">(</span>eg, company<span style="color:#f92672">)[</span>Default Company Ltd<span style="color:#f92672">]</span>:公司名称
+Organizational Unit Name<span style="color:#f92672">(</span>eg, section<span style="color:#f92672">)[]</span>:部门名称
+Common Name<span style="color:#f92672">(</span>eg, your name or your server<span style="color:#960050;background-color:#1e0010">&#39;</span>s hostname<span style="color:#f92672">)</span>：OL服务器名称
+Email Address <span style="color:#f92672">[]</span>: ca@game2sky.com
+
+</code></pre></div><ul>
+<li>
+<p>生成文件用途</p>
+<ul>
+<li>cacert.pem:CA 自身证书文件</li>
+<li>certs:客户端证书存放目录</li>
+<li>crl:CA吊销的客户端证书存放目录</li>
+<li>newcerts:生成新证书存放目录</li>
+<li>index.txt:存放客户端证书信息</li>
+<li>serial:客户端证书编号</li>
+<li>private:存放CA自身私钥的目录</li>
+</ul>
+</li>
+<li>
+<p>查看根证书</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">openssl x509 -noout -text -in /etc/pki/CA/cacert.pem
+</code></pre></div></li>
+<li>
+<p>服务器生成密钥</p>
+</li>
+<li>
+<p>openssl genrsa -out ldapkey.pem 1024</p>
+</li>
+<li>
+<p>OpenLDAP服务向CA申请证书签署请求</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">openssl req -new -key ldapkey.pem -out ldap.csr -days <span style="color:#ae81ff">3650</span>
+</code></pre></div></li>
+<li>
+<p>CA核实并签发证书</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">openssl ca -in ldap.csr -out ldapcert.pem -days <span style="color:#ae81ff">3650</span>
+</code></pre></div></li>
+<li>
+<p>OpenLDAP  TLS/SASL</p>
+<ul>
+<li>
+<p>修改证书权限</p>
+</li>
+<li>
+<p>chown -R ldap:ldap /etc/openldap/ssl/*</p>
+</li>
+<li>
+<p>chmod -R 0400 /etc/openldap/ssl/*</p>
+</li>
+<li>
+<p>修改OpenLDAP配置文件</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">vim mod_ssl.ldif
+dn: cn<span style="color:#f92672">=</span>config
+changetype: modify
+add: olcTLSCACertificateFile
+olcTLSCACertificateFile: /etc/openldap/certs/ca-bundle.crt
+-
+replace: olcTLSCertificateFile
+olcTLSCertificateFile: /etc/openldap/certs/server.crt
+-
+replace: olcTLSCertificateKeyFile
+olcTLSCertificateKeyFile: /etc/openldap/certs/server.key
+ldapmodify -Y EXTERNAL -H ldapi:/// -f mod_ssl.ldif
+vim /etc/sysconfig/slapd
+SLAPD_URLS<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;ldapi:/// ldap:/// ldaps:///&#34;</span>
+systemctl restart slapd
+</code></pre></div></li>
+<li>
+<p>设置客户端</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">echo <span style="color:#e6db74">&#34;TLS_REQCERT allow&#34;</span> &gt;&gt; /etc/openldap/ldap.conf
+echo <span style="color:#e6db74">&#34;tls_reqcert allow&#34;</span> &gt;&gt; /etc/nslcd.conf
+authconfig --enableldaptls --updates
+</code></pre></div></li>
+<li>
+<p>证书验证</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">openssl verify -CAfile /etc/pki/CA/cacert.pem /etc/openldap/ssl/ldapcert.pem
+openssl s_client -connect openldap.game2sky.com:636 -showcerts -state -CAfile /etc/openldap/ssl/cacert.pem
+</code></pre></div></li>
+</ul>
+</li>
+</ul>
+<h2 id="三配置详解">三、配置详解</h2>
+<h3 id="1全局配置类型">1.全局配置类型</h3>
+<ul>
+<li>
+<p>本地目录服务:不会以任何方式和其他服务器交互</p>
+<p><img src="C:%5CUsers%5CAdministrator%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201010171521577.png" alt="image-20201010171521577"></p>
+</li>
+<li>
+<p>具有引用的本地服务目录(主从模式)：为本地服务提供应用，并将其配置项其他能够处理请求的服务器返回引用。</p>
+<p><img src="C:%5CUsers%5CAdministrator%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201010171926713.png" alt="image-20201010171926713"></p>
+</li>
+<li>
+<p>复制目录服务:syncrepl主服务器提供服务，由多个从服务器通过syncrepl返回数据。<img src="C:%5CUsers%5CAdministrator%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201010172208583.png" alt="image-20201010172208583"></p>
+</li>
+<li>
+<p>分布式本地模式：将本地服务解耦划分为更小的服务，每个服务都可以进行复制，并与上下级引用粘合在一起</p>
+</li>
+</ul>
+<h3 id="2配置树">2.配置树</h3>
+<p><img src="C:%5CUsers%5CAdministrator%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201010161811243.png" alt="image-20201010161811243"></p>
+<ul>
+<li>slapd配置树:树的根名为cn=config包含全局配置设置，其他设置包含在单独的子条目中。</li>
+<li>动态加载模块</li>
+<li>模式定义:cn=schema,cn=config条目包含系统架构。cn=schema,cn=config的子条目包含从配置文件加载或在运行时添加的用户架构</li>
+<li>后端特定配置</li>
+<li>数据库特定配置:覆盖在数据库项的子项中定义。数据库和覆盖也可能有其他的子对象</li>
+</ul>
+<h3 id="3ldif配置文件">3.LDIF配置文件</h3>
+<ul>
+<li>
+<p>LDIF用途:LDIF(LDAP Data Interchanged Format)的轻量级目录访问协议数据交换格式，是存储LDAP配置信息及目录内容的标准文本文件格式。</p>
+</li>
+<li>
+<p>LDIF文件特点</p>
+<ul>
+<li>LDIF 文件每行的结尾不允许有空格或则制表符</li>
+<li>LDIF文件允许相关属性可以重复赋值并使用</li>
+<li>LDIF文件以.ldif结尾命名</li>
+<li>LDIF文件中以#号开头的一行为注释，可以作为解释使用</li>
+<li>LDIF文件所有的赋值方式为: 属性:[空格]属性值</li>
+<li>LDIF文件通过空行来定义一个条目，空格前为一个条目，空格后为另一个条目的开始</li>
+</ul>
+</li>
+<li>
+<p>全局配置规则</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">dn:cn<span style="color:#f92672">=</span>config 
+objectClass:olcGlobal 
+cn:config&lt;global config settings&gt;
+</code></pre></div></li>
+<li>
+<p>架构定义(模块定义)</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">dn: cn<span style="color:#f92672">=</span>schema,cn<span style="color:#f92672">=</span>config 
+objectClass: olcSchemaConfig 
+cn: schema
+</code></pre></div></li>
+<li>
+<p>系统架构(系统模块)</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">dn: cn<span style="color:#f92672">={</span>X<span style="color:#f92672">}</span>core,cn<span style="color:#f92672">=</span>schema,cn<span style="color:#f92672">=</span>config objectClass: olcSchemaConfig cn: <span style="color:#f92672">{</span>X<span style="color:#f92672">}</span>core &lt;core schema&gt;
+</code></pre></div></li>
+<li>
+<p>其他用户指定的架构</p>
+</li>
+<li>
+<p>后端定义</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">olcBackend<span style="color:#f92672">=</span>&lt;typeA&gt;,cn<span style="color:#f92672">=</span>config 
+objectClass: olcBackendConfig 
+olcBackend: &lt;typeA&gt; &lt;backend-specific settings&gt;
+</code></pre></div></li>
+<li>
+<p>数据库定义</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"> dn: olcDatabase<span style="color:#f92672">={</span>X<span style="color:#f92672">}</span>&lt;typeA&gt;,cn<span style="color:#f92672">=</span>config objectClass: olcDatabaseConfig olcDatabase: <span style="color:#f92672">{</span>X<span style="color:#f92672">}</span>&lt;typeA&gt; &lt;database-specific settings&gt;
+</code></pre></div></li>
+</ul>
+<ul>
+<li>
+<p>配置项</p>
+<ul>
+<li>
+<p>cn=config</p>
+<ul>
+<li>config设置适用于整个服务器，设置用于系统或面向连接（必须有olcGlobal、objectClass设置才可以使用</li>
+</ul>
+</li>
+<li>
+<p>olcldletimeout: <!-- raw HTML omitted --></p>
+<ul>
+<li>等待(<!-- raw HTML omitted -->表示为具体秒数)时间，强制断开与空闲用户的连接</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>olcLogLevel: <!-- raw HTML omitted --></p>
+<ul>
+<li>
+<p>系统记录日志的级别，olcLogLevel -l显示具体级别</p>
+</li>
+<li>
+<p>olcReferral <!-- raw HTML omitted --></p>
+<ul>
+<li>当slapd找不到本地数据库来处理请求时要传递的引用</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>例示:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">dn: cn<span style="color:#f92672">=</span>config
+objectClass: olcGlobal
+cn: config
+olcIdleTimeout: <span style="color:#ae81ff">30</span>
+olcLogLevel: Stats
+olcReferral: ldap://root.openldap.org
+</code></pre></div><ul>
+<li>
+<p>cn=module</p>
+<ul>
+<li>动态模块配置，cn=module条目设置指定要加载的模块集。(必须有olcModuleList、objectClass设置)</li>
+</ul>
+</li>
+<li>
+<p>olcModuleLoad:<!-- raw HTML omitted --></p>
+<ul>
+<li>指定要加载的动态可加载模块的名称,<!-- raw HTML omitted -->可以是文件名也可以是绝对路径名(文件名在olcModulePath的指定目录中检索)</li>
+</ul>
+</li>
+<li>
+<p>olcModuleLoad:<!-- raw HTML omitted --></p>
+<ul>
+<li>需要加载模块所在路径，不同的路径使用冒号分隔(不同操作系统不同)</li>
+</ul>
+</li>
+<li>
+<p>例示:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">    dn: cn<span style="color:#f92672">=</span>module<span style="color:#f92672">{</span>0<span style="color:#f92672">}</span>,cn<span style="color:#f92672">=</span>config
+    objectClass: olcModuleList
+    cn: module<span style="color:#f92672">{</span>0<span style="color:#f92672">}</span>
+    olcModuleLoad: /usr/local/lib/smbk5pwd.la
+    dn: cn<span style="color:#f92672">=</span>module<span style="color:#f92672">{</span>1<span style="color:#f92672">}</span>,cn<span style="color:#f92672">=</span>config
+    objectClass: olcModuleList
+    cn: module<span style="color:#f92672">{</span>1<span style="color:#f92672">}</span>
+    olcModulePath: /usr/local/lib:/usr/local/lib/slapd
+    olcModuleLoad: accesslog.la
+    olcModuleLoad: pcache.la
+</code></pre></div><ul>
+<li>
+<p>cn=schema</p>
+</li>
+<li>
+<p>schema模板配置,该条目由slapd服务生成（必须有olcSchemaConfig, 			objectClass)</p>
+</li>
+<li>
+<p>olcAttributeTypes: <!-- raw HTML omitted --></p>
+</li>
+<li>
+<p>设置属性类型:查看schema 规范设置</p>
+</li>
+<li>
+<p>olcObjectClasses: <strong><!-- raw HTML omitted --></strong></p>
+</li>
+<li>
+<p>设置对象类:查看schema 规范设置</p>
+</li>
+<li>
+<p>例示:</p>
+</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">dn: cn<span style="color:#f92672">=</span>schema,cn<span style="color:#f92672">=</span>config
+objectClass: olcSchemaConfig
+cn: schema
+dn: cn<span style="color:#f92672">=</span>test,cn<span style="color:#f92672">=</span>schema,cn<span style="color:#f92672">=</span>config
+objectClass: olcSchemaConfig
+cn: test
+olcAttributeTypes: <span style="color:#f92672">(</span> 1.1.1
+ NAME <span style="color:#e6db74">&#39;testAttr&#39;</span>
+ EQUALITY integerMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 <span style="color:#f92672">)</span>olcAttributeTypes: <span style="color:#f92672">(</span> 1.1.2 NAME <span style="color:#e6db74">&#39;testTwo&#39;</span> EQUALITY caseIgnoreMatchSUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.44 <span style="color:#f92672">)</span>
+olcObjectClasses: <span style="color:#f92672">(</span> 1.1.3 NAME <span style="color:#e6db74">&#39;testObject&#39;</span> MAY <span style="color:#f92672">(</span> testAttr $ testTwo <span style="color:#f92672">)</span> AUXILIARY <span style="color:#f92672">)</span>
+</code></pre></div></li>
+</ul>
+</li>
+<li>
+<p>后端数据库配置</p>
+<ul>
+<li>
+<p>olcBackend: <!-- raw HTML omitted --></p>
+<ul>
+<li><!-- raw HTML omitted -->表示后端类型设置</li>
+</ul>
+</li>
+<li>
+<p>例示</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"> dn: olcBackend<span style="color:#f92672">=</span>bdb,cn<span style="color:#f92672">=</span>config
+ objectClass: olcBackendConfig
+ olcBackend: bdb
+</code></pre></div></li>
+</ul>
+</li>
+<li>
+<p>数据库实例设置</p>
+<ul>
+<li>
+<p>olcDatabase:[{index}]<!-- raw HTML omitted --></p>
+<ul>
+<li>{index}实例数据库索引，<!-- raw HTML omitted -->为后端数据库类型</li>
+</ul>
+</li>
+<li>
+<p>olcAccess: to <!-- raw HTML omitted --> [ by <!-- raw HTML omitted --> [<!-- raw HTML omitted -->] [<!-- raw HTML omitted -->] ]+</p>
+</li>
+<li>
+<p>设置条目的访问权限(<!-- raw HTML omitted --> 访问级别、<!-- raw HTML omitted -->请求者)。默认所有用户</p>
+</li>
+<li>
+<p>olc Readonly {TRUE|FALSE}</p>
+<ul>
+<li>TRUE设置数据库只读</li>
+</ul>
+</li>
+<li>
+<p>olcRootDN: <!-- raw HTML omitted --></p>
+<ul>
+<li>该指令指定不受访问控制或管理限制的条目对数据库进行操作，条目可以是SASL身份</li>
+<li>例示
+<ul>
+<li>Entry-base &ldquo;olcRootDN: cn=Manager,dc=example,dc=com&rdquo;</li>
+<li>SASL-based &ldquo;olcRootDN: uid=root,cn=example.com,cn=digest-md5,cn=auth&rdquo;</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>olcRootPW: <!-- raw HTML omitted --></p>
+<ul>
+<li>修改指定条目的密码
+<ul>
+<li>olcRootPW: secret</li>
+<li>使用hash设置，olcRootPW: {SSHA}ZKKuqbEKJfKSXhUbHG3fG8MDn9j1v4QN</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>olcSizeLimit: <!-- raw HTML omitted --></p>
+<ul>
+<li>设置从搜索区域显示最大条目数</li>
+</ul>
+</li>
+<li>
+<p>olcSuffix: <!-- raw HTML omitted --></p>
+<ul>
+<li>
+<p>查询将传递后端数据库查询的DN后缀</p>
+</li>
+<li>
+<p>例示:olcSuffix: dc=example,dc=com</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>olcSyncrepl设置</p>
+<ul>
+<li>
+<p>设置内容：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">olcSyncrepl: rid<span style="color:#f92672">=</span>&lt;replica ID&gt;
+ provider<span style="color:#f92672">=</span>ldap<span style="color:#f92672">[</span>s<span style="color:#f92672">]</span>://&lt;hostname&gt;<span style="color:#f92672">[</span>:port<span style="color:#f92672">]</span>
+ <span style="color:#f92672">[</span>type<span style="color:#f92672">=</span>refreshOnly|refreshAndPersist<span style="color:#f92672">]</span>
+ <span style="color:#f92672">[</span>interval<span style="color:#f92672">=</span>dd:hh:mm:ss<span style="color:#f92672">]</span>
+ <span style="color:#f92672">[</span>retry<span style="color:#f92672">=[</span>&lt;retry interval&gt; &lt;<span style="color:#75715e"># of retries&gt;]+]</span>
+ searchbase<span style="color:#f92672">=</span>&lt;base DN&gt;
+ <span style="color:#f92672">[</span>filter<span style="color:#f92672">=</span>&lt;filter str&gt;<span style="color:#f92672">]</span>
+ <span style="color:#f92672">[</span>scope<span style="color:#f92672">=</span>sub|one|base<span style="color:#f92672">]</span>
+ <span style="color:#f92672">[</span>attrs<span style="color:#f92672">=</span>&lt;attr list&gt;<span style="color:#f92672">]</span>
+ <span style="color:#f92672">[</span>attrsonly<span style="color:#f92672">]</span>
+ <span style="color:#f92672">[</span>sizelimit<span style="color:#f92672">=</span>&lt;limit&gt;<span style="color:#f92672">]</span>
+ <span style="color:#f92672">[</span>timelimit<span style="color:#f92672">=</span>&lt;limit&gt;<span style="color:#f92672">]</span>
+ <span style="color:#f92672">[</span>schemachecking<span style="color:#f92672">=</span>on|off<span style="color:#f92672">]</span>
+ <span style="color:#f92672">[</span>bindmethod<span style="color:#f92672">=</span>simple|sasl<span style="color:#f92672">]</span>
+ <span style="color:#f92672">[</span>binddn<span style="color:#f92672">=</span>&lt;DN&gt;<span style="color:#f92672">]</span>
+ <span style="color:#f92672">[</span>saslmech<span style="color:#f92672">=</span>&lt;mech&gt;<span style="color:#f92672">]</span>
+ <span style="color:#f92672">[</span>authcid<span style="color:#f92672">=</span>&lt;identity&gt;<span style="color:#f92672">]</span>
+ <span style="color:#f92672">[</span>authzid<span style="color:#f92672">=</span>&lt;identity&gt;<span style="color:#f92672">]</span>
+ <span style="color:#f92672">[</span>credentials<span style="color:#f92672">=</span>&lt;passwd&gt;<span style="color:#f92672">]</span>
+ <span style="color:#f92672">[</span>realm<span style="color:#f92672">=</span>&lt;realm&gt;<span style="color:#f92672">]</span>
+ <span style="color:#f92672">[</span>secprops<span style="color:#f92672">=</span>&lt;properties&gt;<span style="color:#f92672">]</span>
+ <span style="color:#f92672">[</span>starttls<span style="color:#f92672">=</span>yes|critical<span style="color:#f92672">]</span>
+ <span style="color:#f92672">[</span>tls_cert<span style="color:#f92672">=</span>&lt;file&gt;<span style="color:#f92672">]</span>
+ <span style="color:#f92672">[</span>tls_key<span style="color:#f92672">=</span>&lt;file&gt;<span style="color:#f92672">]</span>
+ <span style="color:#f92672">[</span>tls_cacert<span style="color:#f92672">=</span>&lt;file&gt;<span style="color:#f92672">]</span>
+ <span style="color:#f92672">[</span>tls_cacertdir<span style="color:#f92672">=</span>&lt;path&gt;<span style="color:#f92672">]</span>
+ <span style="color:#f92672">[</span>tls_reqcert<span style="color:#f92672">=</span>never|allow|try|demand<span style="color:#f92672">]</span>
+ <span style="color:#f92672">[</span>tls_cipher_suite<span style="color:#f92672">=</span>&lt;ciphers&gt;<span style="color:#f92672">]</span>
+ <span style="color:#f92672">[</span>tls_crlcheck<span style="color:#f92672">=</span>none|peer|all<span style="color:#f92672">]</span>
+ <span style="color:#f92672">[</span>logbase<span style="color:#f92672">=</span>&lt;base DN&gt;<span style="color:#f92672">]</span>
+ <span style="color:#f92672">[</span>logfilter<span style="color:#f92672">=</span>&lt;filter str&gt;<span style="color:#f92672">]</span>
+ <span style="color:#f92672">[</span>syncdata<span style="color:#f92672">=</span>default|accesslog|changelog<span style="color:#f92672">]</span>
+</code></pre></div></li>
+<li>
+<p>配置详细内容查看 RFC4533</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="四命令详解">四、命令详解</h2>
+<h3 id="1--ldapsearch命令">1.  ldapsearch命令</h3>
+<ul>
+<li>通过用户定义的查询条件，对OpenLDAP目录树进行查找以及检索目录树相关条目
+<ul>
+<li>
+<p>-b <!-- raw HTML omitted -->:查找指定的节点</p>
+</li>
+<li>
+<p>-D<!-- raw HTML omitted -->:查找指定的DN</p>
+</li>
+<li>
+<p>-v:详细输出信息</p>
+</li>
+<li>
+<p>-x:使用简单的认证，不是用任何加密算法</p>
+</li>
+<li>
+<p>-W:在查询时，会提示输入密码，如不想输入密码，使用-w password</p>
+</li>
+<li>
+<p>-h:使用指定ldaphost，可以使用FQDN或IP地址(FQDN表示可以连通的主机名(/etc/hosts))</p>
+</li>
+<li>
+<p>-H(LDAP-URI):使用LDAP服务器的URI地址进行操作</p>
+</li>
+<li>
+<p>-p(port):指定OpenLDAP监听的端口(默认端口为389，加密端口为636)</p>
+</li>
+<li>
+<p>-LLL:禁止输入与过滤条件不匹配的信息</p>
+</li>
+<li>
+<p>uid：过滤条件</p>
+</li>
+<li>
+<p>cn、gidNumber:将目标信息进一步过滤，显示出相关cn及gidNumber信息</p>
+<ul>
+<li>示例</li>
+</ul>
+</li>
+<li>
+<p>ldapsearch -x -D&quot;cn=Manager,dc=game2sky,dc=com&quot; -H ldap:/// -b &ldquo;ou=people,dc=game2sky,dc=com&rdquo; -W</p>
+</li>
+</ul>
+</li>
+<li>ldapserach -x -LLL -b dc=game2sky,dc=com &lsquo;uid=Guodayong&rsquo; cn gidNumber</li>
+</ul>
+<h3 id="2-ldapadd命令">2. ldapadd命令</h3>
+<ul>
+<li>
+<p>ldapadd:用于通过LDIF格式添加目录树条目。ldapadd为ldapmodify软连接，功能相当于ldapmodify -a</p>
+</li>
+<li>
+<p>示例</p>
+<ul>
+<li>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">ldapadd -x -D <span style="color:#e6db74">&#34;cn=Manager,dc=game2sky,dc=com&#34;</span> -W -h 127.0.0.1 -f base.ldif
+</code></pre></div></li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">cat <span style="color:#e6db74">&lt;&lt;  EOF|ldapadd -x -D cn=Manager, dc=game2sky,dc=com -W -H ldap:///
+</span><span style="color:#e6db74">&gt; dn: uid=tlin,ou=people,dc=game2sky,dc=com
+</span><span style="color:#e6db74">&gt; changetype: delete
+</span><span style="color:#e6db74">&gt; EOF</span>
+</code></pre></div><h3 id="3-ldapdelete命令">3. ldapdelete命令</h3>
+<ul>
+<li>
+<p>ldapdelete 命令用于从目录树中删除指定条目，并根据DN条目删除一个或多个条目，但必须提供所要删除指定条目的权限所绑定的DN(整个目录树的唯一标识名称)</p>
+<ul>
+<li>-c:持续操作模式，操作过程中出现错误，也会进行后续相关操作</li>
+<li>-D:同上</li>
+<li>-n:显示正在进行的相关操作，但不实际修改数据，一般用于测试</li>
+<li>-x:同上</li>
+<li>-f:使用目标文件名作为命令的输入</li>
+<li>-W:同上</li>
+<li>-w passwd:passwd(管理员密码)</li>
+<li>-y passwdfile:密码文件认证</li>
+<li>-r:递归删除,从目录树删除指定的DN的所有子条目</li>
+<li>-h:同上</li>
+</ul>
+</li>
+<li>
+<p>示例</p>
+<ul>
+<li>
+<p>ldapdelete -D &ldquo;cn=Manager,dc=game2sky,dc=com&rdquo; -W -h host_ipaddress -x</p>
+</li>
+<li>
+<p>删除用户和用户组</p>
+</li>
+<li>
+<p>ldapdelete -x -w gdy@123! -D &lsquo;cn=Manager,dc=game2sky,dc=com&rsquo; &ldquo;uid=user1,ou=people,dc=game2sky,dc=com&rdquo;</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="4-ldapmodify命令">4. ldapmodify命令</h3>
+<ul>
+<li>
+<p>ldapmodify命令可以对OpenLDAP数据库中的条目进行修改操作，可以理解为编辑器。</p>
+<ul>
+<li>-a:新增条目</li>
+<li>-D:同上</li>
+<li>-n:同上</li>
+<li>-v:详细输出结果</li>
+<li>-f:同上</li>
+<li>-w passwd：同上</li>
+<li>-W:同上</li>
+<li>-h:同上</li>
+<li>-H:同上</li>
+<li>-p:同上</li>
+</ul>
+</li>
+<li>
+<p>示例</p>
+<ul>
+<li>
+<p>ldapmodify -x -D &ldquo;cn=Manager,cd=game2sky,cd=com&rdquo; -w gdy@123 -H ldap:/// -f modify.ldif</p>
+</li>
+<li>
+<p>对系统用户密码进行解锁</p>
+</li>
+<li>
+<p>cat &laquo; EOF | ldapmodify -x -H ldap:/// -D cn=config -w gdy@123</p>
+</li>
+<li>
+<p>dn :uid=lisi,ou=people,dc=game2sky,dc=com</p>
+</li>
+<li>
+<p>changetype=modify</p>
+</li>
+<li>
+<p>delete: pwdAccountLockedTime</p>
+</li>
+<li>
+<p>EOF</p>
+</li>
+<li>
+<p>重置系统用户密码</p>
+</li>
+<li>
+<p>cat &laquo; EOF|ldapmodify -x -H ldap:/// -D cn=config -w gdy@123!</p>
+</li>
+<li>
+<p>dn: cn=default,ou=pwpolicies,dc=game2sky,dc=com</p>
+</li>
+<li>
+<p>changetype: modify</p>
+</li>
+<li>
+<p>replace: pwdMustChange</p>
+</li>
+<li>
+<p>pwdMustChange: TRUE</p>
+</li>
+<li>
+<p>EOF</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="5-ldapwhoami命令">5. ldapwhoami命令</h3>
+<ul>
+<li>ldapwhoami用于验证OpenLDAP服务器身份</li>
+<li>示例
+<ul>
+<li>ldapwhoami -x -D &ldquo;uid=dpgdy,ou=people,dc=game2sky,dc=com&rdquo; -W -h ipaddress</li>
+<li>输入dpgdy密码</li>
+</ul>
+</li>
+</ul>
+<h3 id="6-ldapmodrdn命令">6. ldapmodrdn命令</h3>
+<ul>
+<li>ldapmodrdn命令用于对OpenLDAP目录树中RDN条目的修改，可以从标准的条目信息输入或使用-f指定ldif文件输入
+<ul>
+<li>-c: 同上</li>
+<li>-D:同上</li>
+<li>-n: 同上</li>
+<li>-x:同上</li>
+<li>-f:同上</li>
+<li>-W:同上</li>
+<li>-w passwd:</li>
+<li>-y passwdfile:</li>
+<li>-r:删除OpenLDAP目录树中rdn(相对路径)条目的唯一标识名称</li>
+<li>-h:同上</li>
+<li>-H:同上</li>
+<li>-p:同上</li>
+<li>-P:输入OpenLDAP版本号，V2或V3</li>
+<li>-O props:指定SASL安全属性</li>
+</ul>
+</li>
+<li>示例
+<ul>
+<li>ldapmodrdn -x -D &ldquo;cn=Manager,dc=game2sky,dc=com&rdquo; -W -h ipaddress &ldquo;uid=dpgdy,ou=people,dc=game2sky,dc=com&rdquo; uid=Guodayong</li>
+<li>cat &laquo; EOF |ldapmodify -x -D &ldquo;cn=Manager,dc=game2sky,dc=com&rdquo; -W -h ipaddress</li>
+<li>dn: uid=Guodayong,ou=people,dc=game2sky,dc=com</li>
+<li>changetype:modify</li>
+<li>delete: uid</li>
+<li>uid: dpgdy</li>
+<li>EOF</li>
+</ul>
+</li>
+</ul>
+<h3 id="7-ldapcompare命令">7. ldapcompare命令</h3>
+<ul>
+<li>
+<p>ldapcompare命令用于判断OpenLDAP目录树中DN值和指定条目是否属于同一条目</p>
+<ul>
+<li>-D:同上</li>
+<li>-n:同上</li>
+<li>-x:同上</li>
+<li>-W:同上</li>
+<li>-w passwd:同上</li>
+<li>-y passwdfile:同上</li>
+<li>-h:同上</li>
+<li>-H:同上</li>
+<li>-p:同上</li>
+<li>-P:同上</li>
+</ul>
+</li>
+<li>
+<p>示例</p>
+<ul>
+<li>
+<p>ldapcompare -x -D &ldquo;cn=Manager,dc=game2sky,dc=com&rdquo; -W -h &ldquo;uid=dpgdy,ou=people,dc=game2sky,dc=com&rdquo; &ldquo;uid:ada&rdquo;</p>
+</li>
+<li>
+<p>内容不匹配显示FALSE,内容匹配显示TRUE</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="8-ldappasswd命令">8. ldappasswd命令</h3>
+<ul>
+<li>
+<p>ldappasswd命令用户修改密码</p>
+</li>
+<li>
+<p>-S:提示用户输入密码</p>
+</li>
+<li>
+<p>-s newPasswd:指定密码(明文提示)</p>
+</li>
+<li>
+<p>-a oldPasswd:通过旧密码生成新密码</p>
+</li>
+<li>
+<p>-A:提示输入旧密码，自动生成新密码</p>
+</li>
+<li>
+<p>-x:使用简单的认证，不使用任何加密的算法</p>
+</li>
+<li>
+<p>-D:同上</p>
+</li>
+<li>
+<p>-W:同上</p>
+</li>
+<li>
+<p>-w passwd:同上</p>
+</li>
+<li>
+<p>使用DLAP管理员进行用户密码重置</p>
+</li>
+<li>
+<p>ldappasswd -x -D &ldquo;cn=Manager,dc=game2sky,dc=com&rdquo; -W &ldquo;uid=lisi,ou=people,dc=gdy,dc=com&rdquo; -S</p>
+</li>
+<li>
+<p>输入用户新密码</p>
+</li>
+<li>
+<p>使用DLAP管理员进行用户密码旧密码重置</p>
+</li>
+<li>
+<p>ldappasswd -x -D &ldquo;cn=Manager,dc=game2sky,dc=com&rdquo; -A -W &ldquo;uid=zhangsan,ou=people,dc=game2sky,dc=com&rdquo; -S</p>
+</li>
+<li>
+<p>Oldpassword: 输入旧密码</p>
+</li>
+<li>
+<p>Re-enter old password:确认旧密码</p>
+</li>
+<li>
+<p>New password:输入新密码</p>
+</li>
+<li>
+<p>Re-enter new password:确认新密码</p>
+</li>
+</ul>
+<h3 id="9-slaptest命令">9. slaptest命令</h3>
+<ul>
+<li>slaptest 命令用于检测配置文件(/etc/openldap/slapd.conf)以及数据文件的可用性
+<ul>
+<li>-d:指定debug的级别</li>
+<li>-f:检测指定配置文件/etc/openldap/slapd.conf</li>
+<li>-F:检测指定的数据库目录/etc/openldap/slapd/</li>
+</ul>
+</li>
+<li>示例
+<ul>
+<li>slaptest -f /etc/openldap/slapd.conf</li>
+<li>检测数据库文件可用性以及定义debug级别，可以使用一下命令</li>
+<li>slaptest -d 3 -F /etc/openldap/slapd.d/</li>
+</ul>
+</li>
+</ul>
+<h3 id="10-slapindex命令">10. slapindex命令</h3>
+<ul>
+<li>slapindex用于创建OpenLDAP数据库条目索引，用于提高查询速度。</li>
+<li>-f:指定OpenLDAP的配置文件，并创建索引</li>
+<li>-F:检测指定OpenLDAP数据库目录，并创建索引</li>
+</ul>
+<h3 id="11-slapcat命令">11. slapcat命令</h3>
+<ul>
+<li>slapcat命令用于将数据条目转换为OpenLDAP的LDIF文件，可用于OpenLDAP条目的备份</li>
+<li>-a filter:添加过滤选项
+<ul>
+<li>-b suffix:指定suffix路径，如dc=game2sky,dc=com</li>
+<li>-d number: 指定debug输出信息的级别</li>
+<li>-f:指定OpenLDAP的配置文件</li>
+<li>-F:指定OpenLDAP的数据库文件目录</li>
+<li>-c:出现错误信息时，继续输出条目</li>
+<li>-H:同上</li>
+<li>-v:输出详细信息</li>
+<li>示例
+<ul>
+<li>slapcat -v -l openldap.ldif</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="五-高级配置">五、 高级配置</h2>
+<h3 id="1linux-用户权限管理">1.Linux 用户权限管理</h3>
+<ul>
+<li>
+<p>使用密码</p>
+</li>
+<li>
+<p>ldap Server端操作</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e">#新增用户</span>
+useradd username
+<span style="color:#75715e">#新增密码</span>
+slappasswd
+输入用户密码生成<span style="color:#f92672">{</span>SSHA<span style="color:#f92672">}</span>密码
+<span style="color:#75715e">#添加用户</span>
+vi ldapuser.ldif
+<span style="color:#75715e"># create new</span>
+<span style="color:#75715e"># replace to your own domain name for &#34;dc=***,dc=***&#34; section</span>
+dn: uid<span style="color:#f92672">=</span>Username,ou<span style="color:#f92672">=</span>People,dc<span style="color:#f92672">=</span>game2sky,dc<span style="color:#f92672">=</span>com
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+cn: Username
+sn: Linux
+userPassword: <span style="color:#f92672">{</span>SSHA<span style="color:#f92672">}</span>xxxxxxxxxxxxxxxxx
+loginShell: /bin/bash
+uidNumber: <span style="color:#ae81ff">1000</span>
+gidNumber: <span style="color:#ae81ff">1000</span>
+homeDirectory: /home/Username
+  
+dn: cn<span style="color:#f92672">=</span>Username,ou<span style="color:#f92672">=</span>Group,dc<span style="color:#f92672">=</span>game2sky,dc<span style="color:#f92672">=</span>com
+objectClass: posixGroup
+cn: Username
+gidNumber: <span style="color:#ae81ff">1000</span>
+memberUid: username
+  
+ldapadd -x -D cn<span style="color:#f92672">=</span>Manager,dc<span style="color:#f92672">=</span>game2sky,dc<span style="color:#f92672">=</span>com -W -f ldapuser.ldif
+<span style="color:#75715e">#批量安装脚本</span>
+ vi ldapuser.sh
+<span style="color:#75715e"># extract local users and groups who have 1000-9999 digit UID</span>
+<span style="color:#75715e"># replace &#34;SUFFIX=***&#34; to your own domain name</span>
+<span style="color:#75715e"># this is an example</span>
+<span style="color:#75715e">#!/bin/bash</span>
+  
+SUFFIX<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;dc=srv,dc=world&#39;</span>
+LDIF<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;ldapuser.ldif&#39;</span>
+  
+echo -n &gt; $LDIF
+GROUP_IDS<span style="color:#f92672">=()</span>
+grep <span style="color:#e6db74">&#34;x:[1-9][0-9][0-9][0-9]:&#34;</span> /etc/passwd | <span style="color:#f92672">(</span><span style="color:#66d9ef">while</span> read TARGET_USER
+<span style="color:#66d9ef">do</span>
+    USER_ID<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">$(</span>echo <span style="color:#e6db74">&#34;</span>$TARGET_USER<span style="color:#e6db74">&#34;</span> | cut -d<span style="color:#e6db74">&#39;:&#39;</span> -f1<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span>
+  
+    USER_NAME<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">$(</span>echo <span style="color:#e6db74">&#34;</span>$TARGET_USER<span style="color:#e6db74">&#34;</span> | cut -d<span style="color:#e6db74">&#39;:&#39;</span> -f5 | cut -d<span style="color:#e6db74">&#39; &#39;</span> -f1,2<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span>
+    <span style="color:#f92672">[</span> ! <span style="color:#e6db74">&#34;</span>$USER_NAME<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">]</span> <span style="color:#f92672">&amp;&amp;</span> USER_NAME<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$USER_ID<span style="color:#e6db74">&#34;</span>
+  
+    LDAP_SN<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">$(</span>echo <span style="color:#e6db74">&#34;</span>$USER_NAME<span style="color:#e6db74">&#34;</span> | cut -d<span style="color:#e6db74">&#39; &#39;</span> -f2<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span>
+    <span style="color:#f92672">[</span> ! <span style="color:#e6db74">&#34;</span>$LDAP_SN<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">]</span> <span style="color:#f92672">&amp;&amp;</span> LDAP_SN<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$USER_NAME<span style="color:#e6db74">&#34;</span>
+  
+    LASTCHANGE_FLAG<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">$(</span>grep <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>USER_ID<span style="color:#e6db74">}</span><span style="color:#e6db74">:&#34;</span> /etc/shadow | cut -d<span style="color:#e6db74">&#39;:&#39;</span> -f3<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span>
+    <span style="color:#f92672">[</span> ! <span style="color:#e6db74">&#34;</span>$LASTCHANGE_FLAG<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">]</span> <span style="color:#f92672">&amp;&amp;</span> LASTCHANGE_FLAG<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;0&#34;</span>
+  
+    SHADOW_FLAG<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">$(</span>grep <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>USER_ID<span style="color:#e6db74">}</span><span style="color:#e6db74">:&#34;</span> /etc/shadow | cut -d<span style="color:#e6db74">&#39;:&#39;</span> -f9<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span>
+    <span style="color:#f92672">[</span> ! <span style="color:#e6db74">&#34;</span>$SHADOW_FLAG<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">]</span> <span style="color:#f92672">&amp;&amp;</span> SHADOW_FLAG<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;0&#34;</span>
+  
+    GROUP_ID<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">$(</span>echo <span style="color:#e6db74">&#34;</span>$TARGET_USER<span style="color:#e6db74">&#34;</span> | cut -d<span style="color:#e6db74">&#39;:&#39;</span> -f4<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span>
+    <span style="color:#f92672">[</span> ! <span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">$(</span>echo <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>GROUP_IDS[@]<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span> | grep <span style="color:#e6db74">&#34;</span>$GROUP_ID<span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">]</span> <span style="color:#f92672">&amp;&amp;</span> GROUP_IDS<span style="color:#f92672">=(</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>GROUP_IDS[@]<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span> <span style="color:#e6db74">&#34;</span>$GROUP_ID<span style="color:#e6db74">&#34;</span><span style="color:#f92672">)</span>
+  
+    echo <span style="color:#e6db74">&#34;dn: uid=</span>$USER_ID<span style="color:#e6db74">,ou=People,</span>$SUFFIX<span style="color:#e6db74">&#34;</span> &gt;&gt; $LDIF
+    echo <span style="color:#e6db74">&#34;objectClass: inetOrgPerson&#34;</span> &gt;&gt; $LDIF
+    echo <span style="color:#e6db74">&#34;objectClass: posixAccount&#34;</span> &gt;&gt; $LDIF
+    echo <span style="color:#e6db74">&#34;objectClass: shadowAccount&#34;</span> &gt;&gt; $LDIF
+    echo <span style="color:#e6db74">&#34;sn: </span>$LDAP_SN<span style="color:#e6db74">&#34;</span> &gt;&gt; $LDIF
+    echo <span style="color:#e6db74">&#34;givenName: </span><span style="color:#66d9ef">$(</span>echo <span style="color:#e6db74">&#34;</span>$USER_NAME<span style="color:#e6db74">&#34;</span> | awk <span style="color:#e6db74">&#39;{print $1}&#39;</span><span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span> &gt;&gt; $LDIF
+    echo <span style="color:#e6db74">&#34;cn: </span>$USER_NAME<span style="color:#e6db74">&#34;</span> &gt;&gt; $LDIF
+    echo <span style="color:#e6db74">&#34;displayName: </span>$USER_NAME<span style="color:#e6db74">&#34;</span> &gt;&gt; $LDIF
+    echo <span style="color:#e6db74">&#34;uidNumber: </span><span style="color:#66d9ef">$(</span>echo <span style="color:#e6db74">&#34;</span>$TARGET_USER<span style="color:#e6db74">&#34;</span> | cut -d<span style="color:#e6db74">&#39;:&#39;</span> -f3<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span> &gt;&gt; $LDIF
+    echo <span style="color:#e6db74">&#34;gidNumber: </span><span style="color:#66d9ef">$(</span>echo <span style="color:#e6db74">&#34;</span>$TARGET_USER<span style="color:#e6db74">&#34;</span> | cut -d<span style="color:#e6db74">&#39;:&#39;</span> -f4<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span> &gt;&gt; $LDIF
+    echo <span style="color:#e6db74">&#34;userPassword: {crypt}</span><span style="color:#66d9ef">$(</span>grep <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>USER_ID<span style="color:#e6db74">}</span><span style="color:#e6db74">:&#34;</span> /etc/shadow | cut -d<span style="color:#e6db74">&#39;:&#39;</span> -f2<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span> &gt;&gt; $LDIF
+    echo <span style="color:#e6db74">&#34;gecos: </span>$USER_NAME<span style="color:#e6db74">&#34;</span> &gt;&gt; $LDIF
+    echo <span style="color:#e6db74">&#34;loginShell: </span><span style="color:#66d9ef">$(</span>echo <span style="color:#e6db74">&#34;</span>$TARGET_USER<span style="color:#e6db74">&#34;</span> | cut -d<span style="color:#e6db74">&#39;:&#39;</span> -f7<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span> &gt;&gt; $LDIF
+    echo <span style="color:#e6db74">&#34;homeDirectory: </span><span style="color:#66d9ef">$(</span>echo <span style="color:#e6db74">&#34;</span>$TARGET_USER<span style="color:#e6db74">&#34;</span> | cut -d<span style="color:#e6db74">&#39;:&#39;</span> -f6<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span> &gt;&gt; $LDIF
+    echo <span style="color:#e6db74">&#34;shadowExpire: </span><span style="color:#66d9ef">$(</span>passwd -S <span style="color:#e6db74">&#34;</span>$USER_ID<span style="color:#e6db74">&#34;</span> | awk <span style="color:#e6db74">&#39;{print $7}&#39;</span><span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span> &gt;&gt; $LDIF
+    echo <span style="color:#e6db74">&#34;shadowFlag: </span>$SHADOW_FLAG<span style="color:#e6db74">&#34;</span> &gt;&gt; $LDIF
+    echo <span style="color:#e6db74">&#34;shadowWarning: </span><span style="color:#66d9ef">$(</span>passwd -S <span style="color:#e6db74">&#34;</span>$USER_ID<span style="color:#e6db74">&#34;</span> | awk <span style="color:#e6db74">&#39;{print $6}&#39;</span><span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span> &gt;&gt; $LDIF
+    echo <span style="color:#e6db74">&#34;shadowMin: </span><span style="color:#66d9ef">$(</span>passwd -S <span style="color:#e6db74">&#34;</span>$USER_ID<span style="color:#e6db74">&#34;</span> | awk <span style="color:#e6db74">&#39;{print $4}&#39;</span><span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span> &gt;&gt; $LDIF
+    echo <span style="color:#e6db74">&#34;shadowMax: </span><span style="color:#66d9ef">$(</span>passwd -S <span style="color:#e6db74">&#34;</span>$USER_ID<span style="color:#e6db74">&#34;</span> | awk <span style="color:#e6db74">&#39;{print $5}&#39;</span><span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span> &gt;&gt; $LDIF
+    echo <span style="color:#e6db74">&#34;shadowLastChange: </span>$LASTCHANGE_FLAG<span style="color:#e6db74">&#34;</span> &gt;&gt; $LDIF
+    echo &gt;&gt; $LDIF
+<span style="color:#66d9ef">done</span>
+  
+<span style="color:#66d9ef">for</span> TARGET_GROUP_ID in <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>GROUP_IDS[@]<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+<span style="color:#66d9ef">do</span>
+    LDAP_CN<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">$(</span>grep <span style="color:#e6db74">&#34;:</span><span style="color:#e6db74">${</span>TARGET_GROUP_ID<span style="color:#e6db74">}</span><span style="color:#e6db74">:&#34;</span> /etc/group | cut -d<span style="color:#e6db74">&#39;:&#39;</span> -f1<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span>
+  
+    echo <span style="color:#e6db74">&#34;dn: cn=</span>$LDAP_CN<span style="color:#e6db74">,ou=Group,</span>$SUFFIX<span style="color:#e6db74">&#34;</span> &gt;&gt; $LDIF
+    echo <span style="color:#e6db74">&#34;objectClass: posixGroup&#34;</span> &gt;&gt; $LDIF
+    echo <span style="color:#e6db74">&#34;cn: </span>$LDAP_CN<span style="color:#e6db74">&#34;</span> &gt;&gt; $LDIF
+    echo <span style="color:#e6db74">&#34;gidNumber: </span>$TARGET_GROUP_ID<span style="color:#e6db74">&#34;</span> &gt;&gt; $LDIF
+  
+    <span style="color:#66d9ef">for</span> MEMBER_UID in <span style="color:#66d9ef">$(</span>grep <span style="color:#e6db74">&#34;:</span><span style="color:#e6db74">${</span>TARGET_GROUP_ID<span style="color:#e6db74">}</span><span style="color:#e6db74">:&#34;</span> /etc/passwd | cut -d<span style="color:#e6db74">&#39;:&#39;</span> -f1,3<span style="color:#66d9ef">)</span>
+    <span style="color:#66d9ef">do</span>
+        UID_NUM<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>echo <span style="color:#e6db74">&#34;</span>$MEMBER_UID<span style="color:#e6db74">&#34;</span> | cut -d<span style="color:#e6db74">&#39;:&#39;</span> -f2<span style="color:#66d9ef">)</span>
+        <span style="color:#f92672">[</span> $UID_NUM -ge <span style="color:#ae81ff">1000</span> -a $UID_NUM -le <span style="color:#ae81ff">9999</span> <span style="color:#f92672">]</span> <span style="color:#f92672">&amp;&amp;</span> echo <span style="color:#e6db74">&#34;memberUid: </span><span style="color:#66d9ef">$(</span>echo <span style="color:#e6db74">&#34;</span>$MEMBER_UID<span style="color:#e6db74">&#34;</span> | cut -d<span style="color:#e6db74">&#39;:&#39;</span> -f1<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span> &gt;&gt; $LDIF
+    <span style="color:#66d9ef">done</span>
+    echo &gt;&gt; $LDIF
+<span style="color:#66d9ef">done</span>
+<span style="color:#f92672">)</span>
+  
+</code></pre></div></li>
+<li>
+<p>通过migrationtools实现用户和用户组添加</p>
+<ul>
+<li>
+<p>安装migrationtools工具</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">yum install migrationtools -y
+/usr/share/migrationtools/migrate_base.pl &gt; base.ldif
+</code></pre></div></li>
+<li>
+<p>添加用于生成OpenDLAP用户</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">vim adduser.sh
+<span style="color:#75715e">#!/bin/bash</span>
+<span style="color:#75715e">#Add system user</span>
+<span style="color:#66d9ef">for</span> ldap in <span style="color:#f92672">{</span>1..5<span style="color:#f92672">}</span>; <span style="color:#66d9ef">do</span>
+    <span style="color:#66d9ef">if</span> id user<span style="color:#e6db74">${</span>ldap<span style="color:#e6db74">}</span> &amp;&gt; /dev/null;<span style="color:#66d9ef">then</span>
+        echo <span style="color:#e6db74">&#34;System account already exists&#34;</span>
+    <span style="color:#66d9ef">else</span>
+        adduser user<span style="color:#e6db74">${</span>ldap<span style="color:#e6db74">}</span>
+        echo user<span style="color:#e6db74">${</span>ldap<span style="color:#e6db74">}</span>|passwd --stdin user<span style="color:#e6db74">${</span>ldap<span style="color:#e6db74">}</span> &amp;&gt; /dev/null
+        echo <span style="color:#e6db74">&#34;user</span><span style="color:#e6db74">${</span>ldap<span style="color:#e6db74">}</span><span style="color:#e6db74"> system add finish&#34;</span>
+    <span style="color:#66d9ef">fi</span>
+<span style="color:#66d9ef">done</span>
+chmod +x adduser.sh
+id user1
+    
+</code></pre></div><ul>
+<li>
+<p>配置/usr/share/migrationtools/migrate_common.ph</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$DEFAULT_MAIL_DOMAIN <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;game2sky.com&#34;</span>
+$DEFAULT_BASE<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;dc=game2sky,dc=com&#34;</span>
+      
+</code></pre></div></li>
+<li>
+<p>通过migrationtools 工具生成LDIF模板文件并生成系统用户及组LDIF 文件</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">tail -n <span style="color:#ae81ff">5</span> /etc/passwd &gt; system
+/usr/share/migrationtools/migrate_passwd.pl system people.ldif
+tail -n <span style="color:#ae81ff">10</span> /etc/group &gt; group
+/usr/share/migrationtools/migrate_group.pl group group.ldif
+</code></pre></div></li>
+<li>
+<p>导入LDIF文件至OpenLDAP目录树中</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">ldapadd -x -W -D <span style="color:#e6db74">&#34;cn=Manager,dc=game2sky,dc=com&#34;</span> -f people.ldif
+</code></pre></div></li>
+<li>
+<p>查询添加的OpenLDAP用户信息</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">ldapsearch -LLL -x -D <span style="color:#e6db74">&#39;cn=Manager,dc=game2sky,dc=com&#39;</span> -W -b <span style="color:#e6db74">&#39;dc=game2sky,dc=com&#39;</span> <span style="color:#e6db74">&#39;uid=user1&#39;</span>
+</code></pre></div></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="2linux-远程权限设置">2.Linux 远程权限设置</h3>
+<ul>
+<li>
+<p>sudo设置</p>
+<ul>
+<li>客户端配置</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">authconfig --enableldap --enableldapauth -enablemkhomedir<span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>--enableforcelegacy --disablessd --disablesssdauth --disableldaptls<span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>--enablelocauthorize <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>--ldapserver<span style="color:#f92672">=</span>ipaddress_server --ldapbasedn<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;dc=***,dc=***&#34;</span> --enableshadow<span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>--update
+<span style="color:#75715e">#修改nsswitch.conf配置文件，</span>
+cp /etc/nsswitch.conf /etc/nsswitch.conf.bak
+echo <span style="color:#e6db74">&#34;sudoers: files ldap&#34;</span> &gt;&gt; /etc/nsswitch.conf
+<span style="color:#75715e">#修改/etc/ldap.conf文件设置</span>
+SUDOERS_BASE ou<span style="color:#f92672">=</span>People,dc<span style="color:#f92672">=</span>game2sky.com
+<span style="color:#75715e">#修改sudoer权限</span>
+<span style="color:#75715e">#或</span>
+gpasswd -a username wheel
+  
+  
+</code></pre></div></li>
+</ul>
+<h3 id="3设置密码策略组">3.设置密码策略组</h3>
+<ul>
+<li>
+<p>vim pwp.ldif</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">dn:ou<span style="color:#f92672">=</span>pwpolicies,dc<span style="color:#f92672">=</span>game2sky,dc<span style="color:#f92672">=</span>com
+objectClass:organizationalUnit
+ou:pwpolices
+  
+dn: cn<span style="color:#f92672">=</span>default,ou<span style="color:#f92672">=</span>pwpolicies,dc<span style="color:#f92672">=</span>game2sky,dc<span style="color:#f92672">=</span>com
+cn: default
+objectClass: pwdPolicy
+objectClass: person
+pwdAllowUserChange: TRUE
+pwdAttribute: userPassword
+pwdExpireWarning:259200
+pwdFailureCountInterval:0
+pwdGraceAuthNLimit: <span style="color:#ae81ff">5</span>
+pwdInHistory: <span style="color:#ae81ff">5</span>
+pwdLockout:TRUE
+pwdLockoutDuration:300
+pwdMaxAge: <span style="color:#ae81ff">259200</span>
+pwdMaxFailure:5
+pwdMinAge:0
+pwdMinLength:8
+pwdMustChange:TRUE
+pwdSafeModify:TRUE
+sn: dummy value
+</code></pre></div><ul>
+<li>添加用户使用密码策略</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">  dn: uid<span style="color:#f92672">=</span>wulei,dc<span style="color:#f92672">=</span>game2sky,dc<span style="color:#f92672">=</span>com
+  objectClass: inetOrgPerson
+  uid:wulei
+  cn:wu lei
+  sn:lei
+  loginShell: /bin/bash
+  homeDirectory: /home/wulei
+  homePhone:
+  employeeNumber:21378
+  mail:wulei@game2sky.com
+  pwdPolicySubentry:cn<span style="color:#f92672">=</span>security,ou<span style="color:#f92672">=</span>policy,dc<span style="color:#f92672">=</span>game2sky,dc<span style="color:#f92672">=</span>com
+    
+</code></pre></div></li>
+<li>
+<p>定义用户登录修改密码</p>
+</li>
+<li>
+<p>vim pwdret.ldif</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e">#该用户登录密码重置</span>
+dn：uid<span style="color:#f92672">=</span>dpcwc,ou<span style="color:#f92672">=</span>people,dc<span style="color:#f92672">=</span>game2sky,dc<span style="color:#f92672">=</span>com
+changetype:modify
+replace:pwdReset
+pwdReset:TRUE
+<span style="color:#75715e">#查看</span>
+ldapsearch -x -LLL uid<span style="color:#f92672">=</span>dpcwc +
+</code></pre></div></li>
+<li>
+<p>客户端配置</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">echo <span style="color:#e6db74">&#34;bind_policy soft&#34;</span>&gt;&gt;/etc/pam_ldap.conf
+echo <span style="color:#e6db74">&#34;pam_password md5&#34;</span>&gt;&gt;/etc/pam_ldap.conf
+echo <span style="color:#e6db74">&#34;pam_lookup_policy yes&#34;</span>&gt;&gt;/etc/pam_ldap.conf
+echo <span style="color:#e6db74">&#34;pam_password clear_remove_old&#34;</span>&gt;&gt;/etc/pam_ldap.conf
+重启nslcd服务
+service nslcd restart
+  
+</code></pre></div></li>
+</ul>
+<h3 id="4samba服务器设置">4.samba服务器设置</h3>
+<ul>
+<li>
+<p>samba安全级别</p>
+<ul>
+<li>share:为共享模式，无须提供用户的密码即可直接访问Samba共享资源，share模式一般用于公共资源下载</li>
+<li>user:使用samba自身数据中存在的用户进行验证，为了保证Samba共享资源的安全性。</li>
+<li>server:使用windows系统或Samba服务端自身提供的用户名和密码进行验证</li>
+<li>domain:使用Windows域服务器提供有效的用户名和密码作为访问samba共享资源的入口passdb backend包括3种类型:smbpasswd tdbsam ldapsam
+<ul>
+<li>smbpasswd:指令基于系统用户设置samba密码</li>
+<li>tdbsam:使用passdb.tdb数据库进行用户验证，该文件存放在/etc/samba下。passdb.tdb时tdbsam所采用的数据库的文件名称。</li>
+<li>ldapsam通过OpenLDAP验证</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>设置samba共享资源</p>
+<ul>
+<li>ldapserver设置</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">cp /usr/share/doc/samba*/LDAP/samba.schema /etc/openldap/schema/
+<span style="color:#75715e">#使用部署时使用ldapmodify命令添加samba.schema</span>
+<span style="color:#75715e">#vim samba_user.ldif</span>
+olcAccess: to attrs<span style="color:#f92672">=</span>userPassword,sambaLMPassword,sambaNTPassword
+ by self write
+ by dn<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;cn=Manager,dc=game2sky,dc=com&#34;</span> write
+ by anonymous auth
+ by * none
+  
+olcAccess: to *
+ by dn<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;cn=Manager,dc=game2sky,dc=com&#34;</span> write
+ by self write
+ by * read
+<span style="color:#75715e">#设置权限设置</span>
+systemctl restart slapd
+  
+</code></pre></div></li>
+<li>
+<p>openldap 客户端配置</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">yum install samba -y
+vim /etc/samba/smb.conf
+<span style="color:#75715e">#修改字段</span>
+<span style="color:#f92672">[</span>global<span style="color:#f92672">]</span>
+security <span style="color:#f92672">=</span> user
+passdb backend <span style="color:#f92672">=</span> ldapsam:ldap://172.16.3.180/
+ldap suffix <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;dc=game2sky,dc=com&#34;</span>
+ldap group suffix <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;cn=group&#34;</span>
+ldap user suffix <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;ou=people&#34;</span>
+ldap admin dn <span style="color:#f92672">=</span><span style="color:#e6db74">&#34;cn=Manager,dc=game2sky,dc=com&#34;</span>
+ldap delete dn <span style="color:#f92672">=</span> no
+ldap passwd sync <span style="color:#f92672">=</span> Yes
+pam password change <span style="color:#f92672">=</span> Yes
+ldap ssl <span style="color:#f92672">=</span> off
+mkdir /home/share <span style="color:#75715e">#创建home下共享文件</span>
+<span style="color:#f92672">[</span>ldap-share<span style="color:#f92672">]</span> <span style="color:#75715e">#设置共享文件夹内用户访问权限</span>
+  path<span style="color:#f92672">=</span>/home/share
+  comment <span style="color:#f92672">=</span> Security Ddirectory
+  writeable <span style="color:#f92672">=</span> yes
+  valid users <span style="color:#f92672">=</span> cent 
+testparm /etc/samba/smb.conf
+systemctl restart smb nmb
+systemctl enable smb nmb
+smbpasswd -w password <span style="color:#75715e">#password 表示管理员用户密码</span>
+smbpasswd -a cent <span style="color:#75715e">#表示修改cent用户的密码</span>
+  
+</code></pre></div></li>
+<li>
+<p>samba 以组方式进行共享</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">vim smb_group.ldif
+dn: cn<span style="color:#f92672">=</span>system,ou<span style="color:#f92672">=</span>groups,dc<span style="color:#f92672">=</span>game2sky,dc<span style="color:#f92672">=</span>com
+changetype: modify
+add:memberUid
+memberUid: userid
+ldapmodify -x -D cn<span style="color:#f92672">=</span>Manager,dc<span style="color:#f92672">=</span>game2sky,dc<span style="color:#f92672">=</span>com -W -H ldap:///
+</code></pre></div></li>
+<li>
+<p>samba设置</p>
+<pre><code class="language-shel" data-lang="shel">[ldap-share]
+  path = /home/share
+  comment = Security Ddirectory
+  writable = yes
+  valid users = @system
+</code></pre></li>
+</ul>
+<p>5.OpenLDAP备份</p>
+<ul>
+<li>
+<p>slapcat 指令进行备份</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">slapcat -v -l openldap-backup.ldif
+</code></pre></div></li>
+</ul>
+
+    <h4><a href="https://cokidd.github.io">Back to Home</a></h4>
+</div>
+
+
+        </div><footer class="container">
+    <hr class="soften">
+    <p>
+
+    <a href="https://gitlab.com/maxlefou/hugo.386">hugo.386 theme by Max le Fou</a> | 
+
+&copy; 
+<a href="http://jmf-portfolio.netlify.com" target="_blank">
+    Cokidd
+</a>
+<span id="thisyear">2020</span>
+
+    | Cokkid 90&rsquo;s
+
+
+        | Built on <a href="//gohugo.io" target="_blank">Hugo</a>
+</p>
+    <p class="text-center">
+        
+        
+        
+        <a href="https://github.com">GitHub</a> 
+        <a href="https://gitlab.com">GitLab</a>
+    </p>
+</footer>
+
+</body><link rel="stylesheet" href="/css/bootstrap.css">
+<link rel="stylesheet" href="/css/bootstrap-responsive.css">
+<link rel="stylesheet" href="/css/style.css">
+
+<script src="/js/jquery.js"></script>
+<script src="/js/bootstrap-386.js"></script>
+<script src="/js/bootstrap-transition.js"></script>
+<script src="/js/bootstrap-alert.js"></script>
+<script src="/js/bootstrap-modal.js"></script>
+<script src="/js/bootstrap-dropdown.js"></script>
+<script src="/js/bootstrap-scrollspy.js"></script>
+<script src="/js/bootstrap-tab.js"></script>
+<script src="/js/bootstrap-tooltip.js"></script>
+<script src="/js/bootstrap-popover.js"></script>
+<script src="/js/bootstrap-button.js"></script>
+<script src="/js/bootstrap-collapse.js"></script>
+<script src="/js/bootstrap-carousel.js"></script>
+<script src="/js/bootstrap-typeahead.js"></script>
+<script src="/js/bootstrap-affix.js"></script>
+<script>
+    _386 = { 
+        fastLoad: false ,
+        onePass: false , 
+        speedFactor: 1 
+    };
+
+    
+    function ThisYear() {
+        document.getElementById('thisyear').innerHTML = new Date().getFullYear();
+    };
+</script></html>
