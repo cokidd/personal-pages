@@ -1,0 +1,34 @@
+language: node_js
+  - lts/*
+
+before_install:
+  - export TZ='Asia/Shanghai'
+  
+install:
+  - npm install hexo-cli -g
+  - npm install 
+
+script:
+  - hexo g
+
+after_script:
+  - cd ./public
+  - git init
+  - git config user.name "cokidd"
+  - git config user.email "okidingme@gmail.com"
+  - git add .
+  - git commit -m "Update Blog By TravisCI With Build $TRAVIS_BUILD_NUMBER"
+  - git push --force --quiet "https://$token@${GH_REF}" master:master
+  - git push --quiet "https://$token@${GH_REF}" master:master --tags
+
+env:
+ global:
+   - GH_REF: github.com/cokidd/cokidd.github.io.git
+
+deploy:
+  provider: pages 
+  skip-cleanup: true
+  local-dir: public 
+  github-token: $token 
+  on:
+    branch: master 
