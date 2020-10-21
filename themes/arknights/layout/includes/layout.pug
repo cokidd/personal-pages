@@ -55,7 +55,7 @@ html(lang=config.language)
           a(href=config.root)#logo
             img(src=asideLogo, alt="Logo")
           h1#Dr
-            a(href= theme.aside.dr)=' Dr.Lecter'
+            a(href= theme.aside.dr)=' Dr.'+ config.author
           section#total
             a#total-archives(href= config.root + "archives")
               span.total-title Archives Total:
