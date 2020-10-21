@@ -6,8 +6,10 @@ before_install:
   
 install:
   - npm install hexo-cli -g
-  - npm install ejs
+  - npm install ejs  
+  - npm install chalk --save-dev 
   - npm install
+  
 
 script:
   - hexo g
