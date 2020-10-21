@@ -1,5 +1,6 @@
 language: node_js
-  - lts/12.19.0
+node_js:
+  - '12.19.0'
 
 before_install:
   - export TZ='Asia/Shanghai'
