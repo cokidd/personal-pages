@@ -6,6 +6,9 @@ before_install:
   
 install:
   - npm install hexo-cli -g
+  - npm i -g create-nuxt-app
+  - npx create-nuxt-app nuxt002
+  - npm run dev
   - npm install
   - npm install hexo-server hexo-browsersync hexo-renderer-pug hexo-renderer-sass hexo-renderer-ts --save
 
