@@ -6,7 +6,9 @@ before_install:
   
 install:
   - npm install hexo-cli -g
-  - npm install 
+  - npm install cnpm -g
+  - cnpm install
+  - cnpm install hexo-server hexo-browsersync hexo-renderer-pug hexo-renderer-sass hexo-renderer-ts --save
 
 script:
   - hexo g
