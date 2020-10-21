@@ -6,8 +6,9 @@ before_install:
   
 install:
   - npm install hexo-cli -g
+  - npm install ejs
   - npm install
-  
+
 script:
   - hexo g
 
