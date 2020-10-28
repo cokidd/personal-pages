@@ -1,7 +1,7 @@
 ---
 title: LDAP(Lightweight Directory Access Protocol 轻量级目录服务)
 date: 2020-10-28 15:59:20
-tags:computer, Linux
+tags:Linux
 archives: Linux
 ---
 
