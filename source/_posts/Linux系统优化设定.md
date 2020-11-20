@@ -1,5 +1,5 @@
 ---
-title: Linux系统基本设定
+title: Linux系统优化设定
 date: 2020-10-29 16:56:30
 tags: Base Setting
 categories: Linux
