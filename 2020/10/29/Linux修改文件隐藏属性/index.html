@@ -1,0 +1,58 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Linux修改文件隐藏属性 | cokkid eat code</title><script src="https://cdn.bootcss.com/valine/1.4.4/Valine.min.js"></script><link rel="stylesheet" href="/css/arknights.css"><link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/atom-one-dark-reasonable.min.css"><style>@font-face {
+ font-family: BenderLight;
+ src: local('Bender'), url("/font/BenderLight.ttf");
+}
+@font-face {
+ font-family: 'JetBrains Mono';
+ src: local('JetBrains Mono'), url('/font/JetBrainsMono-Regular.woff2') format('woff2');
+}</style><meta name="generator" content="Hexo 5.2.0"></head><body><header><nav><a href="/">Home</a><a href="/archives/">Archives</a></nav></header><main><article><div id="post-bg"><div id="post-title"><div id="post-info"><span>date:<time datetime="2020-10-29T06:35:38.000Z" id="date"> 2020-10-29</time></span><br><span>updated:<time datetime="2020-12-15T11:26:49.193Z" id="updated"> 2020-12-15</time></span></div><h1>Linux修改文件隐藏属性</h1><hr></div><div id="post-content"><p>1.lsattr(查看隐藏属性)</p>
+<p>lsattr: (列出Linux隐藏文件系统属性)</p>
+<p>参数说明:</p>
+<ul>
+<li>-R 递归地列出目录及内容的属性</li>
+<li>-V 显示程序的版本</li>
+<li>-a 列出当前路径的所有文件的内容属性</li>
+<li>-d 列出当前目录的内容属性</li>
+<li>-v 列出文件的版本号</li>
+</ul>
+<p>2.chattr:(修改文件系统(EXT2\3\4和部分XFS)隐藏属性)</p>
+<p>参数说明:</p>
+<ul>
+<li><p>-R 递归修改目录隐藏内容</p>
+</li>
+<li><p>-V 详细显示输出并显示程序版本</p>
+</li>
+<li><p>-f 禁止显示出错信息</p>
+</li>
+<li><p>-v 设置文件版本号</p>
+</li>
+<li><p>mode 设置文件隐藏属性</p>
+<p>mode说明:</p>
+<p>(1)+[active]表示追加相应的参数</p>
+<p>(2)-[active]表示移除相应的参数</p>
+<p>(3)=[active]表示更新为指定参数</p>
+<p>active说明:</p>
+<p>(1)A:不修改该文件的最后访问时间，减少一定数量的磁盘I/O</p>
+<p>(2)a:只能以追加模式打开使用</p>
+<p>(3)C:不受到写入时复制的影响(仅影响与写时拷贝的文件系统)</p>
+<p>(4)c:读取时显示为未压缩数据。文件在写入磁盘前会进行数据压缩</p>
+<p>(5)D:当D属性目录发生修改时，更改同步写入磁盘。相当于目录内文件中的S(sync同步)选项</p>
+<p>(6)d:使用dump备份时，d属性文件不为备份候选文件</p>
+<p>(7)h:文件以文件系统块大小单位存储</p>
+<p>(8)i:无法删除或重命名该文件，无法创建指向链接此文件和任何数据都不能写入该文件</p>
+<p>(9)I:使用hash树为目录编制索引</p>
+<p>(10)j:写入时先被记录至journal日志中</p>
+<p>(11)s:删除时，完全擦除该文件在磁盘中的痕迹</p>
+<p>(12)S:该文件更改同步写入磁盘</p>
+<p>(13)t:文件在与其他文件合并的文件末尾不会有部分块片段(对于那些支持尾部合并的文件系统)</p>
+<p>(14)T:当前目录为目录层次结构的顶部</p>
+<p>(15)u:删除文件后文件内容被保存</p>
+</li>
+</ul>
+<p>[^注意事项]: ‘c’ ‘s’ ‘u’ 不受到ext*文件系统的支持，’j’仅受到ext3 ext4文件系统支持，’D’仅支持Linux内核为2.5.19版本之后的</p>
+<div id="paginator"></div></div><div id="post-footer"><hr><a href="/2020/10/29/Linux%E7%B3%BB%E7%BB%9F%E4%BC%98%E5%8C%96%E8%AE%BE%E5%AE%9A/">← Prev Linux系统优化设定</a><span style="color: #fe2"> | </span><a href="/2020/10/29/SElinux-%E5%9F%BA%E7%A1%80%E8%AE%BE%E7%BD%AE/">SElinux-基础设置 Next →</a><hr></div><div id="bottom-btn"><a id="to-top" href="#post-title" title="to top">∧</a></div><details id="reward"><summary>打赏</summary><div id="alipay"><span>支付宝 | Alipay</span><br><img src="/img/Alipay.png"></div><div id="wechat"><span>微信 | WeChat</span><br><img src="/img/WeChat.png"></div></details><div id="Valine"></div><script>new Valine({
+ el: '#Valine'
+ , appId: ''
+ , appKey: ''
+ , placeholder: '此条评论委托企鹅物流发送'
+})</script></div></article><aside><div id="about"><a href="/" id="logo"><img src="/img/logo.png" alt="Logo"></a><h1 id="Dr"><a href="/"> Dr.Cokkid</a></h1><section id="total"><a id="total-archives" href="/archives"><span class="total-title">Archives Total:</span><span class="total-number">21</span></a><div id="total-tags"><span class="total-title">Tags:</span><span class="total-number">8</span></div><div id="total-categories"><span class="total-title">Categories:</span><span class="total-number">2</span></div></section></div><div id="aside-block"></div><footer><nobr><span class="text-title">©</span><span class="text-content">1970 to 2020</span></nobr><wbr><nobr><span class="text-title">ICP</span><span class="text-content">——备案号——</span></nobr><wbr><wbr><nobr>published with&nbsp;<a target="_blank" rel="noopener" href="http://hexo.io">Hexo&nbsp;</a></nobr><wbr><nobr>Theme&nbsp;<a target="_blank" rel="noopener" href="https://github.com/Yue-plus/hexo-theme-arknights">Arknight&nbsp;</a></nobr><wbr><nobr>by&nbsp;<a target="_blank" rel="noopener" href="https://github.com/Yue-plus">Yue_plus</a></nobr></footer></aside></main><canvas id="canvas-dust"></canvas><script src="/js/arknights.js"></script><script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js"></script></body></html>

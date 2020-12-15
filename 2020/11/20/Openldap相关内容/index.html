@@ -1,0 +1,1078 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Openldap相关内容 | cokkid eat code</title><script src="https://cdn.bootcss.com/valine/1.4.4/Valine.min.js"></script><link rel="stylesheet" href="/css/arknights.css"><link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/atom-one-dark-reasonable.min.css"><style>@font-face {
+ font-family: BenderLight;
+ src: local('Bender'), url("/font/BenderLight.ttf");
+}
+@font-face {
+ font-family: 'JetBrains Mono';
+ src: local('JetBrains Mono'), url('/font/JetBrainsMono-Regular.woff2') format('woff2');
+}</style><meta name="generator" content="Hexo 5.2.0"></head><body><header><nav><a href="/">Home</a><a href="/archives/">Archives</a></nav></header><main><article><div id="post-bg"><div id="post-title"><div id="post-info"><span>date:<time datetime="2020-11-20T03:41:39.000Z" id="date"> 2020-11-20</time></span><br><span>updated:<time datetime="2020-12-15T11:26:49.193Z" id="updated"> 2020-12-15</time></span></div><h1>Openldap相关内容</h1><hr></div><div id="post-content"><h1 id="LDAP-Lightweight-Directory-Access-Protocol-轻量级目录服务"><a href="#LDAP-Lightweight-Directory-Access-Protocol-轻量级目录服务" class="headerlink" title="LDAP(Lightweight Directory Access Protocol 轻量级目录服务)"></a>LDAP(Lightweight Directory Access Protocol 轻量级目录服务)</h1><h2 id="一、概述"><a href="#一、概述" class="headerlink" title="一、概述"></a>一、概述</h2><h3 id="1-目录"><a href="#1-目录" class="headerlink" title="1.  目录"></a>1.  目录</h3><ul>
+<li><p>目录：专门设计用于搜索和浏览的树状结构数据库</p>
+</li>
+<li><p>目录特点：</p>
+<ul>
+<li><p>倾向于包含基于属性的描述性信息，并支持复杂的过滤</p>
+</li>
+<li><p>不支持复杂交互和复杂更新、回滚，通常更新是全有或全无的更改</p>
+</li>
+<li><p>对大量查找和搜索操作通常会快速响应</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-目录服务"><a href="#2-目录服务" class="headerlink" title="2. 目录服务"></a>2. 目录服务</h3><ul>
+<li>目录服务：以树状结构数据库为基础，提供相应的信息查询服务</li>
+</ul>
+<h3 id="3-LDAP-Lightweight-Directory-Access-Protocol-轻量级目录服务"><a href="#3-LDAP-Lightweight-Directory-Access-Protocol-轻量级目录服务" class="headerlink" title="3. LDAP (Lightweight Directory Access Protocol 轻量级目录服务)"></a>3. LDAP (Lightweight Directory Access Protocol 轻量级目录服务)</h3><ul>
+<li><p>LDAP:它是用于访问目录服务（特别是基于X.500的目录服务）的轻量级协议。 LDAP通过TCP/IP或其他面向连接的传输服务运行。</p>
+</li>
+<li><p>数据类型表达：</p>
+<ul>
+<li>条目(dn)：条目是具有全局唯一专有名称(DN)属性的集合，DN用于明确地引用条目，每个条目都有一个类型及单一或多个值。</li>
+<li>模式(Schema):对象类(ObjectClass)、属性类型(AttributeType)、属性语法(Syntax)和匹配规则(MatchingRules)的集合。</li>
+</ul>
+</li>
+<li><p>存储信息方式：将条目以树状的层次进行排列</p>
+</li>
+<li><p>LDAP功能：查询条目、更新条目、删除条目、添加条目</p>
+</li>
+<li><p>LDAP适用范围：需要集中管理、存储、访问数据时</p>
+</li>
+<li><p>LDAP架构：Client/Server架构</p>
+</li>
+<li><p>LDAP交互过程：客户端连接到服务端询问，服务器提供应答或对应指针(指针指向从何处可以获得对应信息，类似DNS)</p>
+</li>
+</ul>
+<p>[^DN]: DN为Distinguished Name,表示专有名称。再系统中显示为DN</p>
+<p>[^Schema模式]: LDAP 协议定义了一些标准的模式，也可以根据需求自定义模式。(模板路径：**/etc/openldap/schema/**)</p>
+<h3 id="4-OpenLDAP-开源LDAP应用"><a href="#4-OpenLDAP-开源LDAP应用" class="headerlink" title="4. OpenLDAP(开源LDAP应用)"></a>4. OpenLDAP(开源LDAP应用)</h3><ul>
+<li><p>OpenLDAP服务：核心服务为slapd</p>
+</li>
+<li><p>slapd服务特性：</p>
+<ul>
+<li><p>使用LDAPv3协议</p>
+</li>
+<li><p>简单身份验证和安全层</p>
+</li>
+<li><p>传输层安全(TLS或SSL)</p>
+</li>
+<li><p>拓扑控制</p>
+</li>
+<li><p>访问控制</p>
+</li>
+<li><p>数据库后端选择</p>
+</li>
+<li><p>多个数据实例</p>
+</li>
+<li><p>通用模块api</p>
+</li>
+<li><p>多线程</p>
+</li>
+<li><p>复制</p>
+</li>
+<li><p>代理缓存</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="5-OpenLDAP功能汇总"><a href="#5-OpenLDAP功能汇总" class="headerlink" title="5.OpenLDAP功能汇总"></a>5.OpenLDAP功能汇总</h3><ul>
+<li>实现账号统一集中管理</li>
+<li>权限控制管理(sudo)</li>
+<li>密码控制策略管理</li>
+<li>密码审计管理</li>
+<li>密码控制策略</li>
+<li>主机控制管理</li>
+<li>同步机制管理</li>
+<li>TLS/SASL加密传输</li>
+<li>高可用负载均衡</li>
+<li>自定义schema</li>
+<li>各种应用平台集成账号管理</li>
+</ul>
+<h3 id="6-OpenLDAP条目概述"><a href="#6-OpenLDAP条目概述" class="headerlink" title="6.OpenLDAP条目概述"></a>6.OpenLDAP条目概述</h3><ul>
+<li>objectClass分类<ul>
+<li>结构型(structural): 如person和organizationUnit</li>
+<li>辅助型(auxiliary):如extensibleObject</li>
+<li>抽象型(abstract):如top,抽象型的objectClass不能直接使用</li>
+</ul>
+</li>
+</ul>
+<h3 id="7-OpenLDAP属性概述"><a href="#7-OpenLDAP属性概述" class="headerlink" title="7.OpenLDAP属性概述"></a>7.OpenLDAP属性概述</h3><ul>
+<li>属性(Attribute):在目录树中主要用于描述条目相关信息。例如用户条目的用途、联系方式、邮件、uid、gid、公司地址等</li>
+<li>常用属性类型:<ul>
+<li>dn(distinguished name):唯一标识名，类似于Linux文件系统中的绝对路径，每个对象都有唯一标识名。(例如，uid=dpgdy, ou=People, dc=gdy, dc=com)</li>
+<li>rdn(relative dn):通常指相对标识名，类似与Linux文件系统中的相对路径。</li>
+<li>ui(user id):通常指一个用户的登录名称</li>
+<li>sn(sur name):通常指一个人的姓氏</li>
+<li>giveName:通常指一个人的名字</li>
+<li>I:通常指一个地方的地名。</li>
+<li>objectClass:objectClass是特殊的属性，包含数据存储的方式以及相关属性信息</li>
+<li>dc(domain component):通常指定一个域名</li>
+<li>ou(organization unit):通常指定一个组织单元的名称</li>
+<li>cn(common name):通常指一个对象的名称，如果是人,需要使用全名</li>
+<li>mail:通常指登录账号的邮箱地址</li>
+<li>telephoneNumber:通常指登录账号的手机号码</li>
+<li>c：通常指一个二位国家的名称</li>
+</ul>
+</li>
+</ul>
+<h3 id="8-OpenLDAP管理命令汇总"><a href="#8-OpenLDAP管理命令汇总" class="headerlink" title="8.OpenLDAP管理命令汇总"></a>8.OpenLDAP管理命令汇总</h3><ul>
+<li>ldapsearch:搜索OpenLDAP目录树条目</li>
+<li>ldapadd:通过LDIF格式，添加目录树条目</li>
+<li>ldapdelete:删除OpenLDAP目录树条目</li>
+<li>ldapmodify:修改OpenLDAP目录树条目</li>
+<li>ldapwhoami:检验OpenLDAP目录树条目</li>
+<li>ldapmodrdn:修改OpenLDAP目录树条目</li>
+<li>ldapcompare:判断DN值和指定参数值是否属于同一个条目</li>
+<li>ldappasswd:修改OpenLDAP目录树用户条目实现密码重置</li>
+<li>slaptest:验证slapd.conf文件或cn=配置目录(slapd.d)</li>
+<li>slapindex:创建OpenLDAP目录树索引，提高查询效率</li>
+<li>slapcat:将数据条目转换为OpenLDAP的LDIF文件</li>
+</ul>
+<h3 id="9-OpenLDAP-同步机制概述"><a href="#9-OpenLDAP-同步机制概述" class="headerlink" title="9.OpenLDAP 同步机制概述"></a>9.OpenLDAP 同步机制概述</h3><ul>
+<li>syncrepl同步提供一个有状态的复制，拉(pull)和推(push)模式进行目录树的同步</li>
+<li>多并发连接时，数据同步信息不完整需要重新加载ldap进程</li>
+<li>日志需要分割、清理和同步</li>
+</ul>
+<h3 id="10-OpenLDAP-权限内容概述"><a href="#10-OpenLDAP-权限内容概述" class="headerlink" title="10.OpenLDAP 权限内容概述"></a>10.OpenLDAP 权限内容概述</h3><ul>
+<li><p>Linux-PAM 组织架构</p>
+<ul>
+<li><p>Linux通过PAM模块来验证登录者合法性及密码正确性</p>
+<p><img src="image-20201016154519079.png" alt="image-20201016154519079"></p>
+</li>
+</ul>
+</li>
+<li><p>PAM模块认证类型</p>
+<ul>
+<li>auth:认证管理，验证使用者身份，账号和密码</li>
+<li>accout:用户认证，基于用户表</li>
+<li>password:密码口令，认证管理</li>
+<li>session:会话管理，日志记录或则限制用户登录次数</li>
+</ul>
+</li>
+<li><p>PAM模块的模块流程</p>
+<ul>
+<li>required:必要条件，需要同其他模块一起验证。验证失败，则返回失败信息</li>
+<li>requisite:必要条件，验证失败后即结束整个验证过程</li>
+<li>sufficient:充分条件，验证成功即返回OK,不再继续验证</li>
+<li>optional:可选条件，无论验证如何不会影响会话</li>
+<li>include：包含另外一个配置文件中类型相同的行</li>
+</ul>
+</li>
+<li><p>PAM模块</p>
+<ul>
+<li>pam_rootok.so:如果UID=0,RETURN OK</li>
+<li>pam_access.so:配置文件为/etc/security/access.conf,登录模块</li>
+<li>pam_listfile.so:基于文件允许或拒绝访问资源机制</li>
+<li>pam_time.so:基于时间的访问控制</li>
+<li>pam_tally2.so:登录统计</li>
+<li>pam_limits.so:限制会话过程中对资源的使用情况，配置文件/etc/security/limits.conf</li>
+</ul>
+</li>
+</ul>
+<p>11.密码策略属性详解</p>
+<ul>
+<li>pwdAllowUserChange,允许用户修改密码</li>
+<li>pwdAttribute, pwdPolicy对象的一个属性，用于标识用户密码</li>
+<li>pwdExpireWarning,密码过期前警告天数</li>
+<li>pwdFailureCountInterval，密码失败后恢复时间</li>
+<li>pwdGraceAuthNLimit,密码过期后不能登录的天数，0代表禁止登录</li>
+<li>pwdInHistory，开启密码历史记录，用于保证不能和之前设置的密码相同</li>
+<li>pwdLockout,超过定义次数，账号被锁定</li>
+<li>pwdLockoutDuration，密码连续输入错误次数后，账号锁定时间</li>
+<li>pwdMaxAge,密码有效期，到期需要强制修改密码</li>
+<li>pwdMaxFailure,密码最大失效次数，超过后账号被锁定</li>
+<li>pwdMinAge，密码有效期</li>
+<li>pwdMinLength，用户修改密码是最短的密码长度</li>
+<li>pwdMustChange，用户登录系统提示修改密码</li>
+<li>pwdSafeModify，是否允许用户修改密码</li>
+<li>pwdLockoutDuration，账号锁定后，不能自动解锁，需要管理员解锁</li>
+</ul>
+<h2 id="二、安装和基本配置（CentOS-7"><a href="#二、安装和基本配置（CentOS-7" class="headerlink" title="二、安装和基本配置（CentOS 7)"></a>二、安装和基本配置（CentOS 7)</h2><h3 id="1-查看是否存在openssl"><a href="#1-查看是否存在openssl" class="headerlink" title="1. 查看是否存在openssl"></a>1. 查看是否存在openssl</h3>   <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell">[root@localhost ~]# rpm -qa|grep openssl<br><span class="hljs-meta">#</span><span class="bash">如果内容为空</span><br>[root@localhost ~]# yum -y install openssl<br></code></pre></td></tr></table></figure>
+
+<h3 id="2-安装openldap"><a href="#2-安装openldap" class="headerlink" title="2. 安装openldap"></a>2. 安装openldap</h3>   <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs shell">[root@localhost ~]# yum -y install openldap-servers openldap-clients<br><span class="hljs-meta">#</span><span class="bash">复制数据库配置</span><br>[root@localhost ~]# cp /usr/share/openldap-servers/DB_CONFIG.example /var/lib/ldap/DB_CONFIG<br><span class="hljs-meta">#</span><span class="bash">修改文件权限</span><br>[root@localhost ~]# chown ldap. /var/lib/ldap/DB_CONFIG<br><span class="hljs-meta">#</span><span class="bash">启动服务</span><br>[root@localhost ~]#systemctl start slapd<br>[root@localhost ~]# systemctl enable slapd<br></code></pre></td></tr></table></figure>
+
+<h3 id="3-时间同步设置"><a href="#3-时间同步设置" class="headerlink" title="3.时间同步设置"></a>3.时间同步设置</h3><ul>
+<li><p>OpenLDAP需要时间进行同步</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">ntpdate 0.rhel.pool.ntp.org<br>rpm -qa| grep openldap-server<br></code></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+<h3 id="4-基础配置"><a href="#4-基础配置" class="headerlink" title="4. 基础配置"></a>4. 基础配置</h3>   <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash">设置管理员密码</span><br><span class="hljs-meta">#</span><span class="bash">生成加密密码</span><br>[root@localhost ~]# slappasswd<br>New password:<br>Re-enter new password:<br>&#123;SSHA&#125;QECj5ITzHfYsmpNvsGUIYZXqTYxIukXw<br><span class="hljs-meta">#</span><span class="bash">将&#123;SSHA&#125;QECj5ITzHfYsmpNvsGUIYZXqTYxIukXw内容复制</span><br><br><span class="hljs-meta">#</span><span class="bash">创建配置文件</span><br>[root@localhost ~]# vi chrootpw.ldif<br><span class="hljs-meta">#</span><span class="bash">将&#123;SSHA&#125;QECj5ITzHfYsmpNvsGUIYZXqTYxIukXw内容复制至olcRootPW中</span><br>dn: olcDatabase=&#123;0&#125;config,cn=config<br>changetype: modify<br>add: olcRootPW<br>olcRootPW: &#123;SSHA&#125;QECj5ITzHfYsmpNvsGUIYZXqTYxIukXw<br><br><span class="hljs-meta">#</span><span class="bash">添加配置文件(使用SASL机制)</span><br>[root@localhost ~]# ldapadd -Y EXTERNAL -H ldapi:/// -f chrootpw.ldif<br>SASL/EXTERNAL authentication started<br>SASL username: gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth<br>SASL SSF: 0<br>modifying entry &quot;olcDatabase=&#123;0&#125;config,cn=config&quot;<br><br><span class="hljs-meta">#</span><span class="bash">导入基本配置</span><br>[root@localhost ~]# ldapadd -Y EXTERNAL -H ldapi:/// -f /etc/openldap/schema/cosine.ldif<br>SASL/EXTERNAL authentication started<br>SASL username: gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth<br>SASL SSF: 0<br>adding new entry &quot;cn=cosine,cn=schema,cn=config&quot;<br><br>[root@localhost ~]# ldapadd -Y EXTERNAL -H ldapi:/// -f /etc/openldap/schema/nis.ldif<br>SASL/EXTERNAL authentication started<br>SASL username: gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth<br>SASL SSF: 0<br>adding new entry &quot;cn=nis,cn=schema,cn=config&quot;<br><br>[root@localhost ~]# ldapadd -Y EXTERNAL -H ldapi:/// -f /etc/openldap/schema/inetorgperson.ldif<br>SASL/EXTERNAL authentication started<br>SASL username: gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth<br>SASL SSF: 0<br>adding new entry &quot;cn=inetorgperson,cn=schema,cn=config&quot;<br><br><span class="hljs-meta">#</span><span class="bash">导入所有模式</span><br>[root@localhost ~]# find /etc/openldap/schema/ -name &quot;*.ldif&quot; -exec ldapadd -Y EXTERNAL -H ldapi:/// -D &quot;cn=config&quot; -f &#123;&#125; \ <br><br><span class="hljs-meta">#</span><span class="bash">设置目录管理员密码(内容不相同)</span><br><span class="hljs-meta">#</span><span class="bash">生成加密密码</span><br>[root@localhost ~]# slappasswd<br>New password:<br>Re-enter new password:<br>&#123;SSHA&#125;AgeHfglDlqbccpFV4RLY42eXO4+kM0eD<br><span class="hljs-meta">#</span><span class="bash">管理目录配置文件</span><br>[root@localhost ~]# vi chdomain.ldif<br><span class="hljs-meta">#</span><span class="bash"> 将dc=***，dc=***内容替换为设置的域名</span><br><span class="hljs-meta">#</span><span class="bash"> 将&#123;SSHA&#125;AgeHfglDlqbccpFV4RLY42eXO4+kM0eD内容复制至olcRootPW中</span><br>dn: olcDatabase=&#123;1&#125;monitor,cn=config<br>changetype: modify<br>replace: olcAccess<br>olcAccess: &#123;0&#125;to * by dn.base=&quot;gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth&quot;<br>  read by dn.base=&quot;cn=Manager,dc=srv,dc=com&quot; read by * none<br><br>dn: olcDatabase=&#123;2&#125;hdb,cn=config<br>changetype: modify<br>replace: olcSuffix<br>olcSuffix: dc=srv,dc=com<br><br>dn: olcDatabase=&#123;2&#125;hdb,cn=config<br>changetype: modify<br>replace: olcRootDN<br>olcRootDN: cn=Manager,dc=srv,dc=com<br><br>dn: olcDatabase=&#123;2&#125;hdb,cn=config<br>changetype: modify<br>add: olcRootPW<br>olcRootPW: &#123;SSHA&#125;AgeHfglDlqbccpFV4RLY42eXO4+kM0eD<br><br>dn: olcDatabase=&#123;2&#125;hdb,cn=config<br>changetype: modify<br>add: olcAccess<br>olcAccess: &#123;0&#125;to attrs=userPassword,shadowLastChange by<br>  dn=&quot;cn=Manager,dc=srv,dc=com&quot; write by anonymous auth by self write by * none<br>olcAccess: &#123;1&#125;to dn.base=&quot;&quot; by * read<br>olcAccess: &#123;2&#125;to * by dn=&quot;cn=Manager,dc=srv,dc=com&quot; write by * read<br><span class="hljs-meta">#</span><span class="bash">配置文件添加</span><br>[root@localhost ~]# ldapmodify -Y EXTERNAL -H ldapi:/// -f chdomain.ldif<br>SASL/EXTERNAL authentication started<br>SASL username: gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth<br>SASL SSF: 0<br>modifying entry &quot;olcDatabase=&#123;1&#125;monitor,cn=config&quot;<br><br>modifying entry &quot;olcDatabase=&#123;2&#125;hdb,cn=config&quot;<br><br>modifying entry &quot;olcDatabase=&#123;2&#125;hdb,cn=config&quot;<br><br>modifying entry &quot;olcDatabase=&#123;2&#125;hdb,cn=config&quot;<br><br><span class="hljs-meta">#</span><span class="bash">基础域名配置文件</span><br>[root@localhost ~]# vi basedomain.ldif<br><span class="hljs-meta">#</span><span class="bash">将dc=***，dc=***内容替换为设置的域名</span><br>dn: dc=game2sky,dc=com<br>objectClass: top<br>objectClass: dcObject<br>objectclass: organization<br>o: game2sky com<br>dc: game2sky<br><br>dn: cn=Manager,dc=game2sky,dc=com<br>objectClass: organizationalRole<br>cn: Manager<br>description: Directory Manager<br><br>dn: ou=People,dc=game2sky,dc=com<br>objectClass: organizationalUnit<br>ou: People<br><br>dn: ou=Group,dc=game2sky,dc=com<br>objectClass: organizationalUnit<br>ou: Group<br><br><span class="hljs-meta">#</span><span class="bash">数据结构添加</span><br>[root@localhost ~]# ldapadd -x -D cn=Manager,dc=game2sky,dc=com -W -f basedomain.ldif<br>Enter LDAP Password:     # directory manager&#x27;s password<br>adding new entry &quot;dc=game2sky,dc=com&quot;<br><br>adding new entry &quot;cn=Manager,dc=game2sky,dc=com&quot;<br><br>adding new entry &quot;ou=People,dc=game2sky,dc=com&quot;<br><br>adding new entry &quot;ou=Group,dc=game2sky,dc=com&quot;<br><br></code></pre></td></tr></table></figure>
+
+<h3 id="5-phpLDAPadmin前端页面部署"><a href="#5-phpLDAPadmin前端页面部署" class="headerlink" title="5. phpLDAPadmin前端页面部署"></a>5. phpLDAPadmin前端页面部署</h3>   <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs shell">[root@localhost ~]# yum --enablerepo=epel -y install phpldapadmin<br>[root@localhost ~]# vi /etc/phpldapadmin/config.php<br><span class="hljs-meta">#</span><span class="bash"> 397行取消注释, 398行添加注释</span><br><span class="hljs-meta">$</span><span class="bash">servers-&gt;setValue(<span class="hljs-string">&#x27;login&#x27;</span>,<span class="hljs-string">&#x27;attr&#x27;</span>,<span class="hljs-string">&#x27;dn&#x27;</span>);</span><br>// $servers-&gt;setValue(&#x27;login&#x27;,&#x27;attr&#x27;,&#x27;uid&#x27;);<br>[root@localhost ~]# vi /etc/httpd/conf.d/phpldapadmin.conf<br>Alias /phpldapadmin /usr/share/phpldapadmin/htdocs<br>Alias /ldapadmin /usr/share/phpldapadmin/htdocs<br>&lt;Directory /usr/share/phpldapadmin/htdocs&gt;<br>  &lt;IfModule mod_authz_core.c&gt;<br>    # Apache 2.4<br>    Require local<br>    # 添加Require ip 172.16.0.0/22<br>    Require ip 172.16.0.0/22<br>[root@localhost ~]# systemctl restart httpd<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><p>通过web端访问url:ipaddress/ldapadmin/,显示如下</p>
+<p>   <img src="image-20201010160328443.png" alt="image-20201010160328443"></p>
+</li>
+</ul>
+<h3 id="6-防火墙配置"><a href="#6-防火墙配置" class="headerlink" title="6. 防火墙配置"></a>6. 防火墙配置</h3><ul>
+<li><p>iptables明文数据传输配置:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs shell">iptables -A INPUT -p tcp -m state -state NEW -dport 389 -j ACCEPT<br>iptables -A OUTPUT -p tcp -m state -state NEW -dport 389 -j ACCEPT<br>service iptables save<br>service iptables restart&amp;&amp;chkconfig iptables on <br></code></pre></td></tr></table></figure>
+</li>
+<li><p>密文数据传输配置:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs shell">iptables -A INPUT -p tcp -m state -state NEW -dport 636 -j ACCEPT<br>iptables -A OUTPUT -p tcp -m state -state NEW -dport 636 -j ACCEPT<br>service iptables save<br>service iptables restart&amp;&amp;chkconfig iptables on <br></code></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="7-域名解析设置"><a href="#7-域名解析设置" class="headerlink" title="7.域名解析设置"></a>7.域名解析设置</h3>  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs shell">[root@localhost ~]# cat &gt;&gt; /etc/hosts &lt;&lt;EOF<br><span class="hljs-meta">&gt;</span><span class="bash"> ipaddress  hostname firstname</span><br><span class="hljs-meta">&gt;</span><span class="bash"> EOF</span><br><span class="hljs-meta">#</span><span class="bash"> ipaddress 表示IP地址</span><br><span class="hljs-meta">#</span><span class="bash"> hostname 表示服务器域名全称</span><br><span class="hljs-meta">#</span><span class="bash"> firstname 表示服务器域名第一个名称</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="8-LDAP客户端部署"><a href="#8-LDAP客户端部署" class="headerlink" title="8.LDAP客户端部署"></a>8.LDAP客户端部署</h3><ul>
+<li><p>配置文件功能</p>
+<ul>
+<li>/etc/nsswitch.conf：用于名称转化服务，用于UNIX&amp;Linux系统验证用户身份所读取本地文件或是远程验证服务器</li>
+<li>/etc/sysconfig/authconfig：用于提供身份验证值LDAP功能</li>
+<li>/etc/pam.d/system-auth：主要用于显示现实用户账号身份验证</li>
+<li>/etc/pam_ldap.conf：用于实现用户账号身份验证</li>
+<li>/etc/openldap/ldap.conf：主要用于查询OpenLDAP服务器所有条目信息</li>
+</ul>
+</li>
+<li><p>部署方式</p>
+<ul>
+<li><p>图形化部署方式</p>
+<ul>
+<li>常用工具setup 、authconfig-tui命令</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>配置文件部署方式</p>
+<ul>
+<li><p>命令行部署方式</p>
+<ul>
+<li>常用工具authconfig命令</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>部署前时间同步</p>
+<ul>
+<li>ntpdate 0.rhel.pool.ntp.org</li>
+<li>部署前域名解析</li>
+<li>vim /etc/hosts<ul>
+<li>172.16.3.180 openldap.game2sky.com</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>安装客户端工具</p>
+<pre><code><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs shell">yum -y install openldap-clients nss-pam-ldapd authconfig --enableldap \<br>--enableldapauth \<br>--ldapserver=172.16.3.180 \<br>--ldapbasedn=&quot;dc=game,dc=com&quot; \<br>--enablemkhomedir \<br>--update<br></code></pre></td></tr></table></figure></code></pre>
+</li>
+</ul>
+<h3 id="9-OpenSSL加密传输设置"><a href="#9-OpenSSL加密传输设置" class="headerlink" title="9.OpenSSL加密传输设置"></a>9.OpenSSL加密传输设置</h3><ul>
+<li>创建CA证书</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs shell">rpm -qa | grep openssl<br>cd /etc/pki/CA<br>openssl req -new -x509 -key private/cakey.pem -out cacert.pem <br><span class="hljs-meta">#</span><span class="bash">设置证书</span><br>Country Name(2 lettercode):cn(两个字母的国家代号)<br>State or Province Name(fullname):Beijing(省份或地区名)<br>Locality Name(eg, city)[Default City]:市或地区<br>Organization Name(eg, company)[Default Company Ltd]:公司名称<br>Organizational Unit Name(eg, section)[]:部门名称<br>Common Name(eg, your name or your server&#x27;s hostname)：OL服务器名称<br>Email Address []: ca@game2sky.com<br><br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><p>生成文件用途</p>
+<ul>
+<li>cacert.pem:CA 自身证书文件</li>
+<li>certs:客户端证书存放目录</li>
+<li>crl:CA吊销的客户端证书存放目录</li>
+<li>newcerts:生成新证书存放目录</li>
+<li>index.txt:存放客户端证书信息</li>
+<li>serial:客户端证书编号</li>
+<li>private:存放CA自身私钥的目录</li>
+</ul>
+</li>
+<li><p>查看根证书</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">openssl x509 -noout -text -in /etc/pki/CA/cacert.pem<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>服务器生成密钥</p>
+</li>
+<li><p>openssl genrsa -out ldapkey.pem 1024</p>
+</li>
+<li><p>OpenLDAP服务向CA申请证书签署请求</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">openssl req -new -key ldapkey.pem -out ldap.csr -days 3650<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>CA核实并签发证书</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">openssl ca -in ldap.csr -out ldapcert.pem -days 3650<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>OpenLDAP  TLS/SASL</p>
+<ul>
+<li><p>修改证书权限</p>
+</li>
+<li><p>chown -R ldap:ldap /etc/openldap/ssl/*</p>
+</li>
+<li><p>chmod -R 0400 /etc/openldap/ssl/*</p>
+</li>
+<li><p>修改OpenLDAP配置文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs shell">vim mod_ssl.ldif<br>dn: cn=config<br>changetype: modify<br>add: olcTLSCACertificateFile<br>olcTLSCACertificateFile: /etc/openldap/certs/ca-bundle.crt<br>-<br>replace: olcTLSCertificateFile<br>olcTLSCertificateFile: /etc/openldap/certs/server.crt<br>-<br>replace: olcTLSCertificateKeyFile<br>olcTLSCertificateKeyFile: /etc/openldap/certs/server.key<br>ldapmodify -Y EXTERNAL -H ldapi:/// -f mod_ssl.ldif<br>vim /etc/sysconfig/slapd<br>SLAPD_URLS=&quot;ldapi:/// ldap:/// ldaps:///&quot;<br>systemctl restart slapd<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>设置客户端</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell">echo &quot;TLS_REQCERT allow&quot; &gt;&gt; /etc/openldap/ldap.conf<br>echo &quot;tls_reqcert allow&quot; &gt;&gt; /etc/nslcd.conf<br>authconfig --enableldaptls --updates<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>证书验证</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">openssl verify -CAfile /etc/pki/CA/cacert.pem /etc/openldap/ssl/ldapcert.pem<br>openssl s_client -connect openldap.game2sky.com:636 -showcerts -state -CAfile /etc/openldap/ssl/cacert.pem<br></code></pre></td></tr></table></figure>
+
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="10-Openldap后端数据库为MySQL-amp-Mariadb安装过程-包含源码安装过程"><a href="#10-Openldap后端数据库为MySQL-amp-Mariadb安装过程-包含源码安装过程" class="headerlink" title="10.Openldap后端数据库为MySQL&amp;Mariadb安装过程(包含源码安装过程)"></a>10.Openldap后端数据库为MySQL&amp;Mariadb安装过程(包含源码安装过程)</h3><ul>
+<li><p>安装mysql服务(其他文档中有详细描述这里不写了)</p>
+</li>
+<li><p>修改root密码</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell">alter user &#x27;root&#x27;@&#x27;localhost&#x27; identified by &#x27;password&#x27;<br>update mysql.user set host=&#x27;%&#x27; where user=&#x27;root&#x27;<br>flush privileges;<br></code></pre></td></tr></table></figure>
+
+
+
+</li>
+</ul>
+<ul>
+<li><p>创建ldap数据库,创建数据库用户，创建数据库密码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs mysql">create database ldap;<br>CREATE USER &#39;ldap&#39;@&#39;%&#39; IDENTIFIED BY &#39;ldap&#39;;<br>GRANT ALL PRIVILEGES ON ldap.* TO &#39;ldap&#39;@&#39;%&#39;;<br>show database<br></code></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+<h3 id="11-Openldap-主从设置"><a href="#11-Openldap-主从设置" class="headerlink" title="11.Openldap 主从设置"></a>11.Openldap 主从设置</h3><ul>
+<li><p>主控端添加syncprov模块</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs shell">vi mod_syncprov.ldif<br>dn: cn=module,cn=config<br>objectClass: olcModuleList<br>cn: module<br>olcModulePath: /usr/lib64/openldap<br>olcModuleLoad: syncprov.la<br>ldapadd -Y EXTERNAL -H ldapi:/// -f mod_syncprov.ldif<br>vi syncprov.ldif<br>dn: olcOverlay=syncprov,olcDatabase=&#123;2&#125;hdb,cn=config<br>objectClass: olcOverlayConfig<br>objectClass: olcSyncProvConfig<br>olcOverlay: syncprov<br>olcSpSessionLog: 100<br>ldapadd -Y EXTERNAL -H ldapi:/// -f syncprov.ldif<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>设置被控端</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs shell">vi syncrepl.ldif<br>dn: olcDatabase=&#123;2&#125;hdb,cn=config<br>changetype: modify<br>add: olcSyncRepl<br>olcSyncRepl: rid=001<br><span class="hljs-meta">  #</span><span class="bash"> LDAP server<span class="hljs-string">&#x27;s URI</span></span><br>  provider=ldap://10.0.0.30:389/<br>  bindmethod=simple<br><span class="hljs-meta">  #</span><span class="bash"> own domain name</span><br>  binddn=&quot;cn=Manager,dc=game2sky,dc=com&quot;<br><span class="hljs-meta">  #</span><span class="bash"> directory manager<span class="hljs-string">&#x27;s password</span></span><br>  credentials=password<br>  searchbase=&quot;dc=game2sky,dc=com&quot;<br><span class="hljs-meta">  #</span><span class="bash"> includes subtree</span><br>  scope=sub<br>  schemachecking=on<br>  type=refreshAndPersist<br><span class="hljs-meta">  #</span><span class="bash"> [retry interval] [retry <span class="hljs-built_in">times</span>] [interval of re-retry] [re-retry <span class="hljs-built_in">times</span>]</span><br>  retry=&quot;30 5 300 3&quot;<br><span class="hljs-meta">  #</span><span class="bash"> replication interval</span><br>  interval=00:00:05:00<br>  ldapadd -Y EXTERNAL -H ldapi:/// -f syncrepl.ldif<br></code></pre></td></tr></table></figure>
+
+
+
+</li>
+</ul>
+<h2 id="三、配置详解"><a href="#三、配置详解" class="headerlink" title="三、配置详解"></a>三、配置详解</h2><h3 id="1-全局配置类型"><a href="#1-全局配置类型" class="headerlink" title="1.全局配置类型"></a>1.全局配置类型</h3><ul>
+<li><p>本地目录服务:不会以任何方式和其他服务器交互</p>
+<p><img src="image-20201010171521577.png" alt="image-20201010171521577"></p>
+</li>
+<li><p>具有引用的本地服务目录(主从模式)：为本地服务提供应用，并将其配置项其他能够处理请求的服务器返回引用。</p>
+<p><img src="image-20201010171926713.png" alt="image-20201010171926713"></p>
+</li>
+<li><p>复制目录服务:syncrepl主服务器提供服务，由多个从服务器通过syncrepl返回数据。<img src="image-20201010172208583.png" alt="image-20201010172208583"></p>
+</li>
+<li><p>分布式本地模式：将本地服务解耦划分为更小的服务，每个服务都可以进行复制，并与上下级引用粘合在一起</p>
+</li>
+</ul>
+<h3 id="2-配置树"><a href="#2-配置树" class="headerlink" title="2.配置树"></a>2.配置树</h3><p><img src="image-20201010161811243.png" alt="image-20201010161811243">    </p>
+<ul>
+<li>slapd配置树:树的根名为cn=config包含全局配置设置，其他设置包含在单独的子条目中。</li>
+<li>动态加载模块</li>
+<li>模式定义:cn=schema,cn=config条目包含系统架构。cn=schema,cn=config的子条目包含从配置文件加载或在运行时添加的用户架构</li>
+<li>后端特定配置</li>
+<li>数据库特定配置:覆盖在数据库项的子项中定义。数据库和覆盖也可能有其他的子对象</li>
+</ul>
+<h3 id="3-LDIF配置文件"><a href="#3-LDIF配置文件" class="headerlink" title="3.LDIF配置文件"></a>3.LDIF配置文件</h3><ul>
+<li><p>LDIF用途:LDIF(LDAP Data Interchanged Format)的轻量级目录访问协议数据交换格式，是存储LDAP配置信息及目录内容的标准文本文件格式。</p>
+</li>
+<li><p>LDIF文件特点</p>
+<ul>
+<li>LDIF 文件每行的结尾不允许有空格或则制表符</li>
+<li>LDIF文件允许相关属性可以重复赋值并使用</li>
+<li>LDIF文件以.ldif结尾命名</li>
+<li>LDIF文件中以#号开头的一行为注释，可以作为解释使用</li>
+<li>LDIF文件所有的赋值方式为: 属性:[空格]属性值</li>
+<li>LDIF文件通过空行来定义一个条目，空格前为一个条目，空格后为另一个条目的开始</li>
+</ul>
+</li>
+<li><p>全局配置规则</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell">dn:cn=config <br>objectClass:olcGlobal <br>cn:config&lt;global config settings&gt;<br></code></pre></td></tr></table></figure>
+
+
+
+</li>
+</ul>
+<ul>
+<li><p>架构定义(模块定义)</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell">dn: cn=schema,cn=config <br>objectClass: olcSchemaConfig <br>cn: schema<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>系统架构(系统模块)</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">dn: cn=&#123;X&#125;core,cn=schema,cn=config objectClass: olcSchemaConfig cn: &#123;X&#125;core &lt;core schema&gt;<br></code></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+<ul>
+<li><p>其他用户指定的架构</p>
+</li>
+<li><p>后端定义</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell">olcBackend=&lt;typeA&gt;,cn=config <br>objectClass: olcBackendConfig <br>olcBackend: &lt;typeA&gt; &lt;backend-specific settings&gt;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>数据库定义</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">dn: olcDatabase=&#123;X&#125;&lt;typeA&gt;,cn=config objectClass: olcDatabaseConfig olcDatabase: &#123;X&#125;&lt;typeA&gt; &lt;database-specific settings&gt;<br></code></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>[^配置指令]:配置指令可以使用参数，参数之间使用空格分开。如果一个参数包含空格使用双引号”arg”。上面应该用参数替换的内容为&lt;&gt;中的内容。</p>
+<ul>
+<li><p>配置项</p>
+<ul>
+<li><p>cn=config</p>
+<ul>
+<li>config设置适用于整个服务器，设置用于系统或面向连接（必须有olcGlobal、objectClass设置才可以使用</li>
+</ul>
+</li>
+<li><p>olcldletimeout: <interger></p>
+<ul>
+<li>等待(<interger>表示为具体秒数)时间，强制断开与空闲用户的连接</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>olcLogLevel: <level></p>
+<ul>
+<li><p>系统记录日志的级别，olcLogLevel -l显示具体级别</p>
+</li>
+<li><p>olcReferral <URL></p>
+<ul>
+<li>当slapd找不到本地数据库来处理请求时要传递的引用</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>例示:</p>
+  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs shell">dn: cn=config<br>objectClass: olcGlobal<br>cn: config<br>olcIdleTimeout: 30<br>olcLogLevel: Stats<br>olcReferral: ldap://root.openldap.org<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><p>cn=module</p>
+<ul>
+<li>动态模块配置，cn=module条目设置指定要加载的模块集。(必须有olcModuleList、objectClass设置)</li>
+</ul>
+</li>
+<li><p>olcModuleLoad:<filename></p>
+<ul>
+<li>指定要加载的动态可加载模块的名称,<filename>可以是文件名也可以是绝对路径名(文件名在olcModulePath的指定目录中检索)</li>
+</ul>
+</li>
+<li><p>olcModuleLoad:<pathspec></p>
+<ul>
+<li>需要加载模块所在路径，不同的路径使用冒号分隔(不同操作系统不同)</li>
+</ul>
+</li>
+<li><p>例示: </p>
+  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs shell">dn: cn=module&#123;0&#125;,cn=config<br> 	objectClass: olcModuleList<br>	cn: module&#123;0&#125;<br>	olcModuleLoad: /usr/local/lib/smbk5pwd.la<br>	dn: cn=module&#123;1&#125;,cn=config<br>	objectClass: olcModuleList<br>	cn: module&#123;1&#125;<br>	olcModulePath: /usr/local/lib:/usr/local/lib/slapd<br>	olcModuleLoad: accesslog.la<br>	olcModuleLoad: pcache.la<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><p>cn=schema</p>
+<ul>
+<li>schema模板配置,该条目由slapd服务生成（必须有olcSchemaConfig,             objectClass)</li>
+</ul>
+</li>
+<li><p>olcAttributeTypes: <RFC4512 Attribute Type Description></p>
+<ul>
+<li>设置属性类型:查看schema 规范设置</li>
+</ul>
+</li>
+<li><p>olcObjectClasses: <strong><RFC4512 Object Class Description></strong></p>
+<ul>
+<li>设置对象类:查看schema 规范设置</li>
+</ul>
+</li>
+<li><p>例示:</p>
+</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs shell">dn: cn=schema,cn=config<br>objectClass: olcSchemaConfig<br>cn: schema<br>dn: cn=test,cn=schema,cn=config<br>objectClass: olcSchemaConfig<br>cn: test<br>olcAttributeTypes: ( 1.1.1<br> NAME &#x27;testAttr&#x27;<br> EQUALITY integerMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 )olcAttributeTypes: ( 1.1.2 NAME &#x27;testTwo&#x27; EQUALITY caseIgnoreMatchSUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.44 )<br>olcObjectClasses: ( 1.1.3 NAME &#x27;testObject&#x27; MAY ( testAttr $ testTwo ) AUXILIARY )<br></code></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>后端数据库配置</p>
+<ul>
+<li><p>olcBackend: <type></p>
+<ul>
+<li><type>表示后端类型设置</li>
+</ul>
+</li>
+<li><p>例示</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell">dn: olcBackend=bdb,cn=config<br>objectClass: olcBackendConfig<br>olcBackend: bdb<br></code></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>数据库实例设置</p>
+<ul>
+<li><p>olcDatabase:[{index}]<type></p>
+<ul>
+<li>{index}实例数据库索引，<type>为后端数据库类型</li>
+</ul>
+</li>
+<li><p>olcAccess: to <what> [ by <who> [<accesslevel>] [<control>] ]+</p>
+<ul>
+<li>设置条目的访问权限(<accesslevel> 访问级别、<who>请求者)。默认所有用户</li>
+</ul>
+</li>
+<li><p>olc Readonly {TRUE|FALSE}</p>
+<ul>
+<li>TRUE设置数据库只读</li>
+</ul>
+</li>
+<li><p>olcRootDN: <DN></p>
+<ul>
+<li>该指令指定不受访问控制或管理限制的条目对数据库进行操作，条目可以是SASL身份</li>
+<li>例示<ul>
+<li>Entry-base “olcRootDN: cn=Manager,dc=example,dc=com”</li>
+<li>SASL-based “olcRootDN: uid=root,cn=example.com,cn=digest-md5,cn=auth”</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>olcRootPW: <password></p>
+<ul>
+<li>修改指定条目的密码<ul>
+<li>olcRootPW: secret</li>
+<li>使用hash设置，olcRootPW: {SSHA}ZKKuqbEKJfKSXhUbHG3fG8MDn9j1v4QN</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>olcSizeLimit: <integer></p>
+<ul>
+<li>设置从搜索区域显示最大条目数</li>
+</ul>
+</li>
+<li><p>olcSuffix: <dn suffix></p>
+<ul>
+<li><p>查询将传递后端数据库查询的DN后缀</p>
+</li>
+<li><p>例示:olcSuffix: dc=example,dc=com</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>olcSyncrepl设置</p>
+<ul>
+<li><p>设置内容：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs shell">olcSyncrepl: rid=&lt;replica ID&gt;<br> provider=ldap[s]://&lt;hostname&gt;[:port]<br> [type=refreshOnly|refreshAndPersist]<br> [interval=dd:hh:mm:ss]<br> [retry=[&lt;retry interval&gt; &lt;# of retries&gt;]+]<br> searchbase=&lt;base DN&gt;<br> [filter=&lt;filter str&gt;]<br> [scope=sub|one|base]<br> [attrs=&lt;attr list&gt;]<br> [attrsonly]<br> [sizelimit=&lt;limit&gt;]<br> [timelimit=&lt;limit&gt;]<br> [schemachecking=on|off]<br> [bindmethod=simple|sasl]<br> [binddn=&lt;DN&gt;]<br> [saslmech=&lt;mech&gt;]<br> [authcid=&lt;identity&gt;]<br> [authzid=&lt;identity&gt;]<br> [credentials=&lt;passwd&gt;]<br> [realm=&lt;realm&gt;]<br> [secprops=&lt;properties&gt;]<br> [starttls=yes|critical]<br> [tls_cert=&lt;file&gt;]<br> [tls_key=&lt;file&gt;]<br> [tls_cacert=&lt;file&gt;]<br> [tls_cacertdir=&lt;path&gt;]<br> [tls_reqcert=never|allow|try|demand]<br> [tls_cipher_suite=&lt;ciphers&gt;]<br> [tls_crlcheck=none|peer|all]<br> [logbase=&lt;base DN&gt;]<br> [logfilter=&lt;filter str&gt;]<br> [syncdata=default|accesslog|changelog]<br></code></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>配置详细内容查看 RFC4533</li>
+</ul>
+<h2 id="四、命令详解"><a href="#四、命令详解" class="headerlink" title="四、命令详解"></a>四、命令详解</h2><h3 id="1-ldapsearch命令"><a href="#1-ldapsearch命令" class="headerlink" title="1.  ldapsearch命令"></a>1.  ldapsearch命令</h3><ul>
+<li><p>通过用户定义的查询条件，对OpenLDAP目录树进行查找以及检索目录树相关条目</p>
+<ul>
+<li><p>-b <searchbase>:查找指定的节点</p>
+<ul>
+<li><p>-D<dinddn>:查找指定的DN</p>
+</li>
+<li><p>-v:详细输出信息</p>
+</li>
+<li><p>-x:使用简单的认证，不是用任何加密算法</p>
+</li>
+<li><p>-W:在查询时，会提示输入密码，如不想输入密码，使用-w password</p>
+</li>
+<li><p>-h:使用指定ldaphost，可以使用FQDN或IP地址(FQDN表示可以连通的主机名(/etc/hosts))</p>
+</li>
+<li><p>-H(LDAP-URI):使用LDAP服务器的URI地址进行操作</p>
+</li>
+<li><p>-p(port):指定OpenLDAP监听的端口(默认端口为389，加密端口为636)</p>
+</li>
+<li><p>-LLL:禁止输入与过滤条件不匹配的信息</p>
+</li>
+<li><p>uid：过滤条件</p>
+</li>
+<li><p>cn、gidNumber:将目标信息进一步过滤，显示出相关cn及gidNumber信息</p>
+<ul>
+<li>示例</li>
+</ul>
+</li>
+<li><p>ldapsearch -x -D”cn=Manager,dc=game2sky,dc=com” -H ldap:/// -b “ou=people,dc=game2sky,dc=com” -W</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>ldapserach -x -LLL -b dc=game2sky,dc=com ‘uid=Guodayong’ cn gidNumber</p>
+</li>
+</ul>
+<h3 id="2-ldapadd命令"><a href="#2-ldapadd命令" class="headerlink" title="2. ldapadd命令"></a>2. ldapadd命令</h3><ul>
+<li><p>ldapadd:用于通过LDIF格式添加目录树条目。ldapadd为ldapmodify软连接，功能相当于ldapmodify -a</p>
+</li>
+<li><p>示例</p>
+<ul>
+<li><pre><code class="shell">ldapadd -x -D &quot;cn=Manager,dc=game2sky,dc=com&quot; -W -h 127.0.0.1 -f base.ldif
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs plain">&#96;&#96;&#96;shell<br>cat &lt;&lt;  EOF|ldapadd -x -D cn&#x3D;Manager, dc&#x3D;game2sky,dc&#x3D;com -W -H ldap:&#x2F;&#x2F;&#x2F;<br>&gt; dn: uid&#x3D;tlin,ou&#x3D;people,dc&#x3D;game2sky,dc&#x3D;com<br>&gt; changetype: delete<br>&gt; EOF<br></code></pre></td></tr></table></figure>
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-ldapdelete命令"><a href="#3-ldapdelete命令" class="headerlink" title="3. ldapdelete命令"></a>3. ldapdelete命令</h3><ul>
+<li><p>ldapdelete 命令用于从目录树中删除指定条目，并根据DN条目删除一个或多个条目，但必须提供所要删除指定条目的权限所绑定的DN(整个目录树的唯一标识名称)</p>
+<ul>
+<li>-c:持续操作模式，操作过程中出现错误，也会进行后续相关操作</li>
+<li>-D:同上</li>
+<li>-n:显示正在进行的相关操作，但不实际修改数据，一般用于测试</li>
+<li>-x:同上</li>
+<li>-f:使用目标文件名作为命令的输入</li>
+<li>-W:同上</li>
+<li>-w passwd:passwd(管理员密码)</li>
+<li>-y passwdfile:密码文件认证</li>
+<li>-r:递归删除,从目录树删除指定的DN的所有子条目</li>
+<li>-h:同上</li>
+</ul>
+</li>
+<li><p>示例</p>
+<ul>
+<li><p>ldapdelete -D “cn=Manager,dc=game2sky,dc=com” -W -h host_ipaddress -x </p>
+</li>
+<li><p>删除用户和用户组</p>
+</li>
+<li><p>ldapdelete -x -w gdy@123! -D ‘cn=Manager,dc=game2sky,dc=com’ “uid=user1,ou=people,dc=game2sky,dc=com”</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="4-ldapmodify命令"><a href="#4-ldapmodify命令" class="headerlink" title="4. ldapmodify命令"></a>4. ldapmodify命令</h3><ul>
+<li><p>ldapmodify命令可以对OpenLDAP数据库中的条目进行修改操作，可以理解为编辑器。</p>
+<ul>
+<li>-a:新增条目</li>
+<li>-D:同上</li>
+<li>-n:同上</li>
+<li>-v:详细输出结果</li>
+<li>-f:同上</li>
+<li>-w passwd：同上</li>
+<li>-W:同上</li>
+<li>-h:同上</li>
+<li>-H:同上</li>
+<li>-p:同上</li>
+</ul>
+</li>
+<li><p>示例</p>
+<ul>
+<li><p>ldapmodify -x -D “cn=Manager,cd=game2sky,cd=com” -w gdy@123 -H ldap:/// -f modify.ldif</p>
+</li>
+<li><p>对系统用户密码进行解锁</p>
+</li>
+<li><p>cat &lt;&lt; EOF | ldapmodify -x -H ldap:/// -D cn=config -w gdy@123</p>
+</li>
+<li><p>dn :uid=lisi,ou=people,dc=game2sky,dc=com</p>
+</li>
+<li><p>changetype=modify</p>
+</li>
+<li><p>delete: pwdAccountLockedTime</p>
+</li>
+<li><p>EOF</p>
+</li>
+<li><p>重置系统用户密码</p>
+</li>
+<li><p>cat &lt;&lt; EOF|ldapmodify -x -H ldap:/// -D cn=config -w gdy@123!</p>
+</li>
+<li><p>dn: cn=default,ou=pwpolicies,dc=game2sky,dc=com</p>
+</li>
+<li><p>changetype: modify</p>
+</li>
+<li><p>replace: pwdMustChange</p>
+</li>
+<li><p>pwdMustChange: TRUE</p>
+</li>
+<li><p>EOF</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="5-ldapwhoami命令"><a href="#5-ldapwhoami命令" class="headerlink" title="5. ldapwhoami命令"></a>5. ldapwhoami命令</h3><ul>
+<li>ldapwhoami用于验证OpenLDAP服务器身份</li>
+<li>示例<ul>
+<li>ldapwhoami -x -D “uid=dpgdy,ou=people,dc=game2sky,dc=com” -W -h ipaddress</li>
+<li>输入dpgdy密码</li>
+</ul>
+</li>
+</ul>
+<h3 id="6-ldapmodrdn命令"><a href="#6-ldapmodrdn命令" class="headerlink" title="6. ldapmodrdn命令"></a>6. ldapmodrdn命令</h3><ul>
+<li>ldapmodrdn命令用于对OpenLDAP目录树中RDN条目的修改，可以从标准的条目信息输入或使用-f指定ldif文件输入<ul>
+<li>-c: 同上</li>
+<li>-D:同上</li>
+<li>-n: 同上</li>
+<li>-x:同上</li>
+<li>-f:同上</li>
+<li>-W:同上</li>
+<li>-w passwd:</li>
+<li>-y passwdfile:</li>
+<li>-r:删除OpenLDAP目录树中rdn(相对路径)条目的唯一标识名称</li>
+<li>-h:同上</li>
+<li>-H:同上</li>
+<li>-p:同上</li>
+<li>-P:输入OpenLDAP版本号，V2或V3</li>
+<li>-O props:指定SASL安全属性</li>
+</ul>
+</li>
+<li>示例<ul>
+<li>ldapmodrdn -x -D “cn=Manager,dc=game2sky,dc=com” -W -h ipaddress “uid=dpgdy,ou=people,dc=game2sky,dc=com” uid=Guodayong</li>
+<li>cat &lt;&lt; EOF |ldapmodify -x -D “cn=Manager,dc=game2sky,dc=com” -W -h ipaddress</li>
+<li>dn: uid=Guodayong,ou=people,dc=game2sky,dc=com</li>
+<li>changetype:modify</li>
+<li>delete: uid</li>
+<li>uid: dpgdy</li>
+<li>EOF</li>
+</ul>
+</li>
+</ul>
+<h3 id="7-ldapcompare命令"><a href="#7-ldapcompare命令" class="headerlink" title="7. ldapcompare命令"></a>7. ldapcompare命令</h3><ul>
+<li><p>ldapcompare命令用于判断OpenLDAP目录树中DN值和指定条目是否属于同一条目</p>
+<ul>
+<li>-D:同上</li>
+<li>-n:同上</li>
+<li>-x:同上</li>
+<li>-W:同上</li>
+<li>-w passwd:同上</li>
+<li>-y passwdfile:同上</li>
+<li>-h:同上</li>
+<li>-H:同上</li>
+<li>-p:同上</li>
+<li>-P:同上</li>
+</ul>
+</li>
+<li><p>示例</p>
+<ul>
+<li><p>ldapcompare -x -D “cn=Manager,dc=game2sky,dc=com” -W -h “uid=dpgdy,ou=people,dc=game2sky,dc=com” “uid:ada”</p>
+</li>
+<li><p>内容不匹配显示FALSE,内容匹配显示TRUE</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="8-ldappasswd命令"><a href="#8-ldappasswd命令" class="headerlink" title="8. ldappasswd命令"></a>8. ldappasswd命令</h3><ul>
+<li><p>ldappasswd命令用户修改密码</p>
+</li>
+<li><p>-S:提示用户输入密码</p>
+</li>
+<li><p>-s newPasswd:指定密码(明文提示)</p>
+</li>
+<li><p>-a oldPasswd:通过旧密码生成新密码</p>
+</li>
+<li><p>-A:提示输入旧密码，自动生成新密码</p>
+</li>
+<li><p>-x:使用简单的认证，不使用任何加密的算法</p>
+</li>
+<li><p>-D:同上</p>
+</li>
+<li><p>-W:同上</p>
+</li>
+<li><p>-w passwd:同上</p>
+</li>
+<li><p>使用DLAP管理员进行用户密码重置</p>
+</li>
+<li><p>ldappasswd -x -D “cn=Manager,dc=game2sky,dc=com” -W “uid=lisi,ou=people,dc=gdy,dc=com” -S</p>
+</li>
+<li><p>输入用户新密码</p>
+</li>
+<li><p>使用DLAP管理员进行用户密码旧密码重置</p>
+</li>
+<li><p>ldappasswd -x -D “cn=Manager,dc=game2sky,dc=com” -A -W “uid=zhangsan,ou=people,dc=game2sky,dc=com” -S</p>
+</li>
+<li><p>Oldpassword: 输入旧密码</p>
+</li>
+<li><p>Re-enter old password:确认旧密码</p>
+</li>
+<li><p>New password:输入新密码</p>
+</li>
+<li><p>Re-enter new password:确认新密码</p>
+</li>
+</ul>
+<h3 id="9-slaptest命令"><a href="#9-slaptest命令" class="headerlink" title="9. slaptest命令"></a>9. slaptest命令</h3><ul>
+<li>slaptest 命令用于检测配置文件(/etc/openldap/slapd.conf)以及数据文件的可用性<ul>
+<li>-d:指定debug的级别</li>
+<li>-f:检测指定配置文件/etc/openldap/slapd.conf</li>
+<li>-F:检测指定的数据库目录/etc/openldap/slapd/</li>
+</ul>
+</li>
+<li>示例<ul>
+<li>slaptest -f /etc/openldap/slapd.conf</li>
+<li>检测数据库文件可用性以及定义debug级别，可以使用一下命令</li>
+<li>slaptest -d 3 -F /etc/openldap/slapd.d/</li>
+</ul>
+</li>
+</ul>
+<h3 id="10-slapindex命令"><a href="#10-slapindex命令" class="headerlink" title="10. slapindex命令"></a>10. slapindex命令</h3><ul>
+<li>slapindex用于创建OpenLDAP数据库条目索引，用于提高查询速度。</li>
+<li>-f:指定OpenLDAP的配置文件，并创建索引</li>
+<li>-F:检测指定OpenLDAP数据库目录，并创建索引</li>
+</ul>
+<h3 id="11-slapcat命令"><a href="#11-slapcat命令" class="headerlink" title="11. slapcat命令"></a>11. slapcat命令</h3><ul>
+<li>slapcat命令用于将数据条目转换为OpenLDAP的LDIF文件，可用于OpenLDAP条目的备份</li>
+<li>-a filter:添加过滤选项<ul>
+<li>-b suffix:指定suffix路径，如dc=game2sky,dc=com</li>
+<li>-d number: 指定debug输出信息的级别</li>
+<li>-f:指定OpenLDAP的配置文件</li>
+<li>-F:指定OpenLDAP的数据库文件目录</li>
+<li>-c:出现错误信息时，继续输出条目</li>
+<li>-H:同上</li>
+<li>-v:输出详细信息</li>
+<li>示例<ul>
+<li>slapcat -v -l openldap.ldif</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="五、-高级配置"><a href="#五、-高级配置" class="headerlink" title="五、 高级配置"></a>五、 高级配置</h2><h3 id="1-Linux-用户权限管理"><a href="#1-Linux-用户权限管理" class="headerlink" title="1.Linux 用户权限管理"></a>1.Linux 用户权限管理</h3><ul>
+<li><p>使用密码</p>
+</li>
+<li><p>ldap Server端操作</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash">新增用户</span><br>useradd username<br><span class="hljs-meta">#</span><span class="bash">新增密码</span><br>slappasswd<br>输入用户密码生成&#123;SSHA&#125;密码<br><span class="hljs-meta">#</span><span class="bash">添加用户</span><br>vi ldapuser.ldif<br><span class="hljs-meta">#</span><span class="bash"> create new</span><br><span class="hljs-meta">#</span><span class="bash"> replace to your own domain name <span class="hljs-keyword">for</span> <span class="hljs-string">&quot;dc=***,dc=***&quot;</span> section</span><br>dn: uid=Username,ou=People,dc=game2sky,dc=com<br>objectClass: inetOrgPerson<br>objectClass: posixAccount<br>objectClass: shadowAccount<br>cn: Username<br>sn: Linux<br>userPassword: &#123;SSHA&#125;xxxxxxxxxxxxxxxxx<br>loginShell: /bin/bash<br>uidNumber: 1000<br>gidNumber: 1000<br>homeDirectory: /home/Username<br><br>dn: cn=Username,ou=Group,dc=game2sky,dc=com<br>objectClass: posixGroup<br>cn: Username<br>gidNumber: 1000<br>memberUid: username<br><br>ldapadd -x -D cn=Manager,dc=game2sky,dc=com -W -f ldapuser.ldif<br><span class="hljs-meta">#</span><span class="bash">批量安装脚本</span><br> vi ldapuser.sh<br><span class="hljs-meta">#</span><span class="bash"> extract <span class="hljs-built_in">local</span> users and groups who have 1000-9999 digit UID</span><br><span class="hljs-meta">#</span><span class="bash"> replace <span class="hljs-string">&quot;SUFFIX=***&quot;</span> to your own domain name</span><br><span class="hljs-meta">#</span><span class="bash"> this is an example</span><br><span class="hljs-meta">#</span><span class="bash">!/bin/bash</span><br><br>SUFFIX=&#x27;dc=srv,dc=world&#x27;<br>LDIF=&#x27;ldapuser.ldif&#x27;<br><br>echo -n &gt; $LDIF<br>GROUP_IDS=()<br>grep &quot;x:[1-9][0-9][0-9][0-9]:&quot; /etc/passwd | (while read TARGET_USER<br>do<br>    USER_ID=&quot;$(echo &quot;$TARGET_USER&quot; | cut -d&#x27;:&#x27; -f1)&quot;<br><br>    USER_NAME=&quot;$(echo &quot;$TARGET_USER&quot; | cut -d&#x27;:&#x27; -f5 | cut -d&#x27; &#x27; -f1,2)&quot;<br>    [ ! &quot;$USER_NAME&quot; ] &amp;&amp; USER_NAME=&quot;$USER_ID&quot;<br><br>    LDAP_SN=&quot;$(echo &quot;$USER_NAME&quot; | cut -d&#x27; &#x27; -f2)&quot;<br>    [ ! &quot;$LDAP_SN&quot; ] &amp;&amp; LDAP_SN=&quot;$USER_NAME&quot;<br><br>    LASTCHANGE_FLAG=&quot;$(grep &quot;$&#123;USER_ID&#125;:&quot; /etc/shadow | cut -d&#x27;:&#x27; -f3)&quot;<br>    [ ! &quot;$LASTCHANGE_FLAG&quot; ] &amp;&amp; LASTCHANGE_FLAG=&quot;0&quot;<br><br>    SHADOW_FLAG=&quot;$(grep &quot;$&#123;USER_ID&#125;:&quot; /etc/shadow | cut -d&#x27;:&#x27; -f9)&quot;<br>    [ ! &quot;$SHADOW_FLAG&quot; ] &amp;&amp; SHADOW_FLAG=&quot;0&quot;<br><br>    GROUP_ID=&quot;$(echo &quot;$TARGET_USER&quot; | cut -d&#x27;:&#x27; -f4)&quot;<br>    [ ! &quot;$(echo &quot;$&#123;GROUP_IDS[@]&#125;&quot; | grep &quot;$GROUP_ID&quot;)&quot; ] &amp;&amp; GROUP_IDS=(&quot;$&#123;GROUP_IDS[@]&#125;&quot; &quot;$GROUP_ID&quot;)<br><br>    echo &quot;dn: uid=$USER_ID,ou=People,$SUFFIX&quot; &gt;&gt; $LDIF<br>    echo &quot;objectClass: inetOrgPerson&quot; &gt;&gt; $LDIF<br>    echo &quot;objectClass: posixAccount&quot; &gt;&gt; $LDIF<br>    echo &quot;objectClass: shadowAccount&quot; &gt;&gt; $LDIF<br>    echo &quot;sn: $LDAP_SN&quot; &gt;&gt; $LDIF<br>    echo &quot;givenName: $(echo &quot;$USER_NAME&quot; | awk &#x27;&#123;print $1&#125;&#x27;)&quot; &gt;&gt; $LDIF<br>    echo &quot;cn: $USER_NAME&quot; &gt;&gt; $LDIF<br>    echo &quot;displayName: $USER_NAME&quot; &gt;&gt; $LDIF<br>    echo &quot;uidNumber: $(echo &quot;$TARGET_USER&quot; | cut -d&#x27;:&#x27; -f3)&quot; &gt;&gt; $LDIF<br>    echo &quot;gidNumber: $(echo &quot;$TARGET_USER&quot; | cut -d&#x27;:&#x27; -f4)&quot; &gt;&gt; $LDIF<br>    echo &quot;userPassword: &#123;crypt&#125;$(grep &quot;$&#123;USER_ID&#125;:&quot; /etc/shadow | cut -d&#x27;:&#x27; -f2)&quot; &gt;&gt; $LDIF<br>    echo &quot;gecos: $USER_NAME&quot; &gt;&gt; $LDIF<br>    echo &quot;loginShell: $(echo &quot;$TARGET_USER&quot; | cut -d&#x27;:&#x27; -f7)&quot; &gt;&gt; $LDIF<br>    echo &quot;homeDirectory: $(echo &quot;$TARGET_USER&quot; | cut -d&#x27;:&#x27; -f6)&quot; &gt;&gt; $LDIF<br>    echo &quot;shadowExpire: $(passwd -S &quot;$USER_ID&quot; | awk &#x27;&#123;print $7&#125;&#x27;)&quot; &gt;&gt; $LDIF<br>    echo &quot;shadowFlag: $SHADOW_FLAG&quot; &gt;&gt; $LDIF<br>    echo &quot;shadowWarning: $(passwd -S &quot;$USER_ID&quot; | awk &#x27;&#123;print $6&#125;&#x27;)&quot; &gt;&gt; $LDIF<br>    echo &quot;shadowMin: $(passwd -S &quot;$USER_ID&quot; | awk &#x27;&#123;print $4&#125;&#x27;)&quot; &gt;&gt; $LDIF<br>    echo &quot;shadowMax: $(passwd -S &quot;$USER_ID&quot; | awk &#x27;&#123;print $5&#125;&#x27;)&quot; &gt;&gt; $LDIF<br>    echo &quot;shadowLastChange: $LASTCHANGE_FLAG&quot; &gt;&gt; $LDIF<br>    echo &gt;&gt; $LDIF<br>done<br><br>for TARGET_GROUP_ID in &quot;$&#123;GROUP_IDS[@]&#125;&quot;<br>do<br>    LDAP_CN=&quot;$(grep &quot;:$&#123;TARGET_GROUP_ID&#125;:&quot; /etc/group | cut -d&#x27;:&#x27; -f1)&quot;<br><br>    echo &quot;dn: cn=$LDAP_CN,ou=Group,$SUFFIX&quot; &gt;&gt; $LDIF<br>    echo &quot;objectClass: posixGroup&quot; &gt;&gt; $LDIF<br>    echo &quot;cn: $LDAP_CN&quot; &gt;&gt; $LDIF<br>    echo &quot;gidNumber: $TARGET_GROUP_ID&quot; &gt;&gt; $LDIF<br><br>    for MEMBER_UID in $(grep &quot;:$&#123;TARGET_GROUP_ID&#125;:&quot; /etc/passwd | cut -d&#x27;:&#x27; -f1,3)<br>    do<br>        UID_NUM=$(echo &quot;$MEMBER_UID&quot; | cut -d&#x27;:&#x27; -f2)<br>        [ $UID_NUM -ge 1000 -a $UID_NUM -le 9999 ] &amp;&amp; echo &quot;memberUid: $(echo &quot;$MEMBER_UID&quot; | cut -d&#x27;:&#x27; -f1)&quot; &gt;&gt; $LDIF<br>    done<br>    echo &gt;&gt; $LDIF<br>done<br>)<br><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>通过migrationtools实现用户和用户组添加</p>
+<ul>
+<li><p>安装migrationtools工具</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">yum install migrationtools -y<br>/usr/share/migrationtools/migrate_base.pl &gt; base.ldif<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>添加用于生成OpenDLAP用户</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs shell">vim adduser.sh<br><span class="hljs-meta">#</span><span class="bash">!/bin/bash</span><br><span class="hljs-meta">#</span><span class="bash">Add system user</span><br>for ldap in &#123;1..5&#125;; do<br>	if id user$&#123;ldap&#125; &amp;&gt; /dev/null;then<br>		echo &quot;System account already exists&quot;<br>	else<br>		adduser user$&#123;ldap&#125;<br>		echo user$&#123;ldap&#125;|passwd --stdin user$&#123;ldap&#125; &amp;&gt; /dev/null<br>		echo &quot;user$&#123;ldap&#125; system add finish&quot;<br>	fi<br>done<br>chmod +x adduser.sh<br>id user1<br><br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><p>配置/usr/share/migrationtools/migrate_common.ph</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash">DEFAULT_MAIL_DOMAIN = <span class="hljs-string">&quot;game2sky.com&quot;</span></span><br><span class="hljs-meta">$</span><span class="bash">DEFAULT_BASE=<span class="hljs-string">&quot;dc=game2sky,dc=com&quot;</span></span><br><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>通过migrationtools 工具生成LDIF模板文件并生成系统用户及组LDIF 文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs shell">tail -n 5 /etc/passwd &gt; system<br>/usr/share/migrationtools/migrate_passwd.pl system people.ldif<br>tail -n 10 /etc/group &gt; group<br>/usr/share/migrationtools/migrate_group.pl group group.ldif<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>导入LDIF文件至OpenLDAP目录树中</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">ldapadd -x -W -D &quot;cn=Manager,dc=game2sky,dc=com&quot; -f people.ldif<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>查询添加的OpenLDAP用户信息</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">ldapsearch -LLL -x -D &#x27;cn=Manager,dc=game2sky,dc=com&#x27; -W -b &#x27;dc=game2sky,dc=com&#x27; &#x27;uid=user1&#x27;<br></code></pre></td></tr></table></figure>
+
+
+
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-Linux-远程权限设置"><a href="#2-Linux-远程权限设置" class="headerlink" title="2.Linux 远程权限设置"></a>2.Linux 远程权限设置</h3><ul>
+<li><p>sudo设置</p>
+<ul>
+<li>客户端配置</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs shell">authconfig --enableldap --enableldapauth -enablemkhomedir\<br>--enableforcelegacy --disablessd --disablesssdauth --disableldaptls\<br>--enablelocauthorize \<br>--ldapserver=ipaddress_server --ldapbasedn=&quot;dc=***,dc=***&quot; --enableshadow\<br>--update<br><span class="hljs-meta">#</span><span class="bash">修改nsswitch.conf配置文件，</span><br>cp /etc/nsswitch.conf /etc/nsswitch.conf.bak<br>echo &quot;sudoers: files ldap&quot; &gt;&gt; /etc/nsswitch.conf<br><span class="hljs-meta">#</span><span class="bash">修改/etc/ldap.conf文件设置</span><br>SUDOERS_BASE ou=People,dc=game2sky.com<br><span class="hljs-meta">#</span><span class="bash">修改sudoer权限</span><br><span class="hljs-meta">#</span><span class="bash">或</span><br>gpasswd -a username wheel<br><br><br></code></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="3-设置密码策略组"><a href="#3-设置密码策略组" class="headerlink" title="3.设置密码策略组"></a>3.设置密码策略组</h3><ul>
+<li><p>vim pwp.ldif</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs shell">dn:ou=pwpolicies,dc=game2sky,dc=com<br>objectClass:organizationalUnit<br>ou:pwpolices<br><br>dn: cn=default,ou=pwpolicies,dc=game2sky,dc=com<br>cn: default<br>objectClass: pwdPolicy<br>objectClass: person<br>pwdAllowUserChange: TRUE<br>pwdAttribute: userPassword<br>pwdExpireWarning:259200<br>pwdFailureCountInterval:0<br>pwdGraceAuthNLimit: 5<br>pwdInHistory: 5<br>pwdLockout:TRUE<br>pwdLockoutDuration:300<br>pwdMaxAge: 259200<br>pwdMaxFailure:5<br>pwdMinAge:0<br>pwdMinLength:8<br>pwdMustChange:TRUE<br>pwdSafeModify:TRUE<br>sn: dummy value<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>添加用户使用密码策略</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs shell">dn: uid=wulei,dc=game2sky,dc=com<br>objectClass: inetOrgPerson<br>uid:wulei<br>cn:wu lei<br>sn:lei<br>loginShell: /bin/bash<br>homeDirectory: /home/wulei<br>homePhone:<br>employeeNumber:21378<br>mail:wulei@game2sky.com<br>pwdPolicySubentry:cn=security,ou=policy,dc=game2sky,dc=com<br><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>定义用户登录修改密码</p>
+</li>
+<li><p>vim pwdret.ldif</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash">该用户登录密码重置</span><br>dn：uid=dpcwc,ou=people,dc=game2sky,dc=com<br>changetype:modify<br>replace:pwdReset<br>pwdReset:TRUE<br><span class="hljs-meta">#</span><span class="bash">查看</span><br>ldapsearch -x -LLL uid=dpcwc +<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>客户端配置</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs shell">echo &quot;bind_policy soft&quot;&gt;&gt;/etc/pam_ldap.conf<br>echo &quot;pam_password md5&quot;&gt;&gt;/etc/pam_ldap.conf<br>echo &quot;pam_lookup_policy yes&quot;&gt;&gt;/etc/pam_ldap.conf<br>echo &quot;pam_password clear_remove_old&quot;&gt;&gt;/etc/pam_ldap.conf<br>重启nslcd服务<br>service nslcd restart<br><br></code></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+<h3 id="4-samba服务器设置"><a href="#4-samba服务器设置" class="headerlink" title="4.samba服务器设置"></a>4.samba服务器设置</h3><ul>
+<li><p>samba安全级别</p>
+<ul>
+<li>share:为共享模式，无须提供用户的密码即可直接访问Samba共享资源，share模式一般用于公共资源下载</li>
+<li>user:使用samba自身数据中存在的用户进行验证，为了保证Samba共享资源的安全性。</li>
+<li>server:使用windows系统或Samba服务端自身提供的用户名和密码进行验证</li>
+<li>domain:使用Windows域服务器提供有效的用户名和密码作为访问samba共享资源的入口passdb backend包括3种类型:smbpasswd tdbsam ldapsam<ul>
+<li>smbpasswd:指令基于系统用户设置samba密码</li>
+<li>tdbsam:使用passdb.tdb数据库进行用户验证，该文件存放在/etc/samba下。passdb.tdb时tdbsam所采用的数据库的文件名称。</li>
+<li>ldapsam通过OpenLDAP验证</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>设置samba共享资源</p>
+<ul>
+<li>ldapserver设置</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs shell">cp /usr/share/doc/samba*/LDAP/samba.schema /etc/openldap/schema/<br><span class="hljs-meta">#</span><span class="bash">使用部署时使用ldapmodify命令添加samba.schema</span><br><span class="hljs-meta">#</span><span class="bash">vim samba_user.ldif</span><br>olcAccess: to attrs=userPassword,sambaLMPassword,sambaNTPassword<br> by self write<br> by dn=&quot;cn=Manager,dc=game2sky,dc=com&quot; write<br> by anonymous auth<br> by * none<br><br>olcAccess: to *<br> by dn=&quot;cn=Manager,dc=game2sky,dc=com&quot; write<br> by self write<br> by * read<br><span class="hljs-meta">#</span><span class="bash">设置权限设置</span><br>systemctl restart slapd<br><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>openldap 客户端配置</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs shell">yum install samba -y<br>vim /etc/samba/smb.conf<br><span class="hljs-meta">#</span><span class="bash">修改字段</span><br>[global]<br>security = user<br>passdb backend = ldapsam:ldap://172.16.3.180/<br>ldap suffix = &quot;dc=game2sky,dc=com&quot;<br>ldap group suffix = &quot;cn=group&quot;<br>ldap user suffix = &quot;ou=people&quot;<br>ldap admin dn =&quot;cn=Manager,dc=game2sky,dc=com&quot;<br>ldap delete dn = no<br>ldap passwd sync = Yes<br>pam password change = Yes<br>ldap ssl = off<br>mkdir /home/share #创建home下共享文件<br>[ldap-share] #设置共享文件夹内用户访问权限<br>	path=/home/share<br>	comment = Security Ddirectory<br>	writeable = yes<br>	valid users = cent <br>testparm /etc/samba/smb.conf<br>systemctl restart smb nmb<br>systemctl enable smb nmb<br>smbpasswd -w password #password 表示管理员用户密码<br>smbpasswd -a cent #表示修改cent用户的密码<br><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>samba 以组方式进行共享</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs shell">vim smb_group.ldif<br>dn: cn=system,ou=groups,dc=game2sky,dc=com<br>changetype: modify<br>add:memberUid<br>memberUid: userid<br>ldapmodify -x -D cn=Manager,dc=game2sky,dc=com -W -H ldap:///<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>samba设置</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs shell">[ldap-share]<br>	path = /home/share<br>	comment = Security Ddirectory<br>	writable = yes<br>	valid users = @system<br></code></pre></td></tr></table></figure>
+
+
+
+</li>
+</ul>
+<h3 id="5-OpenLDAP-Apache-svn设置"><a href="#5-OpenLDAP-Apache-svn设置" class="headerlink" title="5.OpenLDAP+Apache+svn设置"></a>5.OpenLDAP+Apache+svn设置</h3><ul>
+<li><p>安装subversion</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">yum -y install subversion<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>创建路径</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">mkdir /var/svn/repos/project<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>subversion注册</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs shell">svnadmin create /var/svn/repos/project<br>svn mkdir file:///var/svn/repos/project/trunk -m &quot;create&quot;<br>svn mkdir file:///var/svn/repos/project/branches -m &quot;create&quot;<br>svn mkdir file:///var/svn/repos/project/tags -m &quot;create&quot;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>安装Apache协议</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">yum install httpd<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>安装Apache中svn模块</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">yum install mod_dav_svn	<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>安装Apache中ldap模块</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">yum install mod_ldap<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>查看Apache模块显示</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">cat /etc/httpd/conf.modules.d/01-ldap.conf<br>cat /etc/httpd/conf.modules.d/10-subversion.conf<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>修改SVN登录认证</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs shell">vim /etc/httpd/conf.d/subversion.conf<br>&lt;Location /project&gt;<br><span class="hljs-meta">		#</span><span class="bash">导入模块 mod_dav_svn</span><br>        DAV svn<br>        #添加svn路径<br>        SVNPath /var/svn/repos/project<br>        #设置认证配置文件(是由svnadmin create 产生的文件，conf中的authz的文件)<br>        AuthzSVNAccessFile /var/svn/repos/project/conf/authz<br><span class="hljs-meta">		#</span><span class="bash">设置认证方式ldap</span><br>        AuthBasicProvider ldap<br>        #使用Basic认证<br>        AuthType Basic<br>        #设置认证窗口名称<br>        AuthName &quot;Subversion repository&quot;<br>        #设置Openldap架构内容<br>        AuthLDAPURL &quot;ldap://172.16.3.191/dc=game2sky,dc=com?uid?sub?(objectClass=*)&quot;<br>        #设置管理者名称<br>        AuthLDAPBindDN &quot;cn=manager,dc=game2sky,dc=com&quot;<br>        #设置管理者密码<br>        AuthLDAPBindPassword &quot;123456&quot;<br>        Require valid-user<br>&lt;/Location&gt;<br><br></code></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="6-OpenLDAP备份"><a href="#6-OpenLDAP备份" class="headerlink" title="6.OpenLDAP备份"></a>6.OpenLDAP备份</h3><ul>
+<li><p>slapcat 指令进行备份</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">slapcat -v -l openldap-backup.ldif<br></code></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>7.性能优化</p>
+<ul>
+<li><p>性能优化的目标</p>
+<ul>
+<li>架构调整</li>
+<li>索引优化</li>
+<li>数据存储优化</li>
+<li>条目缓存大小</li>
+<li>客户端参数调整</li>
+<li>服务端内核参数优化</li>
+</ul>
+</li>
+<li><p>架构调整</p>
+<ul>
+<li>当服务器不能满足需求时，通过增加服务器数量来实现架构上的扩展。通过多台服务器实现同步或LVS及负载均衡等方式实现横向性能的提高</li>
+</ul>
+</li>
+<li><p>索引优化</p>
+<ul>
+<li>对关键数据创建索引提高查询效率<ul>
+<li>获取索引</li>
+<li>ldapsearch -Q -LLL -Y EXTERNAL -H -ldapi:/// -b cn=config ‘(olcDatabase={2}bdb)’</li>
+<li>通过数据类型创建索引给OpenLDAP添加sn信息</li>
+<li>cat &gt;&gt; | ldapmodify -Q -Y EXTERNAL -H ldapi:/// &lt;&lt;EOF</li>
+<li>dn:olcDatabase={2}bdb,cn=config</li>
+<li>changetype:modify</li>
+<li>add:olcDbIndex</li>
+<li>olcDbIndex:sn pres,eq,sub</li>
+<li>modifying entry “olcDatabase={2}db,cn=config”</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>数据存储优化</p>
+<ul>
+<li>测试硬盘普通硬盘性能<ul>
+<li>hdparam -Tt /dev/sdb</li>
+</ul>
+</li>
+<li>测试硬件存储性能<ul>
+<li>hdparam -Tt /dev/emcpoweral</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>条目缓存优化</p>
+<ul>
+<li>设置缓存大小</li>
+<li>使用上文使用的ldapmodify方法添加如下条目</li>
+<li>olcDbCachesize:10000</li>
+</ul>
+</li>
+<li><p>客户端参数调整</p>
+<ul>
+<li>idletimeout等待指定秒数自动与客户端断开连接<ul>
+<li>使用上文使用的ldapmodify方法添加如下条目</li>
+<li>olcIdleTimeout: <integer></li>
+<li>integer为指定秒数(表述为整数)</li>
+</ul>
+</li>
+<li>sizelimit请求最多显示条目数量<ul>
+<li>使用上文使用的ldapmodify方法添加如下条目</li>
+<li>olcSizeLimit:<integer></li>
+<li>integer为请求最多显示条目数量</li>
+</ul>
+</li>
+<li>timelimit请求最大时间<ul>
+<li>使用上文使用的ldapmodify方法添加如下条目</li>
+<li>olcTimeLimit: <integer></li>
+<li>integer为请求最大时间</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>服务器优化</p>
+<ul>
+<li><p>减少生成套接字数量</p>
+<ul>
+<li><p>net.ipv4.tcp_syncookies = 1</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell">vi /etc/sysctl.conf<br>net.ipv4.tcp_syncookies = 1<br>sysctl -p<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>开启序列池使用</p>
+<ul>
+<li><p>net.ipv4.tcp_tw_reuse = 1</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell">vi /etc/sysctl.conf<br>net.ipv4.tcp_tw_reuse = 1<br>sysctl -p<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>开启快速销毁序列池</p>
+<ul>
+<li><p>net.ipv4.tcp_tw_recycle=1</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">sysctl -w net.ipv4.tcp_tw_recycle=1<br></code></pre></td></tr></table></figure>
+
+
+
+
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>六、异常问题</p>
+<p>1.源码编译报错configure: error: could not locate libtool ltdl.h</p>
+<ul>
+<li><p>需要安装包</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">yum install *ltdl* -y<br></code></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>2.报错ldapadd: not compiled with SASL support</p>
+<ul>
+<li><p>需要安装包</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs shell">cyrus-sasl-lib-2.1.22-5.el5_4.__3.x86_64.rpm<br>cyrus-sasl-devel-2.1.22-5.el5___4.3.x86_64.rpm<br>cyrus-sasl-plain-2.1.22-5.el5___4.3.x86_64.rpm<br>cyrus-sasl-2.1.22-5.el5_4.3.__x86_64.rpm<br>cyrus-sasl-ldap-2.1.22-5.el5___4.3.x86_64.rpm<br>cyrus-sasl-md5-2.1.22-5.el5_4.__3.x86_64.rpm<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>main: TLS init def ctx failed: -1</p>
+<p>未添加/etc/hosts文件导致生成秘钥错误</p>
+<p>修复方法删除 /etc/openldap/certs文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">rm -rf /etc/openldap/certs<br></code></pre></td></tr></table></figure>
+
+
+
+</li>
+</ul>
+<p>  执行<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs plain">mkdir -p &#x2F;etc&#x2F;openldap&#x2F;certs<br>bash &#x2F;usr&#x2F;libexec&#x2F;openldap&#x2F;create-certdb.sh<br>bash &#x2F;usr&#x2F;libexec&#x2F;openldap&#x2F;generate-server-cert.sh<br></code></pre></td></tr></table></figure></p>
+<div id="paginator"></div></div><div id="post-footer"><hr><a href="/2020/11/20/CentOS%E5%AE%88%E6%8A%A4%E8%BF%9B%E7%A8%8B%E7%9B%B8%E5%85%B3%E5%86%85%E5%AE%B9/">← Prev CentOS守护进程相关内容</a><span style="color: #fe2"> | </span><a href="/2020/11/19/CentOS%E5%8A%A8%E6%80%81%E6%B7%BB%E5%8A%A0IP%E5%9C%B0%E5%9D%80/">CentOS动态添加IP地址 Next →</a><hr></div><div id="bottom-btn"><a id="to-index" href="#post-index" title="index">≡</a><a id="to-top" href="#post-title" title="to top">∧</a></div><details id="reward"><summary>打赏</summary><div id="alipay"><span>支付宝 | Alipay</span><br><img src="/img/Alipay.png"></div><div id="wechat"><span>微信 | WeChat</span><br><img src="/img/WeChat.png"></div></details><div id="Valine"></div><script>new Valine({
+ el: '#Valine'
+ , appId: ''
+ , appKey: ''
+ , placeholder: '此条评论委托企鹅物流发送'
+})</script></div></article><aside><div id="about"><a href="/" id="logo"><img src="/img/logo.png" alt="Logo"></a><h1 id="Dr"><a href="/"> Dr.Cokkid</a></h1><section id="total"><a id="total-archives" href="/archives"><span class="total-title">Archives Total:</span><span class="total-number">21</span></a><div id="total-tags"><span class="total-title">Tags:</span><span class="total-number">8</span></div><div id="total-categories"><span class="total-title">Categories:</span><span class="total-number">2</span></div></section></div><div id="aside-block"><h1>INDEX</h1><div id="post-index"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#LDAP-Lightweight-Directory-Access-Protocol-%E8%BD%BB%E9%87%8F%E7%BA%A7%E7%9B%AE%E5%BD%95%E6%9C%8D%E5%8A%A1"><span class="toc-number">1.</span> <span class="toc-text">LDAP(Lightweight Directory Access Protocol 轻量级目录服务)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E6%A6%82%E8%BF%B0"><span class="toc-number">1.1.</span> <span class="toc-text">一、概述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E7%9B%AE%E5%BD%95"><span class="toc-number">1.1.1.</span> <span class="toc-text">1.  目录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E7%9B%AE%E5%BD%95%E6%9C%8D%E5%8A%A1"><span class="toc-number">1.1.2.</span> <span class="toc-text">2. 目录服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-LDAP-Lightweight-Directory-Access-Protocol-%E8%BD%BB%E9%87%8F%E7%BA%A7%E7%9B%AE%E5%BD%95%E6%9C%8D%E5%8A%A1"><span class="toc-number">1.1.3.</span> <span class="toc-text">3. LDAP (Lightweight Directory Access Protocol 轻量级目录服务)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-OpenLDAP-%E5%BC%80%E6%BA%90LDAP%E5%BA%94%E7%94%A8"><span class="toc-number">1.1.4.</span> <span class="toc-text">4. OpenLDAP(开源LDAP应用)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-OpenLDAP%E5%8A%9F%E8%83%BD%E6%B1%87%E6%80%BB"><span class="toc-number">1.1.5.</span> <span class="toc-text">5.OpenLDAP功能汇总</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-OpenLDAP%E6%9D%A1%E7%9B%AE%E6%A6%82%E8%BF%B0"><span class="toc-number">1.1.6.</span> <span class="toc-text">6.OpenLDAP条目概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-OpenLDAP%E5%B1%9E%E6%80%A7%E6%A6%82%E8%BF%B0"><span class="toc-number">1.1.7.</span> <span class="toc-text">7.OpenLDAP属性概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-OpenLDAP%E7%AE%A1%E7%90%86%E5%91%BD%E4%BB%A4%E6%B1%87%E6%80%BB"><span class="toc-number">1.1.8.</span> <span class="toc-text">8.OpenLDAP管理命令汇总</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-OpenLDAP-%E5%90%8C%E6%AD%A5%E6%9C%BA%E5%88%B6%E6%A6%82%E8%BF%B0"><span class="toc-number">1.1.9.</span> <span class="toc-text">9.OpenLDAP 同步机制概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10-OpenLDAP-%E6%9D%83%E9%99%90%E5%86%85%E5%AE%B9%E6%A6%82%E8%BF%B0"><span class="toc-number">1.1.10.</span> <span class="toc-text">10.OpenLDAP 权限内容概述</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%AE%89%E8%A3%85%E5%92%8C%E5%9F%BA%E6%9C%AC%E9%85%8D%E7%BD%AE%EF%BC%88CentOS-7"><span class="toc-number">1.2.</span> <span class="toc-text">二、安装和基本配置（CentOS 7)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%9F%A5%E7%9C%8B%E6%98%AF%E5%90%A6%E5%AD%98%E5%9C%A8openssl"><span class="toc-number">1.2.1.</span> <span class="toc-text">1. 查看是否存在openssl</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%AE%89%E8%A3%85openldap"><span class="toc-number">1.2.2.</span> <span class="toc-text">2. 安装openldap</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E6%97%B6%E9%97%B4%E5%90%8C%E6%AD%A5%E8%AE%BE%E7%BD%AE"><span class="toc-number">1.2.3.</span> <span class="toc-text">3.时间同步设置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE"><span class="toc-number">1.2.4.</span> <span class="toc-text">4. 基础配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-phpLDAPadmin%E5%89%8D%E7%AB%AF%E9%A1%B5%E9%9D%A2%E9%83%A8%E7%BD%B2"><span class="toc-number">1.2.5.</span> <span class="toc-text">5. phpLDAPadmin前端页面部署</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E9%98%B2%E7%81%AB%E5%A2%99%E9%85%8D%E7%BD%AE"><span class="toc-number">1.2.6.</span> <span class="toc-text">6. 防火墙配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-%E5%9F%9F%E5%90%8D%E8%A7%A3%E6%9E%90%E8%AE%BE%E7%BD%AE"><span class="toc-number">1.2.7.</span> <span class="toc-text">7.域名解析设置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-LDAP%E5%AE%A2%E6%88%B7%E7%AB%AF%E9%83%A8%E7%BD%B2"><span class="toc-number">1.2.8.</span> <span class="toc-text">8.LDAP客户端部署</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-OpenSSL%E5%8A%A0%E5%AF%86%E4%BC%A0%E8%BE%93%E8%AE%BE%E7%BD%AE"><span class="toc-number">1.2.9.</span> <span class="toc-text">9.OpenSSL加密传输设置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10-Openldap%E5%90%8E%E7%AB%AF%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%BAMySQL-amp-Mariadb%E5%AE%89%E8%A3%85%E8%BF%87%E7%A8%8B-%E5%8C%85%E5%90%AB%E6%BA%90%E7%A0%81%E5%AE%89%E8%A3%85%E8%BF%87%E7%A8%8B"><span class="toc-number">1.2.10.</span> <span class="toc-text">10.Openldap后端数据库为MySQL&amp;Mariadb安装过程(包含源码安装过程)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#11-Openldap-%E4%B8%BB%E4%BB%8E%E8%AE%BE%E7%BD%AE"><span class="toc-number">1.2.11.</span> <span class="toc-text">11.Openldap 主从设置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3"><span class="toc-number">1.3.</span> <span class="toc-text">三、配置详解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%85%A8%E5%B1%80%E9%85%8D%E7%BD%AE%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.3.1.</span> <span class="toc-text">1.全局配置类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E9%85%8D%E7%BD%AE%E6%A0%91"><span class="toc-number">1.3.2.</span> <span class="toc-text">2.配置树</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-LDIF%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">1.3.3.</span> <span class="toc-text">3.LDIF配置文件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3"><span class="toc-number">1.4.</span> <span class="toc-text">四、命令详解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-ldapsearch%E5%91%BD%E4%BB%A4"><span class="toc-number">1.4.1.</span> <span class="toc-text">1.  ldapsearch命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-ldapadd%E5%91%BD%E4%BB%A4"><span class="toc-number">1.4.2.</span> <span class="toc-text">2. ldapadd命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-ldapdelete%E5%91%BD%E4%BB%A4"><span class="toc-number">1.4.3.</span> <span class="toc-text">3. ldapdelete命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-ldapmodify%E5%91%BD%E4%BB%A4"><span class="toc-number">1.4.4.</span> <span class="toc-text">4. ldapmodify命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-ldapwhoami%E5%91%BD%E4%BB%A4"><span class="toc-number">1.4.5.</span> <span class="toc-text">5. ldapwhoami命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-ldapmodrdn%E5%91%BD%E4%BB%A4"><span class="toc-number">1.4.6.</span> <span class="toc-text">6. ldapmodrdn命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-ldapcompare%E5%91%BD%E4%BB%A4"><span class="toc-number">1.4.7.</span> <span class="toc-text">7. ldapcompare命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-ldappasswd%E5%91%BD%E4%BB%A4"><span class="toc-number">1.4.8.</span> <span class="toc-text">8. ldappasswd命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-slaptest%E5%91%BD%E4%BB%A4"><span class="toc-number">1.4.9.</span> <span class="toc-text">9. slaptest命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10-slapindex%E5%91%BD%E4%BB%A4"><span class="toc-number">1.4.10.</span> <span class="toc-text">10. slapindex命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#11-slapcat%E5%91%BD%E4%BB%A4"><span class="toc-number">1.4.11.</span> <span class="toc-text">11. slapcat命令</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81-%E9%AB%98%E7%BA%A7%E9%85%8D%E7%BD%AE"><span class="toc-number">1.5.</span> <span class="toc-text">五、 高级配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-Linux-%E7%94%A8%E6%88%B7%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86"><span class="toc-number">1.5.1.</span> <span class="toc-text">1.Linux 用户权限管理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Linux-%E8%BF%9C%E7%A8%8B%E6%9D%83%E9%99%90%E8%AE%BE%E7%BD%AE"><span class="toc-number">1.5.2.</span> <span class="toc-text">2.Linux 远程权限设置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E8%AE%BE%E7%BD%AE%E5%AF%86%E7%A0%81%E7%AD%96%E7%95%A5%E7%BB%84"><span class="toc-number">1.5.3.</span> <span class="toc-text">3.设置密码策略组</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-samba%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%AE%BE%E7%BD%AE"><span class="toc-number">1.5.4.</span> <span class="toc-text">4.samba服务器设置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-OpenLDAP-Apache-svn%E8%AE%BE%E7%BD%AE"><span class="toc-number">1.5.5.</span> <span class="toc-text">5.OpenLDAP+Apache+svn设置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-OpenLDAP%E5%A4%87%E4%BB%BD"><span class="toc-number">1.5.6.</span> <span class="toc-text">6.OpenLDAP备份</span></a></li></ol></li></ol></li></ol></div></div><footer><nobr><span class="text-title">©</span><span class="text-content">1970 to 2020</span></nobr><wbr><nobr><span class="text-title">ICP</span><span class="text-content">——备案号——</span></nobr><wbr><wbr><nobr>published with&nbsp;<a target="_blank" rel="noopener" href="http://hexo.io">Hexo&nbsp;</a></nobr><wbr><nobr>Theme&nbsp;<a target="_blank" rel="noopener" href="https://github.com/Yue-plus/hexo-theme-arknights">Arknight&nbsp;</a></nobr><wbr><nobr>by&nbsp;<a target="_blank" rel="noopener" href="https://github.com/Yue-plus">Yue_plus</a></nobr></footer></aside></main><canvas id="canvas-dust"></canvas><script src="/js/arknights.js"></script><script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js"></script></body></html>

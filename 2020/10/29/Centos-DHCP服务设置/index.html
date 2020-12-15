@@ -1,0 +1,32 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Centos-DHCP服务设置 | cokkid eat code</title><script src="https://cdn.bootcss.com/valine/1.4.4/Valine.min.js"></script><link rel="stylesheet" href="/css/arknights.css"><link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/atom-one-dark-reasonable.min.css"><style>@font-face {
+ font-family: BenderLight;
+ src: local('Bender'), url("/font/BenderLight.ttf");
+}
+@font-face {
+ font-family: 'JetBrains Mono';
+ src: local('JetBrains Mono'), url('/font/JetBrainsMono-Regular.woff2') format('woff2');
+}</style><meta name="generator" content="Hexo 5.2.0"></head><body><header><nav><a href="/">Home</a><a href="/archives/">Archives</a></nav></header><main><article><div id="post-bg"><div id="post-title"><div id="post-info"><span>date:<time datetime="2020-10-29T02:30:39.000Z" id="date"> 2020-10-29</time></span><br><span>updated:<time datetime="2020-12-15T11:26:49.189Z" id="updated"> 2020-12-15</time></span></div><h1>Centos-DHCP服务设置</h1><hr></div><div id="post-content"><h2 id="1-概述"><a href="#1-概述" class="headerlink" title="1.概述"></a>1.概述</h2><h3 id="1-1-DHCP"><a href="#1-1-DHCP" class="headerlink" title="1.1 DHCP"></a>1.1 DHCP</h3><p>DHCP(Dynamic Host Configuration Protocol 动态主机配置协议)前身是BOOTP协议，是一个局域网UDP网络协议。使用67(服务端)、68(客户端)端口,其作用是集中管理、分配IP地址，使客户端动态IP地址、Gateway(网关)地址、DNS服务器地址信息。</p>
+<p>1.2 DHCP Service工作流程</p>
+<p>初次获取IP地址流程</p>
+<p>(1) DHCP客户端在局域网中通过广播的方式发送Discover请求报文</p>
+<p>(2) DHCP服务端收到Discover报文后，查找本地IP地址池。并将IP地址附带租约期限和其他配置信息，封装为Offer报文发送至DHCP客户端</p>
+<p>(3) DHCP客户端在多个Offer报文中选择一个Offer报文进行应答，并向DHCP服务端广播Request请求报文;表明请求的IP地址</p>
+<p>(4)DHCP服务端收到Request报文，确认IP地址租约;发送DHCPNACK报文确认租约</p>
+<p>续租IP地址流程</p>
+<p>(1)当地址使用租期达到50%时，客户端会向服务端广播Request请求报文</p>
+<p>(2)当上一次Request请求未收到时，会在租期达到87.5%时，客户端会向服务端广播Request请求报文</p>
+<p>1.3 DHCP分配IP地址模式</p>
+<p>(1)自动分配方式(Automatic Allocation),DHCP服务端为客户端指定一个永久性的IP地址，一旦DHCP客户端第一次成功从DHCP服务端租用到该IP地址，即可永久使用该IP地址</p>
+<p>(2)动态分配方式(Dynamic Allocation),DHCP服务端为客户端指定一个具有时间限制的IP地址，时间到期或客户端明确表示放弃该地址时，改地址可重新被分配</p>
+<p>(3)手动分配方式(Manual Allocation),客户端的IP地址是由网络管理员指定的，DHCP服务端只是将指定IP地址分配给客户端</p>
+<p>2.DHCP配置(CentOS)</p>
+<p>2.1系统基本设置</p>
+<ul>
+<li>Selinux关闭(详细内容查看Selinux设置)</li>
+</ul>
+<div id="paginator"></div></div><div id="post-footer"><hr><a href="/2020/10/29/Centos-%E7%BD%91%E7%BB%9C%E8%AE%BE%E7%BD%AE/">← Prev Centos-网络设置</a><span style="color: #fe2"> | </span><a href="/2020/10/29/PXE-BOOT-%E6%89%B9%E9%87%8F%E5%AE%89%E8%A3%85%E7%B3%BB%E7%BB%9F/">PXE-BOOT-批量安装系统 Next →</a><hr></div><div id="bottom-btn"><a id="to-index" href="#post-index" title="index">≡</a><a id="to-top" href="#post-title" title="to top">∧</a></div><details id="reward"><summary>打赏</summary><div id="alipay"><span>支付宝 | Alipay</span><br><img src="/img/Alipay.png"></div><div id="wechat"><span>微信 | WeChat</span><br><img src="/img/WeChat.png"></div></details><div id="Valine"></div><script>new Valine({
+ el: '#Valine'
+ , appId: ''
+ , appKey: ''
+ , placeholder: '此条评论委托企鹅物流发送'
+})</script></div></article><aside><div id="about"><a href="/" id="logo"><img src="/img/logo.png" alt="Logo"></a><h1 id="Dr"><a href="/"> Dr.Cokkid</a></h1><section id="total"><a id="total-archives" href="/archives"><span class="total-title">Archives Total:</span><span class="total-number">21</span></a><div id="total-tags"><span class="total-title">Tags:</span><span class="total-number">8</span></div><div id="total-categories"><span class="total-title">Categories:</span><span class="total-number">2</span></div></section></div><div id="aside-block"><h1>INDEX</h1><div id="post-index"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%A6%82%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">1.概述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-DHCP"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 DHCP</span></a></li></ol></li></ol></div></div><footer><nobr><span class="text-title">©</span><span class="text-content">1970 to 2020</span></nobr><wbr><nobr><span class="text-title">ICP</span><span class="text-content">——备案号——</span></nobr><wbr><wbr><nobr>published with&nbsp;<a target="_blank" rel="noopener" href="http://hexo.io">Hexo&nbsp;</a></nobr><wbr><nobr>Theme&nbsp;<a target="_blank" rel="noopener" href="https://github.com/Yue-plus/hexo-theme-arknights">Arknight&nbsp;</a></nobr><wbr><nobr>by&nbsp;<a target="_blank" rel="noopener" href="https://github.com/Yue-plus">Yue_plus</a></nobr></footer></aside></main><canvas id="canvas-dust"></canvas><script src="/js/arknights.js"></script><script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js"></script></body></html>

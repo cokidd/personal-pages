@@ -1,0 +1,81 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>CentOS磁盘及文件系统挂载 | cokkid eat code</title><script src="https://cdn.bootcss.com/valine/1.4.4/Valine.min.js"></script><link rel="stylesheet" href="/css/arknights.css"><link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/atom-one-dark-reasonable.min.css"><style>@font-face {
+ font-family: BenderLight;
+ src: local('Bender'), url("/font/BenderLight.ttf");
+}
+@font-face {
+ font-family: 'JetBrains Mono';
+ src: local('JetBrains Mono'), url('/font/JetBrainsMono-Regular.woff2') format('woff2');
+}</style><meta name="generator" content="Hexo 5.2.0"></head><body><header><nav><a href="/">Home</a><a href="/archives/">Archives</a></nav></header><main><article><div id="post-bg"><div id="post-title"><div id="post-info"><span>date:<time datetime="2020-11-02T03:46:30.000Z" id="date"> 2020-11-02</time></span><br><span>updated:<time datetime="2020-12-15T11:26:49.189Z" id="updated"> 2020-12-15</time></span></div><h1>CentOS磁盘及文件系统挂载</h1><hr></div><div id="post-content"><p>1.动态磁盘挂载</p>
+<p>(1)总线检索获取磁盘</p>
+<ul>
+<li><p>查看主机总线</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">ls /sys/class/scsi_host<br>host0 host1 host2<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>扫描总线添加设备</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell">echo &quot;- - -&quot; &gt; /sys/class/scsi_host/host0/scan<br>echo &quot;- - -&quot; &gt; /sys/class/scsi_host/host1/scan<br>echo &quot;- - -&quot; &gt; /sys/class/scsi_host/host2/scan<br></code></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>(2)手动添加</p>
+<ul>
+<li><p>修改/proc/scsi/scsi文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> x 表示硬盘所在SCSI控制器编号(单SCSI控制器为0)</span><br><span class="hljs-meta">#</span><span class="bash"> y 表示硬盘所在SCSI通道的编号(单通道为0，多通道为具体通道)</span><br><span class="hljs-meta">#</span><span class="bash"> z 表示硬盘所在SCSI ID号(通过磁盘所在的SLOT来判断)</span><br><span class="hljs-meta">#</span><span class="bash"> u 表示硬盘所在LUN号(通常默认情况是0)</span><br>echo &quot;scsi add-single-device x y z u&quot; &gt; /proc/scsi/scsi<br></code></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>2.文件系统的挂载</p>
+<p>​    (1)手动挂载</p>
+<ul>
+<li><p>mount命令进行手动挂载</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash">mount &lt;操作&gt; &lt;挂载点&gt; &lt;目标&gt;</span><br>mount /dev/sda /<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>mount命令操作描述</p>
+<ul>
+<li>-a 挂载 fstab 中的所有文件系统</li>
+<li>-f 不实际加载设备。查看mount设备</li>
+<li>-F 与-a同时使用。/etc/fstab中的设备同时加载，可加快执行速度。</li>
+<li>-T &lt;路径&gt;，/etc/fstab的替代文件</li>
+<li>-h –help,显示帮助</li>
+<li>-l 列出带标签的挂载</li>
+<li>-n 不写入/etc/mtab</li>
+<li>-o 挂载选项列表</li>
+<li>-r 以只读方式挂载文件系统</li>
+<li>-t 限制文件系统的种类集合</li>
+<li>-v 打印当前进行的操作</li>
+<li>-V 显示版本信息并退出</li>
+<li>-w 以读写方式挂载文件系统（默认操作）</li>
+<li>-B 挂载其他位置的子树(同 -o bind)</li>
+<li>-M 将子树移动到其他位置</li>
+<li>-R, –rbind挂载其他位置的子树及其包含的所有挂载</li>
+<li>–make-shared 将子树标记为 共享</li>
+<li>–make-slave 将子树标记为 从属</li>
+<li>–make-private 将子树标记为 私有</li>
+<li>–make-unbindable 将子树标记为 不可绑定</li>
+<li>–make-rshared递归地将整个子树标记为 共享</li>
+<li>–make-rslave 递归地将整个子树标记为 从属</li>
+<li>–make-rprivate递归地将整个子树标记为 私有</li>
+<li>–make-runbindable递归地将整个子树标记为 不可绑定</li>
+</ul>
+</li>
+<li><p>挂载点描述</p>
+<ul>
+<li>-L LABEL=&lt;标签&gt; 按文件系统标签指定设备</li>
+<li>-U UUID=<uuid>按文件系统uuid指定设备</li>
+<li>PARTLABEL=&lt;标签&gt;按分区标签指定设备</li>
+<li>PARTUUID=<uuid>按分区 UUID 指定设备</li>
+<li>&lt;设备&gt;按路径指定设备</li>
+<li>&lt;目录&gt;绑定挂载的挂载点</li>
+<li>&lt;文件&gt;用于设置回环设备的常规文件</li>
+</ul>
+</li>
+<li><p>示例</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs shell">mount -o codepage=936,iocharset=cp936 /dev/hda7 /mnt/cdrom (mount -t vfat -o iocharset=cp936 /dev/hda7 /mnt/cdrom)<br>mount -o iocharset=cp936 /dev/hda7 /mnt/cdrom<br>mount -o loop /abc.iso /mnt/cdrom<br>mount /dev/fd0 /mnt/floppy<br>mount -t vfat /dev/sdd1 /mnt/usb<br></code></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<div id="paginator"></div></div><div id="post-footer"><hr><a href="/2020/11/03/CentOS%E9%87%8A%E6%94%BE%E7%BC%93%E5%AD%98/">← Prev CentOS释放缓存</a><span style="color: #fe2"> | </span><a href="/2020/10/29/Linux%E7%B3%BB%E7%BB%9F%E4%BC%98%E5%8C%96%E8%AE%BE%E5%AE%9A/">Linux系统优化设定 Next →</a><hr></div><div id="bottom-btn"><a id="to-top" href="#post-title" title="to top">∧</a></div><details id="reward"><summary>打赏</summary><div id="alipay"><span>支付宝 | Alipay</span><br><img src="/img/Alipay.png"></div><div id="wechat"><span>微信 | WeChat</span><br><img src="/img/WeChat.png"></div></details><div id="Valine"></div><script>new Valine({
+ el: '#Valine'
+ , appId: ''
+ , appKey: ''
+ , placeholder: '此条评论委托企鹅物流发送'
+})</script></div></article><aside><div id="about"><a href="/" id="logo"><img src="/img/logo.png" alt="Logo"></a><h1 id="Dr"><a href="/"> Dr.Cokkid</a></h1><section id="total"><a id="total-archives" href="/archives"><span class="total-title">Archives Total:</span><span class="total-number">21</span></a><div id="total-tags"><span class="total-title">Tags:</span><span class="total-number">8</span></div><div id="total-categories"><span class="total-title">Categories:</span><span class="total-number">2</span></div></section></div><div id="aside-block"></div><footer><nobr><span class="text-title">©</span><span class="text-content">1970 to 2020</span></nobr><wbr><nobr><span class="text-title">ICP</span><span class="text-content">——备案号——</span></nobr><wbr><wbr><nobr>published with&nbsp;<a target="_blank" rel="noopener" href="http://hexo.io">Hexo&nbsp;</a></nobr><wbr><nobr>Theme&nbsp;<a target="_blank" rel="noopener" href="https://github.com/Yue-plus/hexo-theme-arknights">Arknight&nbsp;</a></nobr><wbr><nobr>by&nbsp;<a target="_blank" rel="noopener" href="https://github.com/Yue-plus">Yue_plus</a></nobr></footer></aside></main><canvas id="canvas-dust"></canvas><script src="/js/arknights.js"></script><script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js"></script></body></html>

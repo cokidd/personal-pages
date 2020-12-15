@@ -1,0 +1,47 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>网络设备设置 | cokkid eat code</title><script src="https://cdn.bootcss.com/valine/1.4.4/Valine.min.js"></script><link rel="stylesheet" href="/css/arknights.css"><link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/atom-one-dark-reasonable.min.css"><style>@font-face {
+ font-family: BenderLight;
+ src: local('Bender'), url("/font/BenderLight.ttf");
+}
+@font-face {
+ font-family: 'JetBrains Mono';
+ src: local('JetBrains Mono'), url('/font/JetBrainsMono-Regular.woff2') format('woff2');
+}</style><meta name="generator" content="Hexo 5.2.0"></head><body><header><nav><a href="/">Home</a><a href="/archives/">Archives</a></nav></header><main><article><div id="post-bg"><div id="post-title"><div id="post-info"><span>date:<time datetime="2020-11-10T08:06:07.000Z" id="date"> 2020-11-10</time></span><br><span>updated:<time datetime="2020-12-15T11:26:49.193Z" id="updated"> 2020-12-15</time></span></div><h1>网络设备设置</h1><hr></div><div id="post-content"><p>1.概述</p>
+<p>广播域:指的是用一个网段中所有设备组成的集合，这些设备侦听该网段中发送的所有广播。</p>
+<p>冲突域:如果同时有两台设备同时传输数据时，会导致冲突，则两台设备必须重新传输数据，因此两台主机在同一冲突域中</p>
+<p>桥接：网桥将LAN划分为多个冲突域，（LAN交换机，仍然使用桥接技术，思科称为多端网桥）</p>
+<p>2.设备类型</p>
+<p>1.LAN集线器</p>
+<p>客户端获取服务端mac地址通过ARP协议广播IP地址实现。</p>
+<p>缺点</p>
+<p>​    1.同一个广播域或冲突域中的主机太多</p>
+<p>​    2.广播风暴</p>
+<p>​    3.组播数据流太多</p>
+<p>​    4.带宽太低</p>
+<p>​    5.使用集线器扩展网络</p>
+<p>2.路由器</p>
+<p>路由器接口获取广播后，将广播丢弃，而不将其转发给其他网络。因此对广播域和冲突域进行分割</p>
+<p>路由器优点：</p>
+<p>1.路由器不转发广播</p>
+<p>2.通过网络层信息进行过滤</p>
+<p>3.分组交换</p>
+<p>4.分组过滤</p>
+<p>5.网络间通信</p>
+<p>6.路径选择</p>
+<p>3.IOS网络模型</p>
+<p>1.应用层:提供用户界面</p>
+<p>2.表示层:表述数据进行加密处理</p>
+<p>3.会话层:将不同应用程序的数据分离</p>
+<p>4.传输层:提供可靠或不可靠的传输在重传前执行纠错</p>
+<p>5.网络层:提供逻辑地址，路由器使用它们来选择路径</p>
+<p>6.数据链路层:将分组拆分为字节，将字节组合成帧使用MAC地址提供介质访问，执行错误检测，但不纠错。</p>
+<p>7.物理层:在设备之间传输比特指定电平，电缆速度和电缆针脚</p>
+<p>IOS模型各层功能</p>
+<p>1.应用层：文件、打印、消息、数据库和应用程序服务</p>
+<p>2.表示层：数据加密、压缩和转化服务</p>
+<p>3.会话层:对话控制</p>
+<div id="paginator"></div></div><div id="post-footer"><hr><a href="/2020/11/16/%E9%85%8D%E7%BD%AESubversion/">← Prev 配置Subversion</a><span style="color: #fe2"> | </span><a href="/2020/11/04/shell%E5%BF%AB%E6%8D%B7%E9%94%AE/">shell快捷键 Next →</a><hr></div><div id="bottom-btn"><a id="to-top" href="#post-title" title="to top">∧</a></div><details id="reward"><summary>打赏</summary><div id="alipay"><span>支付宝 | Alipay</span><br><img src="/img/Alipay.png"></div><div id="wechat"><span>微信 | WeChat</span><br><img src="/img/WeChat.png"></div></details><div id="Valine"></div><script>new Valine({
+ el: '#Valine'
+ , appId: ''
+ , appKey: ''
+ , placeholder: '此条评论委托企鹅物流发送'
+})</script></div></article><aside><div id="about"><a href="/" id="logo"><img src="/img/logo.png" alt="Logo"></a><h1 id="Dr"><a href="/"> Dr.Cokkid</a></h1><section id="total"><a id="total-archives" href="/archives"><span class="total-title">Archives Total:</span><span class="total-number">21</span></a><div id="total-tags"><span class="total-title">Tags:</span><span class="total-number">8</span></div><div id="total-categories"><span class="total-title">Categories:</span><span class="total-number">2</span></div></section></div><div id="aside-block"></div><footer><nobr><span class="text-title">©</span><span class="text-content">1970 to 2020</span></nobr><wbr><nobr><span class="text-title">ICP</span><span class="text-content">——备案号——</span></nobr><wbr><wbr><nobr>published with&nbsp;<a target="_blank" rel="noopener" href="http://hexo.io">Hexo&nbsp;</a></nobr><wbr><nobr>Theme&nbsp;<a target="_blank" rel="noopener" href="https://github.com/Yue-plus/hexo-theme-arknights">Arknight&nbsp;</a></nobr><wbr><nobr>by&nbsp;<a target="_blank" rel="noopener" href="https://github.com/Yue-plus">Yue_plus</a></nobr></footer></aside></main><canvas id="canvas-dust"></canvas><script src="/js/arknights.js"></script><script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js"></script></body></html>

@@ -1,0 +1,20 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Centos6启动phddns卡死 | cokkid eat code</title><script src="https://cdn.bootcss.com/valine/1.4.4/Valine.min.js"></script><link rel="stylesheet" href="/css/arknights.css"><link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/atom-one-dark-reasonable.min.css"><style>@font-face {
+ font-family: BenderLight;
+ src: local('Bender'), url("/font/BenderLight.ttf");
+}
+@font-face {
+ font-family: 'JetBrains Mono';
+ src: local('JetBrains Mono'), url('/font/JetBrainsMono-Regular.woff2') format('woff2');
+}</style><meta name="generator" content="Hexo 5.2.0"></head><body><header><nav><a href="/">Home</a><a href="/archives/">Archives</a></nav></header><main><article><div id="post-bg"><div id="post-title"><div id="post-info"><span>date:<time datetime="2020-12-15T10:19:39.000Z" id="date"> 2020-12-15</time></span><br><span>updated:<time datetime="2020-12-15T11:26:49.193Z" id="updated"> 2020-12-15</time></span></div><h1>Centos6启动phddns卡死</h1><hr></div><div id="post-content"><h1 id="CentOS开机启动卡死"><a href="#CentOS开机启动卡死" class="headerlink" title="CentOS开机启动卡死"></a>CentOS开机启动卡死</h1><p>1.开机点击e键，进入grub菜单</p>
+<p>2.选择启动版本，按e键</p>
+<p>3.再kernel描述后添加 1</p>
+<p>4.按b键，进入single模式</p>
+<p>5.使用rpm -qa phddns | grep phddns 查看安装组件</p>
+<p>6.使用rpm -e phddns 卸载phddns</p>
+<p>原因:是由于异常断电导致的动态域名出现问题，卸载该服务对实际环境无特大影响。</p>
+<div id="paginator"></div></div><div id="post-footer"><hr><a href="/2020/12/15/Windows%E7%B3%BB%E7%BB%9F%E8%93%9D%E5%B1%8F%E6%8A%A5%E9%94%99/">← Prev Windows系统蓝屏报错</a><span style="color: #fe2"> | </span><a href="/2020/12/11/CentOS%E8%BF%87%E6%9C%9Fyum%E4%BB%93%E5%BA%93%E8%AE%BE%E7%BD%AE/">CentOS过期yum仓库设置 Next →</a><hr></div><div id="bottom-btn"><a id="to-index" href="#post-index" title="index">≡</a><a id="to-top" href="#post-title" title="to top">∧</a></div><details id="reward"><summary>打赏</summary><div id="alipay"><span>支付宝 | Alipay</span><br><img src="/img/Alipay.png"></div><div id="wechat"><span>微信 | WeChat</span><br><img src="/img/WeChat.png"></div></details><div id="Valine"></div><script>new Valine({
+ el: '#Valine'
+ , appId: ''
+ , appKey: ''
+ , placeholder: '此条评论委托企鹅物流发送'
+})</script></div></article><aside><div id="about"><a href="/" id="logo"><img src="/img/logo.png" alt="Logo"></a><h1 id="Dr"><a href="/"> Dr.Cokkid</a></h1><section id="total"><a id="total-archives" href="/archives"><span class="total-title">Archives Total:</span><span class="total-number">21</span></a><div id="total-tags"><span class="total-title">Tags:</span><span class="total-number">8</span></div><div id="total-categories"><span class="total-title">Categories:</span><span class="total-number">2</span></div></section></div><div id="aside-block"><h1>INDEX</h1><div id="post-index"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#CentOS%E5%BC%80%E6%9C%BA%E5%90%AF%E5%8A%A8%E5%8D%A1%E6%AD%BB"><span class="toc-number">1.</span> <span class="toc-text">CentOS开机启动卡死</span></a></li></ol></div></div><footer><nobr><span class="text-title">©</span><span class="text-content">1970 to 2020</span></nobr><wbr><nobr><span class="text-title">ICP</span><span class="text-content">——备案号——</span></nobr><wbr><wbr><nobr>published with&nbsp;<a target="_blank" rel="noopener" href="http://hexo.io">Hexo&nbsp;</a></nobr><wbr><nobr>Theme&nbsp;<a target="_blank" rel="noopener" href="https://github.com/Yue-plus/hexo-theme-arknights">Arknight&nbsp;</a></nobr><wbr><nobr>by&nbsp;<a target="_blank" rel="noopener" href="https://github.com/Yue-plus">Yue_plus</a></nobr></footer></aside></main><canvas id="canvas-dust"></canvas><script src="/js/arknights.js"></script><script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js"></script></body></html>
